@@ -257,6 +257,22 @@
             </div>
           </section>
 
+          <section class="card kid-card kid-card--blue">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">School Bag</p>
+                <h2>上学小包清单</h2>
+              </div>
+            </div>
+            <div class="prediction-copy">
+              <p>□ 2 到 3 片卫生巾或护垫</p>
+              <p>□ 一条干净内裤</p>
+              <p>□ 深色外裤或外套</p>
+              <p>□ 小袋子和纸巾</p>
+              <p>□ 记得：不舒服时可以找老师帮忙。</p>
+            </div>
+          </section>
+
           <div class="stats-grid" id="stats-grid"></div>
 
           <section class="card prediction-card parent-only">
@@ -450,10 +466,12 @@
       </main>
 
       <footer class="app-footer">
-        <p>Eva的月亮 v1.0.0</p>
+        <p>Eva的月亮 v1.1.0</p>
         <button id="show-changelog-btn" class="text-btn" type="button">查看更新</button>
       </footer>
     </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
 
     <template id="stat-card-template">
       <article class="card stat-card">
@@ -518,8 +536,8 @@
           </div>
         </div>
         <div class="prediction-copy">
+          <p><strong>v1.1.0</strong> 新增保存提示气泡、上学小包清单，并优化空状态说明。</p>
           <p><strong>v1.0.0</strong> 儿童模式、家长模式、PIN 锁、自动锁定、打印摘要已齐备。</p>
-          <p><strong>本次新增</strong> 超简模式、今天一键记录、更新记录入口。</p>
         </div>
         <div class="form-actions">
           <button class="primary-btn" type="submit" value="close">知道了</button>

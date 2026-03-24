@@ -2,8 +2,9 @@ const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
 const PARENT_UNLOCK_EXPIRES_KEY = "moon-log-parent-unlock-expires-v1";
-const VERSION = "1.0.0";
+const VERSION = "1.1.0";
 const MAX_PIN_ATTEMPTS = 3;
+const TOAST_DURATION = 2200;
 const SYMPTOMS = [
   "腹痛",
   "腰酸",
@@ -177,7 +178,10 @@ const elements = {
   welcomeDialogForm: document.querySelector("#welcome-dialog-form"),
   changelogDialog: document.querySelector("#changelog-dialog"),
   showChangelogBtn: document.querySelector("#show-changelog-btn"),
+  toast: document.querySelector("#toast"),
 };
+
+let toastTimer = null;
 
 bootstrap();
 
@@ -316,6 +320,7 @@ function onSubmitPeriod(event) {
   resetPeriodForm();
   render();
   setFormStatus(statusMessage);
+  showToast(statusMessage);
 }
 
 function onSubmitDailyLog(event) {
@@ -351,6 +356,7 @@ function onSubmitDailyLog(event) {
   resetDailyForm();
   render();
   setDailyFormStatus(statusMessage);
+  showToast(statusMessage);
 }
 
 function render() {
@@ -631,7 +637,7 @@ function buildDayCell(date, monthStart, insights) {
 
 function renderRecords() {
   if (!state.records.length) {
-    elements.recordList.innerHTML = `<div class="empty-state">还没有任何经期记录。先从最近一次开始。</div>`;
+    elements.recordList.innerHTML = `<div class="empty-state">还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。</div>`;
     return;
   }
 
@@ -669,7 +675,7 @@ function renderRecords() {
 
 function renderDailyLogs() {
   if (!state.dailyLogs.length) {
-    elements.dailyLogList.innerHTML = `<div class="empty-state">还没有日报。点击日历上的任意一天可以快速填入日期。</div>`;
+    elements.dailyLogList.innerHTML = `<div class="empty-state">还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。</div>`;
     return;
   }
 
@@ -881,6 +887,7 @@ function exportData() {
   anchor.download = `period-tracker-${toDateInputValue(new Date())}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
+  showToast("原始数据已导出。");
 }
 
 function exportSummary() {
@@ -957,6 +964,7 @@ function exportSummary() {
   anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
+  showToast("家长摘要已导出。");
 }
 
 function importData(event) {
@@ -976,6 +984,7 @@ function importData(event) {
       render();
       setFormStatus("数据已导入。");
       setDailyFormStatus("数据已导入。");
+      showToast("备份已恢复。");
     } catch (error) {
       window.alert("导入失败：JSON 文件格式不正确。");
     } finally {
@@ -995,6 +1004,7 @@ function clearAllData() {
   resetPeriodForm();
   resetDailyForm();
   render();
+  showToast("已清空当前浏览器里的记录。");
 }
 
 function seedData() {
@@ -1008,6 +1018,7 @@ function seedData() {
   state.settings = normalizeSettings();
   saveState();
   render();
+  showToast("示例数据已填充。");
 }
 
 function saveSettings(event) {
@@ -1023,12 +1034,14 @@ function saveSettings(event) {
   saveState();
   render();
   setFormStatus("预测参数已更新。");
+  showToast("家长参数已更新。");
 }
 
 function resetSettings() {
   state.settings = normalizeSettings();
   saveState();
   render();
+  showToast("预测参数已恢复自动计算。");
 }
 
 function renderSettings() {
@@ -1105,6 +1118,7 @@ function toggleParentMode() {
     clearParentSessionUnlock();
     saveState();
     render();
+    showToast("家长模式已关闭。");
     return;
   }
 
@@ -1153,6 +1167,7 @@ function savePin(event) {
   saveState();
   renderPinSettings();
   elements.pinStatus.textContent = "家长 PIN 已保存。";
+  showToast("家长 PIN 已保存。");
 }
 
 function clearPin() {
@@ -1162,6 +1177,7 @@ function clearPin() {
   saveState();
   render();
   elements.pinStatus.textContent = "家长 PIN 已清除。";
+  showToast("家长 PIN 已清除。");
 }
 
 function handlePinDialogSubmit(event) {
@@ -1191,6 +1207,7 @@ function handlePinDialogSubmit(event) {
     saveState();
     render();
     elements.pinDialog.close();
+    showToast("家长模式已开启。");
     return;
   }
 
@@ -1212,6 +1229,7 @@ function handlePinDialogSubmit(event) {
   saveState();
   render();
   elements.pinDialog.close();
+  showToast("家长模式已开启。");
 }
 
 function normalizePin(value) {
@@ -1290,12 +1308,14 @@ function isParentSessionUnlocked() {
 
 function quickLogToday() {
   fillDailyDate(toDateInputValue(new Date()));
+  showToast("已帮你选中今天，可以直接填写。");
 }
 
 function toggleSimpleMode() {
   state.settings.simpleMode = !state.settings.simpleMode;
   saveState();
   render();
+  showToast(state.settings.simpleMode ? "已打开超简模式。" : "已关闭超简模式。");
 }
 
 function installApp() {
@@ -1373,4 +1393,14 @@ function formatDate(dateString) {
     month: "long",
     day: "numeric",
   }).format(new Date(`${dateString}T00:00:00`));
+}
+
+function showToast(message) {
+  if (!elements.toast || !message) return;
+  elements.toast.textContent = message;
+  elements.toast.classList.add("is-visible");
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    elements.toast.classList.remove("is-visible");
+  }, TOAST_DURATION);
 }
