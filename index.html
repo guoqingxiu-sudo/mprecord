@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#d65b7d" />
+    <title>月迹 · 生理期记录</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero__copy">
+          <p class="eyebrow">Moon Log</p>
+          <h1>月迹</h1>
+          <p class="hero__text">
+            记录生理期、症状与情绪变化，基于历史周期给出下一次来潮与易孕窗口预测。
+          </p>
+          <div class="hero__actions">
+            <button class="primary-btn" data-jump="#record-form">立即记录</button>
+            <button class="ghost-btn" data-jump="#calendar-panel">查看日历</button>
+            <button class="ghost-btn is-hidden" id="install-btn" type="button">安装应用</button>
+          </div>
+        </div>
+        <section class="hero__status card">
+          <p class="card__label">当前周期</p>
+          <h2 id="cycle-day">尚无数据</h2>
+          <p id="cycle-summary" class="muted">
+            添加至少一次生理期记录后，这里会显示周期状态与预测信息。
+          </p>
+          <div class="pill-row" id="hero-pills"></div>
+        </section>
+      </header>
+
+      <main class="layout">
+        <section class="panel panel--form card" id="record-form">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Record</p>
+              <h2>新增生理期记录</h2>
+            </div>
+            <button id="reset-form-btn" class="text-btn" type="button">清空表单</button>
+          </div>
+
+          <form id="period-form" class="stack">
+            <input type="hidden" id="record-id" />
+            <div class="grid-two">
+              <label>
+                开始日期
+                <input id="start-date" name="startDate" type="date" required />
+              </label>
+              <label>
+                结束日期
+                <input id="end-date" name="endDate" type="date" required />
+              </label>
+            </div>
+
+            <div class="grid-three">
+              <label>
+                流量级别
+                <select id="flow-level" name="flowLevel">
+                  <option value="轻">轻</option>
+                  <option value="中" selected>中</option>
+                  <option value="重">重</option>
+                  <option value="不规则">不规则</option>
+                </select>
+              </label>
+              <label>
+                疼痛程度
+                <input id="pain-level" name="painLevel" type="range" min="0" max="10" value="3" />
+                <span class="range-hint"><strong id="pain-output">3</strong>/10</span>
+              </label>
+              <label>
+                情绪状态
+                <select id="mood" name="mood">
+                  <option value="平稳" selected>平稳</option>
+                  <option value="轻松">轻松</option>
+                  <option value="疲惫">疲惫</option>
+                  <option value="烦躁">烦躁</option>
+                  <option value="低落">低落</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset class="symptoms">
+              <legend>伴随症状</legend>
+              <div class="tag-grid" id="symptom-options"></div>
+            </fieldset>
+
+            <label>
+              备注
+              <textarea
+                id="notes"
+                name="notes"
+                rows="4"
+                placeholder="例如：第一天腹痛明显、第三天量减少、服用了止痛药等"
+              ></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">保存记录</button>
+              <span id="form-status" class="muted"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Daily Log</p>
+              <h2>每日状态</h2>
+            </div>
+            <button id="reset-daily-form-btn" class="text-btn" type="button">清空表单</button>
+          </div>
+
+          <form id="daily-form" class="stack">
+            <input type="hidden" id="daily-log-id" />
+            <div class="grid-two">
+              <label>
+                日期
+                <input id="daily-date" type="date" required />
+              </label>
+              <label>
+                当日出血情况
+                <select id="daily-bleeding">
+                  <option value="无" selected>无</option>
+                  <option value="点滴">点滴</option>
+                  <option value="轻">轻</option>
+                  <option value="中">中</option>
+                  <option value="重">重</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="grid-three">
+              <label>
+                疼痛程度
+                <input id="daily-pain-level" type="range" min="0" max="10" value="2" />
+                <span class="range-hint"><strong id="daily-pain-output">2</strong>/10</span>
+              </label>
+              <label>
+                精力水平
+                <input id="energy-level" type="range" min="1" max="5" value="3" />
+                <span class="range-hint"><strong id="energy-output">3</strong>/5</span>
+              </label>
+              <label>
+                情绪状态
+                <select id="daily-mood">
+                  <option value="平稳" selected>平稳</option>
+                  <option value="轻松">轻松</option>
+                  <option value="疲惫">疲惫</option>
+                  <option value="烦躁">烦躁</option>
+                  <option value="低落">低落</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset>
+              <legend>当日症状</legend>
+              <div class="tag-grid" id="daily-symptom-options"></div>
+            </fieldset>
+
+            <label>
+              当日备注
+              <textarea
+                id="daily-notes"
+                rows="3"
+                placeholder="例如：睡眠不足、运动后疼痛减轻、出现点滴出血等"
+              ></textarea>
+            </label>
+
+            <div class="form-actions">
+              <button type="submit" class="primary-btn">保存日报</button>
+              <span id="daily-form-status" class="muted"></span>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel panel--insights">
+          <div class="stats-grid" id="stats-grid"></div>
+
+          <section class="card prediction-card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Forecast</p>
+                <h2>周期预测</h2>
+              </div>
+            </div>
+            <div id="prediction-content" class="prediction-copy"></div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Trend</p>
+                <h2>周期观察</h2>
+              </div>
+            </div>
+            <div id="trend-content" class="prediction-copy"></div>
+          </section>
+
+          <section class="card" id="calendar-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Calendar</p>
+                <h2>月视图</h2>
+              </div>
+              <div class="calendar-nav">
+                <button type="button" class="icon-btn" id="prev-month" aria-label="上个月">‹</button>
+                <p id="calendar-title"></p>
+                <button type="button" class="icon-btn" id="next-month" aria-label="下个月">›</button>
+              </div>
+            </div>
+            <div class="calendar-legend">
+              <span><i class="swatch swatch--period"></i>已记录经期</span>
+              <span><i class="swatch swatch--predicted"></i>预测经期</span>
+              <span><i class="swatch swatch--fertile"></i>易孕窗口</span>
+              <span><i class="swatch swatch--log"></i>当日日报</span>
+              <span><i class="swatch swatch--today"></i>今天</span>
+            </div>
+            <div class="calendar" id="calendar-grid"></div>
+          </section>
+        </section>
+
+        <aside class="panel panel--history">
+          <section class="card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Settings</p>
+                <h2>预测参数</h2>
+              </div>
+            </div>
+            <form id="settings-form" class="stack">
+              <div class="grid-two">
+                <label>
+                  手动周期天数
+                  <input id="manual-cycle-length" type="number" min="15" max="60" placeholder="留空则自动计算" />
+                </label>
+                <label>
+                  手动经期天数
+                  <input id="manual-period-length" type="number" min="2" max="14" placeholder="留空则自动计算" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button id="save-settings-btn" class="ghost-btn" type="submit">保存参数</button>
+                <button id="reset-settings-btn" class="text-btn" type="button">恢复自动计算</button>
+              </div>
+              <p class="muted">
+                如果你知道自己周期更稳定，可以手动输入天数覆盖平均值。
+              </p>
+            </form>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">History</p>
+                <h2>历史记录</h2>
+              </div>
+            </div>
+            <div id="record-list" class="record-list"></div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Daily Feed</p>
+                <h2>最近日报</h2>
+              </div>
+            </div>
+            <div id="daily-log-list" class="record-list"></div>
+          </section>
+
+          <section class="card">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Data</p>
+                <h2>数据管理</h2>
+              </div>
+            </div>
+            <div class="data-actions">
+              <button id="export-btn" class="ghost-btn" type="button">导出 JSON</button>
+              <label class="upload-btn">
+                导入 JSON
+                <input id="import-input" type="file" accept="application/json" hidden />
+              </label>
+              <button id="seed-btn" class="ghost-btn" type="button">填充示例数据</button>
+              <button id="clear-btn" class="danger-btn" type="button">清空全部数据</button>
+            </div>
+            <p class="muted">
+              数据默认保存在当前浏览器的本地存储中，不会自动上传。
+            </p>
+          </section>
+        </aside>
+      </main>
+    </div>
+
+    <template id="stat-card-template">
+      <article class="card stat-card">
+        <p class="card__label"></p>
+        <h3></h3>
+        <p class="muted"></p>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
