@@ -259,6 +259,39 @@ textarea {
   gap: 10px;
 }
 
+.choice-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.choice-grid--five {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.choice-chip {
+  min-height: 54px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(110, 63, 77, 0.12);
+  color: var(--text);
+  padding: 10px 12px;
+  font-weight: 700;
+}
+
+.choice-chip.is-selected {
+  background: linear-gradient(135deg, var(--primary), #ef7b8d);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 10px 20px rgba(214, 91, 125, 0.18);
+}
+
 .tag-check {
   position: relative;
 }
@@ -583,6 +616,11 @@ textarea {
   .grid-three,
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+
+  .choice-grid,
+  .choice-grid--five {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 

@@ -122,39 +122,55 @@
                 日期
                 <input id="daily-date" type="date" required />
               </label>
-              <label>
-                当日出血情况
-                <select id="daily-bleeding">
-                  <option value="无" selected>无</option>
-                  <option value="点滴">点滴</option>
-                  <option value="轻">轻</option>
-                  <option value="中">中</option>
-                  <option value="重">重</option>
-                </select>
-              </label>
+              <div class="choice-section">
+                <span>今天有没有出血</span>
+                <div class="choice-grid choice-grid--five" id="daily-bleeding-choices">
+                  <button type="button" class="choice-chip is-selected" data-target="daily-bleeding" data-value="无">无</button>
+                  <button type="button" class="choice-chip" data-target="daily-bleeding" data-value="点滴">点滴</button>
+                  <button type="button" class="choice-chip" data-target="daily-bleeding" data-value="轻">轻</button>
+                  <button type="button" class="choice-chip" data-target="daily-bleeding" data-value="中">中</button>
+                  <button type="button" class="choice-chip" data-target="daily-bleeding" data-value="重">重</button>
+                </div>
+                <input id="daily-bleeding" type="hidden" value="无" />
+              </div>
             </div>
 
-            <div class="grid-three">
-              <label>
-                疼痛程度
-                <input id="daily-pain-level" type="range" min="0" max="10" value="2" />
-                <span class="range-hint"><strong id="daily-pain-output">2</strong>/10</span>
-              </label>
-              <label>
-                精力水平
-                <input id="energy-level" type="range" min="1" max="5" value="3" />
-                <span class="range-hint"><strong id="energy-output">3</strong>/5</span>
-              </label>
-              <label>
-                今天心情
-                <select id="daily-mood">
-                  <option value="平稳" selected>平稳</option>
-                  <option value="轻松">轻松</option>
-                  <option value="疲惫">疲惫</option>
-                  <option value="烦躁">烦躁</option>
-                  <option value="低落">低落</option>
-                </select>
-              </label>
+            <div class="choice-section">
+              <span>今天有多疼</span>
+              <div class="choice-grid" id="daily-pain-choices">
+                <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="0">不疼</button>
+                <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="3">有一点</button>
+                <button type="button" class="choice-chip is-selected" data-target="daily-pain-level" data-value="2">普通</button>
+                <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="6">比较疼</button>
+                <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="8">很疼</button>
+              </div>
+              <input id="daily-pain-level" type="hidden" value="2" />
+              <span class="range-hint"><strong id="daily-pain-output">2</strong>/10</span>
+            </div>
+
+            <div class="choice-section">
+              <span>今天有没有精神</span>
+              <div class="choice-grid" id="energy-choices">
+                <button type="button" class="choice-chip" data-target="energy-level" data-value="1">很累</button>
+                <button type="button" class="choice-chip" data-target="energy-level" data-value="2">有点累</button>
+                <button type="button" class="choice-chip is-selected" data-target="energy-level" data-value="3">还行</button>
+                <button type="button" class="choice-chip" data-target="energy-level" data-value="4">不错</button>
+                <button type="button" class="choice-chip" data-target="energy-level" data-value="5">很好</button>
+              </div>
+              <input id="energy-level" type="hidden" value="3" />
+              <span class="range-hint"><strong id="energy-output">3</strong>/5</span>
+            </div>
+
+            <div class="choice-section">
+              <span>今天心情怎么样</span>
+              <div class="choice-grid choice-grid--five" id="daily-mood-choices">
+                <button type="button" class="choice-chip is-selected" data-target="daily-mood" data-value="平稳">平稳</button>
+                <button type="button" class="choice-chip" data-target="daily-mood" data-value="轻松">轻松</button>
+                <button type="button" class="choice-chip" data-target="daily-mood" data-value="疲惫">疲惫</button>
+                <button type="button" class="choice-chip" data-target="daily-mood" data-value="烦躁">烦躁</button>
+                <button type="button" class="choice-chip" data-target="daily-mood" data-value="低落">低落</button>
+              </div>
+              <input id="daily-mood" type="hidden" value="平稳" />
             </div>
 
             <fieldset>
@@ -228,6 +244,21 @@
               </div>
             </div>
             <div id="prediction-content" class="prediction-copy"></div>
+          </section>
+
+          <section class="card parent-only">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Guide</p>
+                <h2>给家长的说明</h2>
+              </div>
+            </div>
+            <div class="prediction-copy">
+              <p><strong>初潮前后头一两年不一定很准：</strong>周期忽长忽短并不少见，先以稳定记录为主。</p>
+              <p><strong>重点看三件事：</strong>疼痛是否影响上学、出血是否异常多、孩子情绪和精力有没有明显变化。</p>
+              <p><strong>建议的陪伴方式：</strong>准备好卫生用品、热敷用品和替换衣物，帮助孩子建立“难受就说”的安全感。</p>
+              <p><strong>尽快就医的情况：</strong>持续剧烈腹痛、头晕乏力明显、发烧、经量特别大，或长期不来月经。</p>
+            </div>
           </section>
 
           <section class="card">

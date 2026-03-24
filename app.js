@@ -181,6 +181,11 @@ function attachEvents() {
     elements.energyOutput.textContent = elements.energyLevel.value;
   });
   elements.dailyForm.addEventListener("input", updateAlertAdvice);
+  document.querySelectorAll(".choice-chip[data-target]").forEach((button) => {
+    button.addEventListener("click", () => {
+      setChoiceValue(button.dataset.target, button.dataset.value);
+    });
+  });
 
   elements.periodForm.addEventListener("submit", onSubmitPeriod);
   elements.dailyForm.addEventListener("submit", onSubmitDailyLog);
@@ -701,12 +706,10 @@ function editDailyLog(logId) {
 
   elements.dailyLogId.value = log.id;
   elements.dailyDate.value = log.date;
-  elements.dailyBleeding.value = log.bleeding;
-  elements.dailyPainLevel.value = log.painLevel;
-  elements.dailyPainOutput.textContent = String(log.painLevel);
-  elements.energyLevel.value = log.energyLevel;
-  elements.energyOutput.textContent = String(log.energyLevel);
-  elements.dailyMood.value = log.mood;
+  setChoiceValue("daily-bleeding", log.bleeding);
+  setChoiceValue("daily-pain-level", String(log.painLevel));
+  setChoiceValue("energy-level", String(log.energyLevel));
+  setChoiceValue("daily-mood", log.mood);
   elements.dailyNotes.value = log.notes;
   setCheckedSymptoms("daily-symptoms", log.symptoms);
   setCheckedSymptoms("alert-flags", log.alertFlags || []);
@@ -747,10 +750,10 @@ function resetDailyForm() {
   elements.dailyForm.reset();
   elements.dailyLogId.value = "";
   elements.dailyDate.value = toDateInputValue(new Date());
-  elements.dailyPainLevel.value = "2";
-  elements.dailyPainOutput.textContent = "2";
-  elements.energyLevel.value = "3";
-  elements.energyOutput.textContent = "3";
+  setChoiceValue("daily-bleeding", "无");
+  setChoiceValue("daily-pain-level", "2");
+  setChoiceValue("energy-level", "3");
+  setChoiceValue("daily-mood", "平稳");
   setCheckedSymptoms("daily-symptoms", []);
   setCheckedSymptoms("alert-flags", []);
   setDailyFormStatus("");
@@ -764,6 +767,18 @@ function fillDailyDate(date) {
 
 function getSelectedSymptoms(groupName) {
   return [...document.querySelectorAll(`input[name='${groupName}']:checked`)].map((input) => input.value);
+}
+
+function setChoiceValue(targetId, value) {
+  const input = document.querySelector(`#${targetId}`);
+  if (!input) return;
+  input.value = value;
+  document.querySelectorAll(`.choice-chip[data-target='${targetId}']`).forEach((button) => {
+    button.classList.toggle("is-selected", button.dataset.value === value);
+  });
+  if (targetId === "daily-pain-level") elements.dailyPainOutput.textContent = value;
+  if (targetId === "energy-level") elements.energyOutput.textContent = value;
+  updateAlertAdvice();
 }
 
 function setCheckedSymptoms(groupName, selectedSymptoms) {
