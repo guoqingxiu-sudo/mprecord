@@ -426,7 +426,7 @@ const elements = {
   jumpButtons: document.querySelectorAll("[data-jump]"),
   quickLogBtn: document.querySelector("#quick-log-btn"),
   simpleModeBtn: document.querySelector("#simple-mode-btn"),
-  languageSwitchBtn: document.querySelector("#language-switch-btn"),
+  languageSelect: document.querySelector("#language-select"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
@@ -505,6 +505,13 @@ function bootstrap() {
   maybeShowOnboarding();
 }
 
+function detectPreferredLanguage() {
+  const browserLanguage = String(navigator.language || navigator.userLanguage || DEFAULT_LANGUAGE).toLowerCase();
+  if (browserLanguage.startsWith("en")) return "en";
+  if (browserLanguage.startsWith("zh")) return "zh-CN";
+  return DEFAULT_LANGUAGE;
+}
+
 function attachEvents() {
   elements.painLevel.addEventListener("input", () => {
     elements.painOutput.textContent = elements.painLevel.value;
@@ -553,7 +560,7 @@ function attachEvents() {
   elements.parentModeBtn.addEventListener("click", toggleParentMode);
   elements.quickLogBtn?.addEventListener("click", quickLogToday);
   elements.simpleModeBtn?.addEventListener("click", toggleSimpleMode);
-  elements.languageSwitchBtn?.addEventListener("click", toggleLanguage);
+  elements.languageSelect?.addEventListener("change", onLanguageChange);
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
@@ -706,8 +713,8 @@ function applyTranslations() {
   document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
     node.placeholder = t(node.dataset.i18nPlaceholder);
   });
-  if (elements.languageSwitchBtn) {
-    elements.languageSwitchBtn.textContent = lang === DEFAULT_LANGUAGE ? "English" : "中文";
+  if (elements.languageSelect) {
+    elements.languageSelect.value = lang;
   }
   if (elements.footerVersion) {
     elements.footerVersion.textContent = `${t("app.name")} v${VERSION}`;
@@ -1253,15 +1260,22 @@ function sortDailyLogs() {
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
+    if (!raw) {
+      state.settings = normalizeSettings({ language: detectPreferredLanguage() });
+      return;
+    }
     const parsed = JSON.parse(raw);
     state.records = Array.isArray(parsed.records) ? parsed.records.map(normalizeRecord).filter(Boolean) : [];
     state.dailyLogs = Array.isArray(parsed.dailyLogs) ? parsed.dailyLogs.map(normalizeDailyLog).filter(Boolean) : [];
-    state.settings = normalizeSettings(parsed.settings);
+    state.settings = normalizeSettings({
+      ...parsed.settings,
+      language: parsed.settings?.language || detectPreferredLanguage(),
+    });
     sortRecords();
     sortDailyLogs();
   } catch (error) {
     console.error("Failed to load saved period tracker data", error);
+    state.settings = normalizeSettings({ language: detectPreferredLanguage() });
   }
 }
 
@@ -1750,8 +1764,9 @@ function toggleSimpleMode() {
     : (getLanguage() === "en" ? "Simple Mode is off." : "已关闭超简模式。"));
 }
 
-function toggleLanguage() {
-  state.settings.language = getLanguage() === DEFAULT_LANGUAGE ? "en" : DEFAULT_LANGUAGE;
+function onLanguageChange(event) {
+  const nextLanguage = SUPPORTED_LANGUAGES.includes(event.target.value) ? event.target.value : DEFAULT_LANGUAGE;
+  state.settings.language = nextLanguage;
   saveState();
   render();
   showToast(getLanguage() === "en" ? "Language switched to English." : "语言已切换为中文。");
