@@ -384,6 +384,7 @@
             </div>
             <div class="tab-row" id="settings-tabs">
               <button class="tab-btn is-active" type="button" data-tab-target="preferences-panel" data-i18n="preferences.title">偏好设置</button>
+              <button class="tab-btn" type="button" data-tab-target="reminders-panel" data-i18n="reminderSettings.title">提醒设置</button>
               <button class="tab-btn parent-only" type="button" data-tab-target="security-panel" data-i18n="security.title">家长锁</button>
               <button class="tab-btn parent-only" type="button" data-tab-target="prediction-panel" data-i18n="settings.title">预测参数</button>
               <button class="tab-btn" type="button" data-tab-target="data-panel" data-i18n="data.title">备份与恢复</button>
@@ -408,6 +409,41 @@
                   <div class="form-actions">
                     <button id="preferences-save-btn" class="ghost-btn" type="submit" data-i18n="preferences.save">保存偏好</button>
                     <button id="replay-onboarding-btn" class="text-btn" type="button" data-i18n="preferences.replay">重新查看引导</button>
+                  </div>
+                </form>
+              </section>
+
+              <section class="tab-panel" id="reminders-panel">
+                <form id="notification-form" class="stack">
+                  <label class="toggle-row">
+                    <span>
+                      <strong data-i18n="reminderSettings.enable">浏览器提醒</strong>
+                      <span class="muted" data-i18n="reminderSettings.enableHelp">允许应用在需要时发送本地提醒。</span>
+                    </span>
+                    <input id="notification-enabled" type="checkbox" />
+                  </label>
+                  <label class="toggle-row">
+                    <span>
+                      <strong data-i18n="reminderSettings.daily">今天还没记录时提醒</strong>
+                      <span class="muted" data-i18n="reminderSettings.dailyHelp">晚上会在打开应用时提醒补一条今天的日报。</span>
+                    </span>
+                    <input id="notification-daily-check" type="checkbox" />
+                  </label>
+                  <label class="toggle-row">
+                    <span>
+                      <strong data-i18n="reminderSettings.attention">需要告诉家长时提醒</strong>
+                      <span class="muted" data-i18n="reminderSettings.attentionHelp">出现高疼痛、出血多或异常标记时，会弹出提醒。</span>
+                    </span>
+                    <input id="notification-attention" type="checkbox" />
+                  </label>
+                  <div class="notification-box">
+                    <p id="notification-status" class="muted">当前通知权限：未设置。</p>
+                    <p class="muted" data-i18n="reminderSettings.note">浏览器提醒需要先允许通知权限。当前版本会在打开应用时检查今天是否还没记录，或是否出现需要告诉家长的情况。</p>
+                  </div>
+                  <div class="form-actions">
+                    <button id="request-notification-btn" class="ghost-btn" type="button" data-i18n="reminderSettings.request">开启通知权限</button>
+                    <button id="test-notification-btn" class="text-btn" type="button" data-i18n="reminderSettings.test">发送测试提醒</button>
+                    <button id="save-notification-btn" class="ghost-btn" type="submit" data-i18n="reminderSettings.save">保存提醒设置</button>
                   </div>
                 </form>
               </section>

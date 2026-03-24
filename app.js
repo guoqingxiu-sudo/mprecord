@@ -2,6 +2,8 @@ const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
 const PARENT_UNLOCK_EXPIRES_KEY = "moon-log-parent-unlock-expires-v1";
+const NOTIFICATION_DAILY_KEY = "moon-log-notification-daily-v1";
+const NOTIFICATION_ATTENTION_KEY = "moon-log-notification-attention-v1";
 const DEFAULT_LANGUAGE = "zh-CN";
 const VERSION = "1.2.0";
 const MAX_PIN_ATTEMPTS = 3;
@@ -80,6 +82,17 @@ const I18N = {
     "checklist.item7": "□ 卫生巾/护垫 □ 替换内裤 □ 深色裤子 □ 热敷用品 □ 温水杯",
     "trend.title": "周期观察",
     "reminders.title": "提醒中心",
+    "reminderSettings.title": "提醒设置",
+    "reminderSettings.enable": "浏览器提醒",
+    "reminderSettings.enableHelp": "允许应用在需要时发送本地提醒。",
+    "reminderSettings.daily": "今天还没记录时提醒",
+    "reminderSettings.dailyHelp": "晚上会在打开应用时提醒补一条今天的日报。",
+    "reminderSettings.attention": "需要告诉家长时提醒",
+    "reminderSettings.attentionHelp": "出现高疼痛、出血多或异常标记时，会弹出提醒。",
+    "reminderSettings.request": "开启通知权限",
+    "reminderSettings.test": "发送测试提醒",
+    "reminderSettings.save": "保存提醒设置",
+    "reminderSettings.note": "浏览器提醒需要先允许通知权限。当前版本会在打开应用时检查今天是否还没记录，或是否出现需要告诉家长的情况。",
     "calendar.title": "月视图",
     "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>已记录经期",
     "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>预测经期",
@@ -201,6 +214,17 @@ const I18N = {
     "checklist.item7": "□ Pads/liners □ Spare underwear □ Dark pants □ Heat pack □ Warm water cup",
     "trend.title": "Cycle Notes",
     "reminders.title": "Reminder Center",
+    "reminderSettings.title": "Reminder Settings",
+    "reminderSettings.enable": "Browser Notifications",
+    "reminderSettings.enableHelp": "Allow the app to send local reminders when needed.",
+    "reminderSettings.daily": "Remind if today is not logged",
+    "reminderSettings.dailyHelp": "In the evening, the app can remind you to add today's daily log when it is opened.",
+    "reminderSettings.attention": "Remind when a parent should be told",
+    "reminderSettings.attentionHelp": "Show a notification when pain, bleeding, or alert flags need extra attention.",
+    "reminderSettings.request": "Allow Notifications",
+    "reminderSettings.test": "Send Test Reminder",
+    "reminderSettings.save": "Save Reminder Settings",
+    "reminderSettings.note": "Browser notifications need permission first. This version checks when the app is opened and can remind about missing today's log or records that should be shared with a parent.",
     "calendar.title": "Month View",
     "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>Recorded period",
     "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>Predicted period",
@@ -403,6 +427,9 @@ const state = {
     parentLockMinutes: "10",
     simpleMode: false,
     language: DEFAULT_LANGUAGE,
+    notificationsEnabled: false,
+    reminderDailyCheck: true,
+    reminderAttention: true,
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -452,6 +479,13 @@ const elements = {
   preferencesLanguageSelect: document.querySelector("#preferences-language-select"),
   preferencesSimpleMode: document.querySelector("#preferences-simple-mode"),
   replayOnboardingBtn: document.querySelector("#replay-onboarding-btn"),
+  notificationForm: document.querySelector("#notification-form"),
+  notificationEnabled: document.querySelector("#notification-enabled"),
+  notificationDailyCheck: document.querySelector("#notification-daily-check"),
+  notificationAttention: document.querySelector("#notification-attention"),
+  notificationStatus: document.querySelector("#notification-status"),
+  requestNotificationBtn: document.querySelector("#request-notification-btn"),
+  testNotificationBtn: document.querySelector("#test-notification-btn"),
   settingsTabs: document.querySelectorAll("#settings-tabs [data-tab-target]"),
   settingsTabPanels: document.querySelectorAll(".tab-panel"),
   settingsForm: document.querySelector("#settings-form"),
@@ -588,6 +622,9 @@ function attachEvents() {
   elements.seedBtn.addEventListener("click", seedData);
   elements.preferencesForm?.addEventListener("submit", savePreferences);
   elements.replayOnboardingBtn?.addEventListener("click", replayOnboarding);
+  elements.notificationForm?.addEventListener("submit", saveNotificationSettings);
+  elements.requestNotificationBtn?.addEventListener("click", requestNotificationPermission);
+  elements.testNotificationBtn?.addEventListener("click", sendTestNotification);
   elements.settingsTabs.forEach((button) => {
     button.addEventListener("click", () => {
       setActiveSettingsTab(button.dataset.tabTarget);
@@ -625,6 +662,12 @@ function attachEvents() {
   window.addEventListener("appinstalled", () => {
     state.deferredInstallPrompt = null;
     elements.installBtn.classList.add("is-hidden");
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      void evaluateNotificationTriggers(buildInsights());
+    }
   });
 }
 
@@ -736,6 +779,7 @@ function render() {
   renderParentMode();
   renderPinSettings();
   updateAlertAdvice();
+  void evaluateNotificationTriggers(insights);
 }
 
 function applyTranslations() {
@@ -1667,6 +1711,7 @@ function renderSettings() {
   if (elements.preferencesSimpleMode) {
     elements.preferencesSimpleMode.checked = state.settings.simpleMode;
   }
+  renderNotificationSettings();
 }
 
 function savePreferences(event) {
@@ -1682,6 +1727,43 @@ function savePreferences(event) {
   saveState();
   render();
   showToast(getLanguage() === "en" ? "Preferences saved." : "偏好设置已保存。");
+}
+
+function renderNotificationSettings() {
+  if (elements.notificationEnabled) {
+    elements.notificationEnabled.checked = state.settings.notificationsEnabled;
+  }
+  if (elements.notificationDailyCheck) {
+    elements.notificationDailyCheck.checked = state.settings.reminderDailyCheck;
+    elements.notificationDailyCheck.disabled = !state.settings.notificationsEnabled;
+  }
+  if (elements.notificationAttention) {
+    elements.notificationAttention.checked = state.settings.reminderAttention;
+    elements.notificationAttention.disabled = !state.settings.notificationsEnabled;
+  }
+  if (elements.requestNotificationBtn) {
+    elements.requestNotificationBtn.disabled = !supportsNotifications() || getNotificationPermissionState() === "granted";
+  }
+  if (elements.testNotificationBtn) {
+    elements.testNotificationBtn.disabled = !supportsNotifications() || getNotificationPermissionState() !== "granted";
+  }
+  if (elements.notificationStatus) {
+    elements.notificationStatus.textContent = getNotificationStatusText();
+  }
+}
+
+function saveNotificationSettings(event) {
+  event.preventDefault();
+  state.settings = normalizeSettings({
+    ...state.settings,
+    notificationsEnabled: Boolean(elements.notificationEnabled?.checked),
+    reminderDailyCheck: Boolean(elements.notificationDailyCheck?.checked),
+    reminderAttention: Boolean(elements.notificationAttention?.checked),
+  });
+  saveState();
+  renderNotificationSettings();
+  showToast(getLanguage() === "en" ? "Reminder settings saved." : "提醒设置已保存。");
+  void evaluateNotificationTriggers(buildInsights());
 }
 
 function renderParentMode() {
@@ -1769,6 +1851,9 @@ function normalizeSettings(settings = {}) {
     parentLockMinutes: normalizeLockMinutes(settings.parentLockMinutes),
     simpleMode: Boolean(settings.simpleMode),
     language: SUPPORTED_LANGUAGES.includes(settings.language) ? settings.language : DEFAULT_LANGUAGE,
+    notificationsEnabled: Boolean(settings.notificationsEnabled),
+    reminderDailyCheck: settings.reminderDailyCheck !== false,
+    reminderAttention: settings.reminderAttention !== false,
   };
 }
 
@@ -2023,6 +2108,140 @@ function installApp() {
     state.deferredInstallPrompt = null;
     elements.installBtn.classList.add("is-hidden");
   });
+}
+
+function supportsNotifications() {
+  return "Notification" in window;
+}
+
+function getNotificationPermissionState() {
+  if (!supportsNotifications()) return "unsupported";
+  return Notification.permission;
+}
+
+function getNotificationStatusText() {
+  const permission = getNotificationPermissionState();
+  if (permission === "granted") {
+    return getLanguage() === "en"
+      ? "Notification permission: allowed. Local reminders can appear in the browser or installed app."
+      : "当前通知权限：已允许。本地提醒可以显示在浏览器或已安装应用中。";
+  }
+  if (permission === "denied") {
+    return getLanguage() === "en"
+      ? "Notification permission: blocked. Change it in the browser site settings if needed."
+      : "当前通知权限：已拒绝。如需开启，请到浏览器站点权限里修改。";
+  }
+  if (permission === "unsupported") {
+    return getLanguage() === "en"
+      ? "Notifications are not supported in this browser."
+      : "当前浏览器不支持通知提醒。";
+  }
+  return getLanguage() === "en"
+    ? "Notification permission: not chosen yet."
+    : "当前通知权限：还没有选择。";
+}
+
+async function requestNotificationPermission() {
+  if (!supportsNotifications()) {
+    showToast(getLanguage() === "en" ? "This browser does not support notifications." : "当前浏览器不支持通知提醒。");
+    renderNotificationSettings();
+    return;
+  }
+  if (Notification.permission === "denied") {
+    showToast(getLanguage() === "en" ? "Notifications are blocked. Change browser site settings to allow them." : "通知已被拒绝，请到浏览器站点权限里手动开启。");
+    renderNotificationSettings();
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+  if (permission === "granted") {
+    state.settings.notificationsEnabled = true;
+    saveState();
+    renderNotificationSettings();
+    showToast(getLanguage() === "en" ? "Notifications are enabled." : "通知提醒已开启。");
+    return;
+  }
+
+  renderNotificationSettings();
+  showToast(getLanguage() === "en" ? "Notification permission was not granted." : "还没有获得通知权限。");
+}
+
+async function sendTestNotification() {
+  const sent = await sendLocalNotification({
+    title: getLanguage() === "en" ? "Eva's Moon Test" : "Eva的月亮测试提醒",
+    body: getLanguage() === "en" ? "Notifications are working on this device." : "这台设备已经可以收到应用提醒了。",
+    tag: "eva-moon-test",
+  });
+  if (sent) {
+    showToast(getLanguage() === "en" ? "Test reminder sent." : "测试提醒已发送。");
+    return;
+  }
+  showToast(getLanguage() === "en" ? "Notifications are not ready yet." : "通知暂时还不能使用。");
+}
+
+async function evaluateNotificationTriggers(insights) {
+  if (document.visibilityState !== "visible") return;
+  if (!state.settings.notificationsEnabled || getNotificationPermissionState() !== "granted") return;
+
+  if (state.settings.reminderAttention) {
+    const latestAttention = insights.attentionLogs[0] || null;
+    if (latestAttention && latestAttention.date === insights.today) {
+      const lastNotifiedAttentionId = localStorage.getItem(NOTIFICATION_ATTENTION_KEY);
+      if (lastNotifiedAttentionId !== latestAttention.id) {
+        const sent = await sendLocalNotification({
+          title: getLanguage() === "en" ? "Tell A Parent Today" : "今天需要告诉家长",
+          body: getLanguage() === "en"
+            ? `${formatDate(latestAttention.date)}: pain ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "needs attention"}.`
+            : `${formatDate(latestAttention.date)}：疼痛 ${latestAttention.painLevel}/10，${formatAlertFlags(latestAttention) || "需要留意"}。`,
+          tag: `attention-${latestAttention.id}`,
+        });
+        if (sent) {
+          localStorage.setItem(NOTIFICATION_ATTENTION_KEY, latestAttention.id);
+          return;
+        }
+      }
+    }
+  }
+
+  if (!state.settings.reminderDailyCheck || insights.todayLog || new Date().getHours() < 18) return;
+  if (localStorage.getItem(NOTIFICATION_DAILY_KEY) === insights.today) return;
+
+  const sent = await sendLocalNotification({
+    title: getLanguage() === "en" ? "Remember Today's Check-in" : "记得补今天的记录",
+    body: getLanguage() === "en"
+      ? "There is no daily log for today yet. A quick check-in only takes a few taps."
+      : "今天还没有日报。点几下就能记完今天的状态。",
+    tag: `daily-check-${insights.today}`,
+  });
+  if (sent) {
+    localStorage.setItem(NOTIFICATION_DAILY_KEY, insights.today);
+  }
+}
+
+async function sendLocalNotification({ title, body, tag }) {
+  if (getNotificationPermissionState() !== "granted") return false;
+
+  const options = {
+    body,
+    tag,
+    icon: "./icon.svg",
+    badge: "./icon.svg",
+  };
+
+  try {
+    if ("serviceWorker" in navigator) {
+      const registration = await navigator.serviceWorker.getRegistration() || await navigator.serviceWorker.ready;
+      if (registration?.showNotification) {
+        await registration.showNotification(title, options);
+        return true;
+      }
+    }
+    new Notification(title, options);
+    return true;
+  } catch (error) {
+    console.error("Failed to show local notification", error);
+    return false;
+  }
 }
 
 function registerServiceWorker() {
