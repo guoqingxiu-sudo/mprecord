@@ -22,6 +22,7 @@ const I18N = {
     "common.notes": "备注",
     "common.date": "日期",
     "common.ok": "知道了",
+    "common.close": "关闭",
     "periodForm.title": "新增生理期记录",
     "periodForm.startDate": "开始日期",
     "periodForm.endDate": "结束日期",
@@ -141,6 +142,7 @@ const I18N = {
     "common.notes": "Notes",
     "common.date": "Date",
     "common.ok": "OK",
+    "common.close": "Close",
     "periodForm.title": "Add Period Record",
     "periodForm.startDate": "Start Date",
     "periodForm.endDate": "End Date",
@@ -489,6 +491,11 @@ const elements = {
   welcomeDialogForm: document.querySelector("#welcome-dialog-form"),
   changelogDialog: document.querySelector("#changelog-dialog"),
   showChangelogBtn: document.querySelector("#show-changelog-btn"),
+  dailyDetailDialog: document.querySelector("#daily-detail-dialog"),
+  dailyDetailDialogForm: document.querySelector("#daily-detail-dialog-form"),
+  dailyDetailTitle: document.querySelector("#daily-detail-title"),
+  dailyDetailContent: document.querySelector("#daily-detail-content"),
+  dailyDetailEditBtn: document.querySelector("#daily-detail-edit-btn"),
   toast: document.querySelector("#toast"),
   footerVersion: document.querySelector("#footer-version"),
 };
@@ -591,6 +598,7 @@ function attachEvents() {
   elements.printChecklistBtn?.addEventListener("click", () => window.print());
   elements.welcomeDialogForm?.addEventListener("submit", closeOnboarding);
   elements.showChangelogBtn?.addEventListener("click", () => elements.changelogDialog?.showModal());
+  elements.dailyDetailEditBtn?.addEventListener("click", openDetailLogEditor);
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -1019,7 +1027,7 @@ function renderReminderCenter(insights) {
 
   elements.reminderCenterContent.querySelectorAll("[data-log-id]").forEach((item) => {
     item.addEventListener("click", () => {
-      editDailyLog(item.dataset.logId);
+      openDailyLogDetail(item.dataset.logId);
     });
   });
 }
@@ -1306,6 +1314,34 @@ function editDailyLog(logId) {
   setCheckedSymptoms("alert-flags", log.alertFlags || []);
   setDailyFormStatus(getLanguage() === "en" ? "Daily log loaded. Edit and save when ready." : "已载入日报，可直接修改后保存。");
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function openDailyLogDetail(logId) {
+  const log = state.dailyLogs.find((item) => item.id === logId);
+  if (!log || !elements.dailyDetailDialog) return;
+
+  elements.dailyDetailTitle.textContent = getLanguage() === "en"
+    ? `Daily Log: ${formatDate(log.date)}`
+    : `日报详情：${formatDate(log.date)}`;
+  elements.dailyDetailContent.innerHTML = `
+    <p><strong>${getLanguage() === "en" ? "Bleeding:" : "出血："}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
+    <p><strong>${getLanguage() === "en" ? "Pain:" : "疼痛："}</strong>${log.painLevel}/10</p>
+    <p><strong>${getLanguage() === "en" ? "Energy:" : "精力："}</strong>${log.energyLevel}/5</p>
+    <p><strong>${getLanguage() === "en" ? "Mood:" : "心情："}</strong>${labelFromCatalog("mood", log.mood)}</p>
+    <p><strong>${getLanguage() === "en" ? "Body feelings:" : "身体感觉："}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() === "en" ? ", " : "、") : (getLanguage() === "en" ? "None" : "无")}</p>
+    <p><strong>${getLanguage() === "en" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || (getLanguage() === "en" ? "Normal observation" : "正常观察")}</p>
+    <p><strong>${getLanguage() === "en" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
+  `;
+  elements.dailyDetailEditBtn.dataset.logId = log.id;
+  elements.dailyDetailEditBtn.textContent = getLanguage() === "en" ? "Edit This Log" : "编辑这条日报";
+  elements.dailyDetailDialog.showModal();
+}
+
+function openDetailLogEditor() {
+  const logId = elements.dailyDetailEditBtn?.dataset.logId;
+  if (!logId) return;
+  elements.dailyDetailDialog?.close();
+  editDailyLog(logId);
 }
 
 function deletePeriodRecord(recordId) {
