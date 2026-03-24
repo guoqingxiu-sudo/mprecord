@@ -919,6 +919,18 @@ const RUNTIME_TEXT = {
     tr: "belirtileri izlemeye devam et",
     ru: "nablyudat za simptomami",
   },
+  reminderLatestOnDate: {
+    "zh-CN": "{date}，出血{bleeding}，疼痛 {pain}/10",
+    en: "{date}: bleeding {bleeding}, pain {pain}/10",
+    tr: "{date}: kanama {bleeding}, agri {pain}/10",
+    ru: "{date}: vydeleniya {bleeding}, bol {pain}/10",
+  },
+  reminderItemSummary: {
+    "zh-CN": "{summary}，{detail}",
+    en: "{summary}, {detail}",
+    tr: "{summary}, {detail}",
+    ru: "{summary}, {detail}",
+  },
   reminderNowLabel: {
     "zh-CN": "现在：",
     en: "Now:",
@@ -1590,6 +1602,18 @@ const RUNTIME_TEXT = {
     en: "{date}, energy {energy}/5, pain {pain}/10.",
     tr: "{date}, enerji {energy}/5, agri {pain}/10.",
     ru: "{date}, energiya {energy}/5, bol {pain}/10.",
+  },
+  trendEmptyTitle: {
+    "zh-CN": "暂无趋势数据。",
+    en: "No trend data yet.",
+    tr: "Henuz egilim verisi yok.",
+    ru: "Poka net dannyh dlya dinamiki.",
+  },
+  trendEmptyBody: {
+    "zh-CN": "随着记录数量增加，这里会总结周期波动、症状和最近状态。",
+    en: "As more records are added, this area will summarize cycle changes, symptoms, and recent status.",
+    tr: "Kayitlar arttikca burada dongu degisimi, belirtiler ve son durum ozetlenecek.",
+    ru: "Po mere dobavleniya zapisey zdes budut kratko pokazany izmeneniya cikla, simptomy i poslednee sostoyanie.",
   },
   dailyListSummary: {
     "zh-CN": "出血 {bleeding}，精力 {energy}/5{attention}",
@@ -2405,10 +2429,11 @@ function renderReminderCenter(insights) {
     ? rt("reminderPainSome", { count: insights.highPainCount })
     : rt("reminderPainNone");
   const latestMessage = latestAttention
-    ? rt("heroTodayLog", {
+    ? rt("reminderLatestOnDate", {
+      date: formatDate(latestAttention.date),
       bleeding: labelFromCatalog("bleeding", latestAttention.bleeding),
       pain: latestAttention.painLevel,
-    }).replace(/^Today:\s*/, `${formatDate(latestAttention.date)}: `).replace(/^今日日报\s*/, `${formatDate(latestAttention.date)}，`)
+    })
     : rt("reminderLatestNone");
   const parentOnlyDetail = latestAttention && state.settings.parentMode
     ? rt("reminderParentView", { flags: formatAlertFlags(latestAttention) })
@@ -2422,10 +2447,13 @@ function renderReminderCenter(insights) {
               <strong>${formatDate(log.date)}</strong>
               <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
             </div>
-            <p>${rt("heroTodayLog", {
-              bleeding: labelFromCatalog("bleeding", log.bleeding),
-              pain: log.painLevel,
-            })}${formatAlertFlags(log) ? `${getLanguage() !== "zh-CN" ? ", " : "，"}${formatAlertFlags(log)}` : `${getLanguage() !== "zh-CN" ? ", " : "，"}${rt("reminderWatchSymptoms")}`}</p>
+            <p>${rt("reminderItemSummary", {
+              summary: rt("heroTodayLog", {
+                bleeding: labelFromCatalog("bleeding", log.bleeding),
+                pain: log.painLevel,
+              }),
+              detail: formatAlertFlags(log) || rt("reminderWatchSymptoms"),
+            })}</p>
           </article>
         `).join("")}
       </div>
@@ -2525,8 +2553,8 @@ function renderPrediction(insights) {
 function renderTrend(insights) {
   if (!insights.sorted.length && !insights.sortedDailyLogs.length) {
     elements.trendContent.innerHTML = `
-      <p>${getLanguage() !== "zh-CN" ? "No trend data yet." : "暂无趋势数据。"}</p>
-      <p class="muted">${getLanguage() !== "zh-CN" ? "As more records are added, this area will summarize cycle changes, symptoms, and recent status." : "随着记录数量增加，这里会总结周期波动、症状和最近状态。"}</p>
+      <p>${rt("trendEmptyTitle")}</p>
+      <p class="muted">${rt("trendEmptyBody")}</p>
     `;
     return;
   }
