@@ -1,7 +1,7 @@
 {
-  "name": "月迹 · 生理期记录",
-  "short_name": "月迹",
-  "description": "用于记录生理期、每日状态、症状与周期预测的离线网页应用。",
+  "name": "Eva的月亮",
+  "short_name": "Eva的月亮",
+  "description": "帮助孩子记录月经、每日状态和身体变化的离线网页应用。",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#fff8f3",

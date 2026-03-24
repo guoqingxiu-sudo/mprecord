@@ -385,7 +385,7 @@ function renderHero(insights) {
 
   if (!insights.lastRecord) {
     elements.cycleDay.textContent = "尚无数据";
-    elements.cycleSummary.textContent = "录入两次以上记录后，系统会自动计算平均周期并更新预测。";
+    elements.cycleSummary.textContent = "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。";
     return;
   }
 
@@ -450,7 +450,7 @@ function renderPrediction(insights) {
   if (!insights.lastRecord) {
     elements.predictionContent.innerHTML = `
       <p>暂无足够数据生成预测。</p>
-      <p class="muted">建议先录入最近一次经期，最好再补充前两次历史记录，预测会更稳定。</p>
+      <p class="muted">建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。</p>
     `;
     return;
   }
@@ -468,7 +468,7 @@ function renderPrediction(insights) {
         ? "当前部分使用手动输入参数。"
         : "当前完全基于历史平均值。"
     }</p>
-    <p><strong>说明：</strong>这是基于历史平均周期做出的估算，不应替代医学建议。如果周期长期紊乱或伴随异常出血，建议咨询医生。</p>
+    <p><strong>说明：</strong>这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。</p>
   `;
 }
 
