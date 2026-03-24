@@ -12,8 +12,8 @@
     <div class="app-shell">
       <header class="hero">
         <div class="hero__copy">
-          <p class="eyebrow">Eva's Moon</p>
-          <h1>Eva的月亮</h1>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Eva's Moon</p>
+          <h1 data-i18n="app.name">Eva的月亮</h1>
           <div class="hero__deco" aria-hidden="true">
             <span class="moon moon--big"></span>
             <span class="moon moon--small"></span>
@@ -21,19 +21,20 @@
             <span class="star star--two">✦</span>
           </div>
           <p class="hero__text">
-            轻轻松松记下今天的身体感觉，也让家长更安心。
+            <span data-i18n="hero.text">轻轻松松记下今天的身体感觉，也让家长更安心。</span>
           </p>
           <div class="hero__actions">
-            <button class="primary-btn" id="quick-log-btn" type="button">今天一键记录</button>
+            <button class="primary-btn" id="quick-log-btn" type="button" data-i18n="actions.quickLog">今天一键记录</button>
             <button class="ghost-btn" id="simple-mode-btn" type="button">打开超简模式</button>
-            <button class="primary-btn" data-jump="#record-form">立即记录</button>
-            <button class="ghost-btn" data-jump="#calendar-panel">查看日历</button>
+            <button class="primary-btn" data-jump="#record-form" data-i18n="actions.recordNow">立即记录</button>
+            <button class="ghost-btn" data-jump="#calendar-panel" data-i18n="actions.viewCalendar">查看日历</button>
             <button class="ghost-btn" id="parent-mode-btn" type="button">打开家长模式</button>
-            <button class="ghost-btn is-hidden" id="install-btn" type="button">安装应用</button>
+            <button class="ghost-btn" id="language-switch-btn" type="button">English</button>
+            <button class="ghost-btn is-hidden" id="install-btn" type="button" data-i18n="actions.install">安装应用</button>
           </div>
         </div>
         <section class="hero__status card">
-          <p class="card__label">当前周期</p>
+          <p class="card__label" data-i18n="hero.currentCycle">当前周期</p>
           <h2 id="cycle-day">尚无数据</h2>
           <p id="cycle-summary" class="muted">
             添加至少一次生理期记录后，这里会显示周期状态与预测信息。
@@ -47,27 +48,27 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Record</p>
-              <h2>新增生理期记录</h2>
+              <h2 data-i18n="periodForm.title">新增生理期记录</h2>
             </div>
-            <button id="reset-form-btn" class="text-btn" type="button">清空表单</button>
+            <button id="reset-form-btn" class="text-btn" type="button" data-i18n="common.clearForm">清空表单</button>
           </div>
 
           <form id="period-form" class="stack">
             <input type="hidden" id="record-id" />
             <div class="grid-two">
               <label>
-                开始日期
+                <span data-i18n="periodForm.startDate">开始日期</span>
                 <input id="start-date" name="startDate" type="date" required />
               </label>
               <label>
-                结束日期
+                <span data-i18n="periodForm.endDate">结束日期</span>
                 <input id="end-date" name="endDate" type="date" required />
               </label>
             </div>
 
             <div class="grid-three">
               <label>
-                流量级别
+                <span data-i18n="periodForm.flowLevel">流量级别</span>
                 <select id="flow-level" name="flowLevel">
                   <option value="轻">轻</option>
                   <option value="中" selected>中</option>
@@ -76,12 +77,12 @@
                 </select>
               </label>
               <label>
-                疼痛程度
+                <span data-i18n="periodForm.painLevel">疼痛程度</span>
                 <input id="pain-level" name="painLevel" type="range" min="0" max="10" value="3" />
                 <span class="range-hint"><strong id="pain-output">3</strong>/10</span>
               </label>
               <label>
-                今天心情
+                <span data-i18n="periodForm.mood">今天心情</span>
                 <select id="mood" name="mood">
                   <option value="平稳" selected>平稳</option>
                   <option value="轻松">轻松</option>
@@ -93,22 +94,23 @@
             </div>
 
             <fieldset class="symptoms">
-              <legend>身体感觉</legend>
+              <legend data-i18n="common.symptoms">身体感觉</legend>
               <div class="tag-grid" id="symptom-options"></div>
             </fieldset>
 
             <label>
-              备注
+              <span data-i18n="common.notes">备注</span>
               <textarea
                 id="notes"
                 name="notes"
                 rows="4"
                 placeholder="例如：第一天腹痛明显、第三天量减少、服用了止痛药等"
+                data-i18n-placeholder="periodForm.notesPlaceholder"
               ></textarea>
             </label>
 
             <div class="form-actions">
-              <button type="submit" class="primary-btn">保存记录</button>
+              <button type="submit" class="primary-btn" data-i18n="periodForm.save">保存记录</button>
               <span id="form-status" class="muted"></span>
             </div>
           </form>
@@ -118,20 +120,20 @@
           <div class="section-heading">
             <div>
               <p class="eyebrow">Daily Log</p>
-              <h2>每日状态</h2>
+              <h2 data-i18n="dailyForm.title">每日状态</h2>
             </div>
-            <button id="reset-daily-form-btn" class="text-btn" type="button">清空表单</button>
+            <button id="reset-daily-form-btn" class="text-btn" type="button" data-i18n="common.clearForm">清空表单</button>
           </div>
 
           <form id="daily-form" class="stack">
             <input type="hidden" id="daily-log-id" />
             <div class="grid-two">
               <label>
-                日期
+                <span data-i18n="common.date">日期</span>
                 <input id="daily-date" type="date" required />
               </label>
               <div class="choice-section">
-                <span>今天有没有出血</span>
+                <span data-i18n="dailyForm.bleedingQuestion">今天有没有出血</span>
               <div class="choice-grid choice-grid--five" id="daily-bleeding-choices">
                   <button type="button" class="choice-chip is-selected" data-target="daily-bleeding" data-value="无"><span class="choice-emoji">🌤</span><span>无</span></button>
                   <button type="button" class="choice-chip" data-target="daily-bleeding" data-value="点滴"><span class="choice-emoji">💧</span><span>点滴</span></button>
@@ -144,7 +146,7 @@
             </div>
 
             <div class="choice-section">
-              <span>今天有多疼</span>
+              <span data-i18n="dailyForm.painQuestion">今天有多疼</span>
               <div class="choice-grid" id="daily-pain-choices">
                 <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="0"><span class="choice-emoji">🙂</span><span>不疼</span></button>
                 <button type="button" class="choice-chip" data-target="daily-pain-level" data-value="3"><span class="choice-emoji">😕</span><span>有一点</span></button>
@@ -157,7 +159,7 @@
             </div>
 
             <div class="choice-section">
-              <span>今天有没有精神</span>
+              <span data-i18n="dailyForm.energyQuestion">今天有没有精神</span>
               <div class="choice-grid" id="energy-choices">
                 <button type="button" class="choice-chip" data-target="energy-level" data-value="1"><span class="choice-emoji">🛌</span><span>很累</span></button>
                 <button type="button" class="choice-chip" data-target="energy-level" data-value="2"><span class="choice-emoji">🐢</span><span>有点累</span></button>
@@ -170,7 +172,7 @@
             </div>
 
             <div class="choice-section">
-              <span>今天心情怎么样</span>
+              <span data-i18n="dailyForm.moodQuestion">今天心情怎么样</span>
               <div class="choice-grid choice-grid--five" id="daily-mood-choices">
                 <button type="button" class="choice-chip is-selected" data-target="daily-mood" data-value="平稳"><span class="choice-emoji">😊</span><span>平稳</span></button>
                 <button type="button" class="choice-chip" data-target="daily-mood" data-value="轻松"><span class="choice-emoji">😌</span><span>轻松</span></button>
@@ -182,31 +184,32 @@
             </div>
 
             <fieldset>
-              <legend>身体感觉</legend>
+              <legend data-i18n="common.symptoms">身体感觉</legend>
               <div class="tag-grid" id="daily-symptom-options"></div>
             </fieldset>
 
             <fieldset>
-              <legend>今天有没有这些情况</legend>
+              <legend data-i18n="dailyForm.alertFlags">今天有没有这些情况</legend>
               <div class="tag-grid" id="alert-flag-options"></div>
             </fieldset>
 
             <div class="card mini-card" id="alert-advice">
-              <p class="card__label">告诉家长</p>
+              <p class="card__label" data-i18n="dailyForm.tellParent">告诉家长</p>
               <p id="alert-advice-text" class="record-notes"></p>
             </div>
 
             <label>
-              当日备注
+              <span data-i18n="dailyForm.dailyNotes">当日备注</span>
               <textarea
                 id="daily-notes"
                 rows="3"
                 placeholder="例如：睡眠不足、运动后疼痛减轻、出现点滴出血等"
+                data-i18n-placeholder="dailyForm.notesPlaceholder"
               ></textarea>
             </label>
 
             <div class="form-actions">
-              <button type="submit" class="primary-btn">保存日报</button>
+              <button type="submit" class="primary-btn" data-i18n="dailyForm.save">保存日报</button>
               <span id="daily-form-status" class="muted"></span>
             </div>
           </form>
@@ -217,14 +220,14 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Care</p>
-                <h2>给孩子的小提醒</h2>
+                <h2 data-i18n="care.title">给孩子的小提醒</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p><strong>卫生巾要常看看：</strong>湿了就换，不用等很久。</p>
-              <p><strong>肚子疼先说出来：</strong>休息、喝温水、热敷都可以。</p>
-              <p><strong>很不舒服就找大人：</strong>家长、老师、校医都可以帮忙。</p>
-              <p><strong>这不是丢脸的事：</strong>记录身体变化是在照顾自己。</p>
+              <p data-i18n-html="care.tip1"><strong>卫生巾要常看看：</strong>湿了就换，不用等很久。</p>
+              <p data-i18n-html="care.tip2"><strong>肚子疼先说出来：</strong>休息、喝温水、热敷都可以。</p>
+              <p data-i18n-html="care.tip3"><strong>很不舒服就找大人：</strong>家长、老师、校医都可以帮忙。</p>
+              <p data-i18n-html="care.tip4"><strong>这不是丢脸的事：</strong>记录身体变化是在照顾自己。</p>
             </div>
           </section>
 
@@ -232,14 +235,14 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Help</p>
-                <h2>现在不舒服怎么办</h2>
+                <h2 data-i18n="help.title">现在不舒服怎么办</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p>1. 先坐下休息，慢慢呼吸，不要硬撑。</p>
-              <p>2. 喝几口温水，或者请大人帮忙热敷肚子。</p>
-              <p>3. 如果很疼、头晕、想吐，马上告诉家长或老师。</p>
-              <p>4. 如果弄脏衣服也没关系，先找大人帮忙处理。</p>
+              <p data-i18n="help.step1">1. 先坐下休息，慢慢呼吸，不要硬撑。</p>
+              <p data-i18n="help.step2">2. 喝几口温水，或者请大人帮忙热敷肚子。</p>
+              <p data-i18n="help.step3">3. 如果很疼、头晕、想吐，马上告诉家长或老师。</p>
+              <p data-i18n="help.step4">4. 如果弄脏衣服也没关系，先找大人帮忙处理。</p>
             </div>
           </section>
 
@@ -247,13 +250,13 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Quick Check</p>
-                <h2>今天要做什么</h2>
+                <h2 data-i18n="quickCheck.title">今天要做什么</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p>1. 看看今天有没有来月经。</p>
-              <p>2. 点一点心情和身体感觉。</p>
-              <p>3. 如果难受，就记录并告诉家长。</p>
+              <p data-i18n="quickCheck.step1">1. 看看今天有没有来月经。</p>
+              <p data-i18n="quickCheck.step2">2. 点一点心情和身体感觉。</p>
+              <p data-i18n="quickCheck.step3">3. 如果难受，就记录并告诉家长。</p>
             </div>
           </section>
 
@@ -261,15 +264,15 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">School Bag</p>
-                <h2>上学小包清单</h2>
+                <h2 data-i18n="schoolBag.title">上学小包清单</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p>□ 2 到 3 片卫生巾或护垫</p>
-              <p>□ 一条干净内裤</p>
-              <p>□ 深色外裤或外套</p>
-              <p>□ 小袋子和纸巾</p>
-              <p>□ 记得：不舒服时可以找老师帮忙。</p>
+              <p data-i18n="schoolBag.item1">□ 2 到 3 片卫生巾或护垫</p>
+              <p data-i18n="schoolBag.item2">□ 一条干净内裤</p>
+              <p data-i18n="schoolBag.item3">□ 深色外裤或外套</p>
+              <p data-i18n="schoolBag.item4">□ 小袋子和纸巾</p>
+              <p data-i18n="schoolBag.item5">□ 记得：不舒服时可以找老师帮忙。</p>
             </div>
           </section>
 
@@ -279,7 +282,7 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Parent View</p>
-                <h2>家长查看</h2>
+                <h2 data-i18n="parentView.title">家长查看</h2>
               </div>
             </div>
             <div id="prediction-content" class="prediction-copy"></div>
@@ -289,14 +292,14 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Guide</p>
-                <h2>给家长的说明</h2>
+                <h2 data-i18n="parentGuide.title">给家长的说明</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p><strong>初潮前后头一两年不一定很准：</strong>周期忽长忽短并不少见，先以稳定记录为主。</p>
-              <p><strong>重点看三件事：</strong>疼痛是否影响上学、出血是否异常多、孩子情绪和精力有没有明显变化。</p>
-              <p><strong>建议的陪伴方式：</strong>准备好卫生用品、热敷用品和替换衣物，帮助孩子建立“难受就说”的安全感。</p>
-              <p><strong>尽快就医的情况：</strong>持续剧烈腹痛、头晕乏力明显、发烧、经量特别大，或长期不来月经。</p>
+              <p data-i18n-html="parentGuide.tip1"><strong>初潮前后头一两年不一定很准：</strong>周期忽长忽短并不少见，先以稳定记录为主。</p>
+              <p data-i18n-html="parentGuide.tip2"><strong>重点看三件事：</strong>疼痛是否影响上学、出血是否异常多、孩子情绪和精力有没有明显变化。</p>
+              <p data-i18n-html="parentGuide.tip3"><strong>建议的陪伴方式：</strong>准备好卫生用品、热敷用品和替换衣物，帮助孩子建立“难受就说”的安全感。</p>
+              <p data-i18n-html="parentGuide.tip4"><strong>尽快就医的情况：</strong>持续剧烈腹痛、头晕乏力明显、发烧、经量特别大，或长期不来月经。</p>
             </div>
           </section>
 
@@ -304,20 +307,20 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Checklist</p>
-                <h2>家长观察清单</h2>
+                <h2 data-i18n="checklist.title">家长观察清单</h2>
               </div>
-              <button id="print-checklist-btn" class="ghost-btn" type="button">打印清单</button>
+              <button id="print-checklist-btn" class="ghost-btn" type="button" data-i18n="checklist.print">打印清单</button>
             </div>
             <div class="prediction-copy">
-              <p><strong>本月是否出现：</strong></p>
-              <p>□ 疼痛影响上学或睡眠</p>
-              <p>□ 一小时内湿透一片卫生巾</p>
-              <p>□ 头晕、乏力、脸色发白</p>
-              <p>□ 发烧或明显不适</p>
-              <p>□ 两次月经之间又出血</p>
-              <p>□ 孩子情绪明显低落或焦虑</p>
-              <p><strong>照护物品检查：</strong></p>
-              <p>□ 卫生巾/护垫 □ 替换内裤 □ 深色裤子 □ 热敷用品 □ 温水杯</p>
+              <p data-i18n-html="checklist.head1"><strong>本月是否出现：</strong></p>
+              <p data-i18n="checklist.item1">□ 疼痛影响上学或睡眠</p>
+              <p data-i18n="checklist.item2">□ 一小时内湿透一片卫生巾</p>
+              <p data-i18n="checklist.item3">□ 头晕、乏力、脸色发白</p>
+              <p data-i18n="checklist.item4">□ 发烧或明显不适</p>
+              <p data-i18n="checklist.item5">□ 两次月经之间又出血</p>
+              <p data-i18n="checklist.item6">□ 孩子情绪明显低落或焦虑</p>
+              <p data-i18n-html="checklist.head2"><strong>照护物品检查：</strong></p>
+              <p data-i18n="checklist.item7">□ 卫生巾/护垫 □ 替换内裤 □ 深色裤子 □ 热敷用品 □ 温水杯</p>
             </div>
           </section>
 
@@ -325,7 +328,7 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Trend</p>
-                <h2>周期观察</h2>
+                <h2 data-i18n="trend.title">周期观察</h2>
               </div>
             </div>
             <div id="trend-content" class="prediction-copy"></div>
@@ -335,7 +338,7 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Calendar</p>
-                <h2>月视图</h2>
+                <h2 data-i18n="calendar.title">月视图</h2>
               </div>
               <div class="calendar-nav">
                 <button type="button" class="icon-btn" id="prev-month" aria-label="上个月">‹</button>
@@ -344,11 +347,11 @@
               </div>
             </div>
             <div class="calendar-legend">
-              <span><i class="swatch swatch--period"></i>已记录经期</span>
-              <span class="parent-only"><i class="swatch swatch--predicted"></i>预测经期</span>
-              <span class="parent-only"><i class="swatch swatch--fertile"></i>易孕窗口</span>
-              <span><i class="swatch swatch--log"></i>当日日报</span>
-              <span><i class="swatch swatch--today"></i>今天</span>
+              <span data-i18n-html="calendar.legendPeriod"><i class="swatch swatch--period"></i>已记录经期</span>
+              <span class="parent-only" data-i18n-html="calendar.legendPredicted"><i class="swatch swatch--predicted"></i>预测经期</span>
+              <span class="parent-only" data-i18n-html="calendar.legendFertile"><i class="swatch swatch--fertile"></i>易孕窗口</span>
+              <span data-i18n-html="calendar.legendLog"><i class="swatch swatch--log"></i>当日日报</span>
+              <span data-i18n-html="calendar.legendToday"><i class="swatch swatch--today"></i>今天</span>
             </div>
             <div class="calendar" id="calendar-grid"></div>
           </section>
@@ -359,23 +362,23 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Security</p>
-                <h2>家长锁</h2>
+                <h2 data-i18n="security.title">家长锁</h2>
               </div>
             </div>
             <form id="pin-form" class="stack">
               <div class="grid-two">
                 <label>
-                  新 PIN
+                  <span data-i18n="security.newPin">新 PIN</span>
                   <input id="parent-pin" type="password" inputmode="numeric" maxlength="4" placeholder="4 位数字" />
                 </label>
                 <label>
-                  确认 PIN
+                  <span data-i18n="security.confirmPin">确认 PIN</span>
                   <input id="confirm-parent-pin" type="password" inputmode="numeric" maxlength="4" placeholder="再次输入" />
                 </label>
               </div>
               <div class="form-actions">
-                <button id="save-pin-btn" class="ghost-btn" type="submit">保存 PIN</button>
-                <button id="clear-pin-btn" class="text-btn" type="button">清除 PIN</button>
+                <button id="save-pin-btn" class="ghost-btn" type="submit" data-i18n="security.savePin">保存 PIN</button>
+                <button id="clear-pin-btn" class="text-btn" type="button" data-i18n="security.clearPin">清除 PIN</button>
               </div>
               <p id="pin-status" class="muted">PIN 只保存在当前浏览器，用于控制家长模式入口。</p>
             </form>
@@ -385,22 +388,22 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Settings</p>
-                <h2>预测参数</h2>
+                <h2 data-i18n="settings.title">预测参数</h2>
               </div>
             </div>
             <form id="settings-form" class="stack">
               <div class="grid-two">
                 <label>
-                  手动周期天数
+                  <span data-i18n="settings.manualCycleLength">手动周期天数</span>
                   <input id="manual-cycle-length" type="number" min="15" max="60" placeholder="留空则自动计算" />
                 </label>
                 <label>
-                  手动经期天数
+                  <span data-i18n="settings.manualPeriodLength">手动经期天数</span>
                   <input id="manual-period-length" type="number" min="2" max="14" placeholder="留空则自动计算" />
                 </label>
               </div>
               <label>
-                自动锁定时间
+                <span data-i18n="settings.autoLock">自动锁定时间</span>
                 <select id="parent-lock-minutes">
                   <option value="5">5 分钟</option>
                   <option value="10" selected>10 分钟</option>
@@ -409,11 +412,11 @@
                 </select>
               </label>
               <div class="form-actions">
-                <button id="save-settings-btn" class="ghost-btn" type="submit">保存参数</button>
-                <button id="reset-settings-btn" class="text-btn" type="button">恢复自动计算</button>
+                <button id="save-settings-btn" class="ghost-btn" type="submit" data-i18n="settings.save">保存参数</button>
+                <button id="reset-settings-btn" class="text-btn" type="button" data-i18n="settings.reset">恢复自动计算</button>
               </div>
               <p class="muted">
-                如果你知道自己周期更稳定，可以手动输入天数覆盖平均值。
+                <span data-i18n="settings.help">如果你知道自己周期更稳定，可以手动输入天数覆盖平均值。</span>
               </p>
             </form>
           </section>
@@ -422,7 +425,7 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">History</p>
-                <h2>历史记录</h2>
+                <h2 data-i18n="history.title">历史记录</h2>
               </div>
             </div>
             <div id="record-list" class="record-list"></div>
@@ -432,7 +435,7 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Daily Feed</p>
-                <h2>最近日报</h2>
+                <h2 data-i18n="history.dailyFeed">最近日报</h2>
               </div>
             </div>
             <div id="daily-log-list" class="record-list"></div>
@@ -442,32 +445,32 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Data</p>
-                <h2>备份与恢复</h2>
+                <h2 data-i18n="data.title">备份与恢复</h2>
               </div>
             </div>
             <div class="prediction-copy">
-              <p><strong>备份：</strong>可以导出原始数据，也可以导出给家长看的摘要。</p>
-              <p><strong>恢复：</strong>如果之前保存过 JSON 文件，可以再导回来。</p>
-              <p><strong>注意：</strong>清空全部数据后不能恢复，操作前先备份更安全。</p>
+              <p data-i18n-html="data.tip1"><strong>备份：</strong>可以导出原始数据，也可以导出给家长看的摘要。</p>
+              <p data-i18n-html="data.tip2"><strong>恢复：</strong>如果之前保存过 JSON 文件，可以再导回来。</p>
+              <p data-i18n-html="data.tip3"><strong>注意：</strong>清空全部数据后不能恢复，操作前先备份更安全。</p>
             </div>
             <div class="data-actions">
-              <button id="export-btn" class="ghost-btn" type="button">备份原始数据</button>
-              <button id="export-summary-btn" class="ghost-btn" type="button">导出家长摘要</button>
+              <button id="export-btn" class="ghost-btn" type="button" data-i18n="data.exportRaw">备份原始数据</button>
+              <button id="export-summary-btn" class="ghost-btn" type="button" data-i18n="data.exportSummary">导出家长摘要</button>
               <label class="upload-btn">
-                恢复备份
+                <span data-i18n="data.restore">恢复备份</span>
                 <input id="import-input" type="file" accept="application/json" hidden />
               </label>
-              <button id="seed-btn" class="ghost-btn" type="button">填充示例数据</button>
-              <button id="clear-btn" class="danger-btn" type="button">清空全部数据</button>
+              <button id="seed-btn" class="ghost-btn" type="button" data-i18n="data.seed">填充示例数据</button>
+              <button id="clear-btn" class="danger-btn" type="button" data-i18n="data.clear">清空全部数据</button>
             </div>
-            <p class="muted">数据默认只保存在当前浏览器，不会自动上传。</p>
+            <p class="muted" data-i18n="data.localOnly">数据默认只保存在当前浏览器，不会自动上传。</p>
           </section>
         </aside>
       </main>
 
       <footer class="app-footer">
-        <p>Eva的月亮 v1.1.0</p>
-        <button id="show-changelog-btn" class="text-btn" type="button">查看更新</button>
+        <p id="footer-version">Eva的月亮 v1.2.0</p>
+        <button id="show-changelog-btn" class="text-btn" type="button" data-i18n="footer.changelog">查看更新</button>
       </footer>
     </div>
 
@@ -490,11 +493,11 @@
           </div>
         </div>
         <label>
-          4 位数字 PIN
+          <span data-i18n="dialog.pinLabel">4 位数字 PIN</span>
           <input id="pin-dialog-input" type="password" inputmode="numeric" maxlength="4" placeholder="请输入 PIN" />
         </label>
         <label id="pin-dialog-confirm-wrap" class="is-hidden">
-          再输入一次 PIN
+          <span data-i18n="dialog.pinConfirm">再输入一次 PIN</span>
           <input id="pin-dialog-confirm-input" type="password" inputmode="numeric" maxlength="4" placeholder="再次输入 PIN" />
         </label>
         <div class="form-actions">
@@ -513,16 +516,16 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Welcome</p>
-            <h2>第一次使用看看这里</h2>
+            <h2 data-i18n="welcome.title">第一次使用看看这里</h2>
           </div>
         </div>
         <div class="prediction-copy">
-          <p>1. 孩子平时只用“每日状态”和“月视图”就够了。</p>
-          <p>2. 如果今天很不舒服，记录后要马上告诉家长或老师。</p>
-          <p>3. 家长模式可以设置 PIN，里面能看更完整的信息和观察清单。</p>
+          <p data-i18n="welcome.tip1">1. 孩子平时只用“每日状态”和“月视图”就够了。</p>
+          <p data-i18n="welcome.tip2">2. 如果今天很不舒服，记录后要马上告诉家长或老师。</p>
+          <p data-i18n="welcome.tip3">3. 家长模式可以设置 PIN，里面能看更完整的信息和观察清单。</p>
         </div>
         <div class="form-actions">
-          <button class="primary-btn" id="welcome-close-btn" type="submit" value="close">开始使用</button>
+          <button class="primary-btn" id="welcome-close-btn" type="submit" value="close" data-i18n="welcome.start">开始使用</button>
         </div>
       </form>
     </dialog>
@@ -532,15 +535,15 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Updates</p>
-            <h2>最近更新</h2>
+            <h2 data-i18n="updates.title">最近更新</h2>
           </div>
         </div>
         <div class="prediction-copy">
-          <p><strong>v1.1.0</strong> 新增保存提示气泡、上学小包清单，并优化空状态说明。</p>
-          <p><strong>v1.0.0</strong> 儿童模式、家长模式、PIN 锁、自动锁定、打印摘要已齐备。</p>
+          <p data-i18n-html="updates.v110"><strong>v1.1.0</strong> 新增保存提示气泡、上学小包清单，并优化空状态说明。</p>
+          <p data-i18n-html="updates.v100"><strong>v1.0.0</strong> 儿童模式、家长模式、PIN 锁、自动锁定、打印摘要已齐备。</p>
         </div>
         <div class="form-actions">
-          <button class="primary-btn" type="submit" value="close">知道了</button>
+          <button class="primary-btn" type="submit" value="close" data-i18n="common.ok">知道了</button>
         </div>
       </form>
     </dialog>

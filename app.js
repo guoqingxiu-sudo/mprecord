@@ -2,9 +2,297 @@ const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
 const PARENT_UNLOCK_EXPIRES_KEY = "moon-log-parent-unlock-expires-v1";
-const VERSION = "1.1.0";
+const DEFAULT_LANGUAGE = "zh-CN";
+const VERSION = "1.2.0";
 const MAX_PIN_ATTEMPTS = 3;
 const TOAST_DURATION = 2200;
+const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "en"];
+const I18N = {
+  "zh-CN": {
+    "app.name": "Eva的月亮",
+    "hero.eyebrow": "Eva's Moon",
+    "hero.text": "轻轻松松记下今天的身体感觉，也让家长更安心。",
+    "hero.currentCycle": "当前周期",
+    "actions.quickLog": "今天一键记录",
+    "actions.recordNow": "立即记录",
+    "actions.viewCalendar": "查看日历",
+    "actions.install": "安装应用",
+    "common.clearForm": "清空表单",
+    "common.symptoms": "身体感觉",
+    "common.notes": "备注",
+    "common.date": "日期",
+    "common.ok": "知道了",
+    "periodForm.title": "新增生理期记录",
+    "periodForm.startDate": "开始日期",
+    "periodForm.endDate": "结束日期",
+    "periodForm.flowLevel": "流量级别",
+    "periodForm.painLevel": "疼痛程度",
+    "periodForm.mood": "今天心情",
+    "periodForm.notesPlaceholder": "例如：第一天腹痛明显、第三天量减少、服用了止痛药等",
+    "periodForm.save": "保存记录",
+    "dailyForm.title": "每日状态",
+    "dailyForm.bleedingQuestion": "今天有没有出血",
+    "dailyForm.painQuestion": "今天有多疼",
+    "dailyForm.energyQuestion": "今天有没有精神",
+    "dailyForm.moodQuestion": "今天心情怎么样",
+    "dailyForm.alertFlags": "今天有没有这些情况",
+    "dailyForm.tellParent": "告诉家长",
+    "dailyForm.dailyNotes": "当日备注",
+    "dailyForm.notesPlaceholder": "例如：睡眠不足、运动后疼痛减轻、出现点滴出血等",
+    "dailyForm.save": "保存日报",
+    "care.title": "给孩子的小提醒",
+    "care.tip1": "<strong>卫生巾要常看看：</strong>湿了就换，不用等很久。",
+    "care.tip2": "<strong>肚子疼先说出来：</strong>休息、喝温水、热敷都可以。",
+    "care.tip3": "<strong>很不舒服就找大人：</strong>家长、老师、校医都可以帮忙。",
+    "care.tip4": "<strong>这不是丢脸的事：</strong>记录身体变化是在照顾自己。",
+    "help.title": "现在不舒服怎么办",
+    "help.step1": "1. 先坐下休息，慢慢呼吸，不要硬撑。",
+    "help.step2": "2. 喝几口温水，或者请大人帮忙热敷肚子。",
+    "help.step3": "3. 如果很疼、头晕、想吐，马上告诉家长或老师。",
+    "help.step4": "4. 如果弄脏衣服也没关系，先找大人帮忙处理。",
+    "quickCheck.title": "今天要做什么",
+    "quickCheck.step1": "1. 看看今天有没有来月经。",
+    "quickCheck.step2": "2. 点一点心情和身体感觉。",
+    "quickCheck.step3": "3. 如果难受，就记录并告诉家长。",
+    "schoolBag.title": "上学小包清单",
+    "schoolBag.item1": "□ 2 到 3 片卫生巾或护垫",
+    "schoolBag.item2": "□ 一条干净内裤",
+    "schoolBag.item3": "□ 深色外裤或外套",
+    "schoolBag.item4": "□ 小袋子和纸巾",
+    "schoolBag.item5": "□ 记得：不舒服时可以找老师帮忙。",
+    "parentView.title": "家长查看",
+    "parentGuide.title": "给家长的说明",
+    "parentGuide.tip1": "<strong>初潮前后头一两年不一定很准：</strong>周期忽长忽短并不少见，先以稳定记录为主。",
+    "parentGuide.tip2": "<strong>重点看三件事：</strong>疼痛是否影响上学、出血是否异常多、孩子情绪和精力有没有明显变化。",
+    "parentGuide.tip3": "<strong>建议的陪伴方式：</strong>准备好卫生用品、热敷用品和替换衣物，帮助孩子建立“难受就说”的安全感。",
+    "parentGuide.tip4": "<strong>尽快就医的情况：</strong>持续剧烈腹痛、头晕乏力明显、发烧、经量特别大，或长期不来月经。",
+    "checklist.title": "家长观察清单",
+    "checklist.print": "打印清单",
+    "checklist.head1": "<strong>本月是否出现：</strong>",
+    "checklist.item1": "□ 疼痛影响上学或睡眠",
+    "checklist.item2": "□ 一小时内湿透一片卫生巾",
+    "checklist.item3": "□ 头晕、乏力、脸色发白",
+    "checklist.item4": "□ 发烧或明显不适",
+    "checklist.item5": "□ 两次月经之间又出血",
+    "checklist.item6": "□ 孩子情绪明显低落或焦虑",
+    "checklist.head2": "<strong>照护物品检查：</strong>",
+    "checklist.item7": "□ 卫生巾/护垫 □ 替换内裤 □ 深色裤子 □ 热敷用品 □ 温水杯",
+    "trend.title": "周期观察",
+    "calendar.title": "月视图",
+    "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>已记录经期",
+    "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>预测经期",
+    "calendar.legendFertile": "<i class=\"swatch swatch--fertile\"></i>易孕窗口",
+    "calendar.legendLog": "<i class=\"swatch swatch--log\"></i>当日日报",
+    "calendar.legendToday": "<i class=\"swatch swatch--today\"></i>今天",
+    "security.title": "家长锁",
+    "security.newPin": "新 PIN",
+    "security.confirmPin": "确认 PIN",
+    "security.savePin": "保存 PIN",
+    "security.clearPin": "清除 PIN",
+    "settings.title": "预测参数",
+    "settings.manualCycleLength": "手动周期天数",
+    "settings.manualPeriodLength": "手动经期天数",
+    "settings.autoLock": "自动锁定时间",
+    "settings.save": "保存参数",
+    "settings.reset": "恢复自动计算",
+    "settings.help": "如果你知道自己周期更稳定，可以手动输入天数覆盖平均值。",
+    "history.title": "历史记录",
+    "history.dailyFeed": "最近日报",
+    "data.title": "备份与恢复",
+    "data.tip1": "<strong>备份：</strong>可以导出原始数据，也可以导出给家长看的摘要。",
+    "data.tip2": "<strong>恢复：</strong>如果之前保存过 JSON 文件，可以再导回来。",
+    "data.tip3": "<strong>注意：</strong>清空全部数据后不能恢复，操作前先备份更安全。",
+    "data.exportRaw": "备份原始数据",
+    "data.exportSummary": "导出家长摘要",
+    "data.restore": "恢复备份",
+    "data.seed": "填充示例数据",
+    "data.clear": "清空全部数据",
+    "data.localOnly": "数据默认只保存在当前浏览器，不会自动上传。",
+    "footer.changelog": "查看更新",
+    "dialog.pinLabel": "4 位数字 PIN",
+    "dialog.pinConfirm": "再输入一次 PIN",
+    "welcome.title": "第一次使用看看这里",
+    "welcome.tip1": "1. 孩子平时只用“每日状态”和“月视图”就够了。",
+    "welcome.tip2": "2. 如果今天很不舒服，记录后要马上告诉家长或老师。",
+    "welcome.tip3": "3. 家长模式可以设置 PIN，里面能看更完整的信息和观察清单。",
+    "welcome.start": "开始使用",
+    "updates.title": "最近更新",
+    "updates.v110": "<strong>v1.2.0</strong> 新增中英双语切换，并让按钮、提示、日期和摘要内容跟随语言一起切换。",
+    "updates.v100": "<strong>v1.0.0</strong> 儿童模式、家长模式、PIN 锁、自动锁定、打印摘要已齐备。",
+  },
+  en: {
+    "app.name": "Eva's Moon",
+    "hero.eyebrow": "Eva's Moon",
+    "hero.text": "Track how the body feels today in a calm, simple way, and help parents stay informed.",
+    "hero.currentCycle": "Current Cycle",
+    "actions.quickLog": "Quick Log Today",
+    "actions.recordNow": "Add Record",
+    "actions.viewCalendar": "View Calendar",
+    "actions.install": "Install App",
+    "common.clearForm": "Clear Form",
+    "common.symptoms": "Body Feelings",
+    "common.notes": "Notes",
+    "common.date": "Date",
+    "common.ok": "OK",
+    "periodForm.title": "Add Period Record",
+    "periodForm.startDate": "Start Date",
+    "periodForm.endDate": "End Date",
+    "periodForm.flowLevel": "Flow Level",
+    "periodForm.painLevel": "Pain Level",
+    "periodForm.mood": "Mood Today",
+    "periodForm.notesPlaceholder": "Example: cramps were stronger on day 1, flow got lighter on day 3, took pain relief",
+    "periodForm.save": "Save Record",
+    "dailyForm.title": "Daily Check-in",
+    "dailyForm.bleedingQuestion": "Any bleeding today?",
+    "dailyForm.painQuestion": "How much does it hurt today?",
+    "dailyForm.energyQuestion": "How is the energy today?",
+    "dailyForm.moodQuestion": "How is the mood today?",
+    "dailyForm.alertFlags": "Did any of these happen today?",
+    "dailyForm.tellParent": "Tell a Parent",
+    "dailyForm.dailyNotes": "Daily Notes",
+    "dailyForm.notesPlaceholder": "Example: poor sleep, felt better after exercise, light spotting happened",
+    "dailyForm.save": "Save Daily Log",
+    "care.title": "Tips For Kids",
+    "care.tip1": "<strong>Check pads often:</strong> change them when they feel wet.",
+    "care.tip2": "<strong>Say it when it hurts:</strong> rest, warm water, and heat can help.",
+    "care.tip3": "<strong>Ask an adult for help:</strong> a parent, teacher, or school nurse can help.",
+    "care.tip4": "<strong>This is not embarrassing:</strong> tracking body changes is part of taking care of yourself.",
+    "help.title": "What To Do If You Feel Unwell",
+    "help.step1": "1. Sit down and rest. Take slow breaths and do not force yourself.",
+    "help.step2": "2. Drink some warm water or ask an adult for a warm compress.",
+    "help.step3": "3. If it hurts a lot, you feel dizzy, or want to throw up, tell a parent or teacher right away.",
+    "help.step4": "4. If clothes get stained, that is okay. Ask an adult to help.",
+    "quickCheck.title": "What To Do Today",
+    "quickCheck.step1": "1. Check whether your period started today.",
+    "quickCheck.step2": "2. Tap your mood and body feelings.",
+    "quickCheck.step3": "3. If you feel bad, save it and tell a parent.",
+    "schoolBag.title": "School Bag Checklist",
+    "schoolBag.item1": "□ 2 to 3 pads or liners",
+    "schoolBag.item2": "□ One clean pair of underwear",
+    "schoolBag.item3": "□ Dark pants or a jacket",
+    "schoolBag.item4": "□ A small pouch and tissues",
+    "schoolBag.item5": "□ Remember: if you feel unwell, you can ask a teacher for help.",
+    "parentView.title": "Parent View",
+    "parentGuide.title": "Notes For Parents",
+    "parentGuide.tip1": "<strong>The first 1 to 2 years after menarche may be irregular:</strong> tracking steadily matters more than precision.",
+    "parentGuide.tip2": "<strong>Focus on three things:</strong> whether pain affects school, whether bleeding is unusually heavy, and whether mood or energy changes are obvious.",
+    "parentGuide.tip3": "<strong>Helpful support:</strong> prepare hygiene products, warming items, and spare clothes, and make it safe for the child to speak up.",
+    "parentGuide.tip4": "<strong>Seek medical advice soon if needed:</strong> severe ongoing pain, strong dizziness or fatigue, fever, very heavy bleeding, or no period for a long time.",
+    "checklist.title": "Parent Checklist",
+    "checklist.print": "Print Checklist",
+    "checklist.head1": "<strong>Did any of these happen this month?</strong>",
+    "checklist.item1": "□ Pain affected school or sleep",
+    "checklist.item2": "□ One pad soaked within an hour",
+    "checklist.item3": "□ Dizziness, fatigue, or pale face",
+    "checklist.item4": "□ Fever or clear discomfort",
+    "checklist.item5": "□ Bleeding between periods",
+    "checklist.item6": "□ Strong low mood or anxiety",
+    "checklist.head2": "<strong>Care items to check:</strong>",
+    "checklist.item7": "□ Pads/liners □ Spare underwear □ Dark pants □ Heat pack □ Warm water cup",
+    "trend.title": "Cycle Notes",
+    "calendar.title": "Month View",
+    "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>Recorded period",
+    "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>Predicted period",
+    "calendar.legendFertile": "<i class=\"swatch swatch--fertile\"></i>Fertile window",
+    "calendar.legendLog": "<i class=\"swatch swatch--log\"></i>Daily log",
+    "calendar.legendToday": "<i class=\"swatch swatch--today\"></i>Today",
+    "security.title": "Parent Lock",
+    "security.newPin": "New PIN",
+    "security.confirmPin": "Confirm PIN",
+    "security.savePin": "Save PIN",
+    "security.clearPin": "Clear PIN",
+    "settings.title": "Prediction Settings",
+    "settings.manualCycleLength": "Manual Cycle Length",
+    "settings.manualPeriodLength": "Manual Period Length",
+    "settings.autoLock": "Auto Lock Time",
+    "settings.save": "Save Settings",
+    "settings.reset": "Use Auto Values",
+    "settings.help": "If you know the cycle is more stable, you can enter manual values to override the average.",
+    "history.title": "History",
+    "history.dailyFeed": "Recent Daily Logs",
+    "data.title": "Backup And Restore",
+    "data.tip1": "<strong>Backup:</strong> export raw data or a parent-friendly summary.",
+    "data.tip2": "<strong>Restore:</strong> import a saved JSON backup here.",
+    "data.tip3": "<strong>Note:</strong> clearing all data cannot be undone. Back up first if needed.",
+    "data.exportRaw": "Export Raw Data",
+    "data.exportSummary": "Export Parent Summary",
+    "data.restore": "Restore Backup",
+    "data.seed": "Load Sample Data",
+    "data.clear": "Clear All Data",
+    "data.localOnly": "Data stays in this browser by default and is not uploaded automatically.",
+    "footer.changelog": "View Updates",
+    "dialog.pinLabel": "4-digit PIN",
+    "dialog.pinConfirm": "Enter PIN Again",
+    "welcome.title": "First Time? Start Here",
+    "welcome.tip1": "1. Kids usually only need Daily Check-in and Month View.",
+    "welcome.tip2": "2. If today feels very uncomfortable, save a record and tell a parent or teacher right away.",
+    "welcome.tip3": "3. Parent Mode can be protected by PIN and shows fuller details and checklists.",
+    "welcome.start": "Start",
+    "updates.title": "Recent Updates",
+    "updates.v110": "<strong>v1.2.0</strong> Added Chinese and English switching, with buttons, messages, dates, and summaries updating together.",
+    "updates.v100": "<strong>v1.0.0</strong> Child mode, parent mode, PIN lock, auto lock, and printable summaries are included.",
+  },
+};
+const VALUE_LABELS = {
+  symptoms: {
+    "腹痛": { "zh-CN": "腹痛", en: "Cramps" },
+    "腰酸": { "zh-CN": "腰酸", en: "Back pain" },
+    "头痛": { "zh-CN": "头痛", en: "Headache" },
+    "乳房胀痛": { "zh-CN": "乳房胀痛", en: "Breast tenderness" },
+    "乏力": { "zh-CN": "乏力", en: "Low energy" },
+    "失眠": { "zh-CN": "失眠", en: "Trouble sleeping" },
+    "爆痘": { "zh-CN": "爆痘", en: "Breakouts" },
+    "食欲变化": { "zh-CN": "食欲变化", en: "Appetite change" },
+    "情绪波动": { "zh-CN": "情绪波动", en: "Mood swings" },
+    "腹胀": { "zh-CN": "腹胀", en: "Bloating" },
+  },
+  alertFlags: {
+    "痛得没法上课": { "zh-CN": "痛得没法上课", en: "Pain too strong for class" },
+    "一小时湿透一片": { "zh-CN": "一小时湿透一片", en: "Soaked one pad in an hour" },
+    "头晕想吐": { "zh-CN": "头晕想吐", en: "Dizzy or nauseous" },
+    "发烧不舒服": { "zh-CN": "发烧不舒服", en: "Fever or feeling unwell" },
+  },
+  flow: {
+    "轻": { "zh-CN": "轻", en: "Light" },
+    "中": { "zh-CN": "中", en: "Medium" },
+    "重": { "zh-CN": "重", en: "Heavy" },
+    "不规则": { "zh-CN": "不规则", en: "Irregular" },
+  },
+  bleeding: {
+    "无": { "zh-CN": "无", en: "None" },
+    "点滴": { "zh-CN": "点滴", en: "Spotting" },
+    "轻": { "zh-CN": "轻", en: "Light" },
+    "中": { "zh-CN": "中", en: "Medium" },
+    "重": { "zh-CN": "重", en: "Heavy" },
+  },
+  mood: {
+    "平稳": { "zh-CN": "平稳", en: "Steady" },
+    "轻松": { "zh-CN": "轻松", en: "Calm" },
+    "疲惫": { "zh-CN": "疲惫", en: "Tired" },
+    "烦躁": { "zh-CN": "烦躁", en: "Irritable" },
+    "低落": { "zh-CN": "低落", en: "Low" },
+  },
+  painChoice: {
+    "0": { "zh-CN": "不疼", en: "No pain" },
+    "2": { "zh-CN": "普通", en: "Okay" },
+    "3": { "zh-CN": "有一点", en: "A little" },
+    "6": { "zh-CN": "比较疼", en: "Hurts" },
+    "8": { "zh-CN": "很疼", en: "Very painful" },
+  },
+  energyChoice: {
+    "1": { "zh-CN": "很累", en: "Very tired" },
+    "2": { "zh-CN": "有点累", en: "A bit tired" },
+    "3": { "zh-CN": "还行", en: "Okay" },
+    "4": { "zh-CN": "不错", en: "Good" },
+    "5": { "zh-CN": "很好", en: "Great" },
+  },
+  lockMinutes: {
+    "5": { "zh-CN": "5 分钟", en: "5 min" },
+    "10": { "zh-CN": "10 分钟", en: "10 min" },
+    "30": { "zh-CN": "30 分钟", en: "30 min" },
+    "60": { "zh-CN": "60 分钟", en: "60 min" },
+  },
+};
 const SYMPTOMS = [
   "腹痛",
   "腰酸",
@@ -96,6 +384,7 @@ const state = {
     parentPin: "",
     parentLockMinutes: "10",
     simpleMode: false,
+    language: DEFAULT_LANGUAGE,
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -137,6 +426,7 @@ const elements = {
   jumpButtons: document.querySelectorAll("[data-jump]"),
   quickLogBtn: document.querySelector("#quick-log-btn"),
   simpleModeBtn: document.querySelector("#simple-mode-btn"),
+  languageSwitchBtn: document.querySelector("#language-switch-btn"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
@@ -179,18 +469,36 @@ const elements = {
   changelogDialog: document.querySelector("#changelog-dialog"),
   showChangelogBtn: document.querySelector("#show-changelog-btn"),
   toast: document.querySelector("#toast"),
+  footerVersion: document.querySelector("#footer-version"),
 };
 
 let toastTimer = null;
 
 bootstrap();
 
+function getLanguage() {
+  return SUPPORTED_LANGUAGES.includes(state.settings.language) ? state.settings.language : DEFAULT_LANGUAGE;
+}
+
+function t(key, variables = {}) {
+  const lang = getLanguage();
+  const template = I18N[lang]?.[key] ?? I18N[DEFAULT_LANGUAGE]?.[key] ?? key;
+  return Object.entries(variables).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    template,
+  );
+}
+
+function labelFromCatalog(catalog, value) {
+  return VALUE_LABELS[catalog]?.[String(value)]?.[getLanguage()] ?? String(value);
+}
+
 function bootstrap() {
+  attachEvents();
+  loadState();
   renderSymptomOptions(elements.symptomOptions, "period-symptoms");
   renderSymptomOptions(elements.dailySymptomOptions, "daily-symptoms");
   renderSymptomOptions(elements.alertFlagOptions, "alert-flags", ALERT_FLAGS);
-  attachEvents();
-  loadState();
   resetDailyForm();
   render();
   registerServiceWorker();
@@ -245,6 +553,7 @@ function attachEvents() {
   elements.parentModeBtn.addEventListener("click", toggleParentMode);
   elements.quickLogBtn?.addEventListener("click", quickLogToday);
   elements.simpleModeBtn?.addEventListener("click", toggleSimpleMode);
+  elements.languageSwitchBtn?.addEventListener("click", toggleLanguage);
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
@@ -273,11 +582,12 @@ function attachEvents() {
 }
 
 function renderSymptomOptions(container, groupName, items = SYMPTOMS) {
+  const catalog = groupName === "alert-flags" ? "alertFlags" : "symptoms";
   container.innerHTML = items.map(
     (symptom) => `
       <label class="tag-check">
         <input type="checkbox" name="${groupName}" value="${symptom}">
-        <span>${symptom}</span>
+        <span>${labelFromCatalog(catalog, symptom)}</span>
       </label>
     `,
   ).join("");
@@ -298,17 +608,19 @@ function onSubmitPeriod(event) {
   };
 
   if (!payload.startDate || !payload.endDate) {
-    setFormStatus("请填写开始和结束日期。");
+    setFormStatus(getLanguage() === "en" ? "Please fill in both start and end dates." : "请填写开始和结束日期。");
     return;
   }
 
   if (payload.endDate < payload.startDate) {
-    setFormStatus("结束日期不能早于开始日期。");
+    setFormStatus(getLanguage() === "en" ? "End date cannot be earlier than start date." : "结束日期不能早于开始日期。");
     return;
   }
 
   const existsIndex = state.records.findIndex((record) => record.id === payload.id);
-  const statusMessage = existsIndex >= 0 ? "记录已更新。" : "记录已保存。";
+  const statusMessage = existsIndex >= 0
+    ? (getLanguage() === "en" ? "Record updated." : "记录已更新。")
+    : (getLanguage() === "en" ? "Record saved." : "记录已保存。");
   if (existsIndex >= 0) {
     state.records[existsIndex] = payload;
   } else {
@@ -339,12 +651,14 @@ function onSubmitDailyLog(event) {
   };
 
   if (!payload.date) {
-    setDailyFormStatus("请选择日期。");
+    setDailyFormStatus(getLanguage() === "en" ? "Please choose a date." : "请选择日期。");
     return;
   }
 
   const existsIndex = state.dailyLogs.findIndex((log) => log.id === payload.id);
-  const statusMessage = existsIndex >= 0 ? "日报已更新。" : "日报已保存。";
+  const statusMessage = existsIndex >= 0
+    ? (getLanguage() === "en" ? "Daily log updated." : "日报已更新。")
+    : (getLanguage() === "en" ? "Daily log saved." : "日报已保存。");
   if (existsIndex >= 0) {
     state.dailyLogs[existsIndex] = payload;
   } else {
@@ -362,6 +676,7 @@ function onSubmitDailyLog(event) {
 function render() {
   const insights = buildInsights();
   document.body.classList.toggle("simple-mode", state.settings.simpleMode);
+  applyTranslations();
   renderHero(insights);
   renderStats(insights);
   renderPrediction(insights);
@@ -373,6 +688,68 @@ function render() {
   renderParentMode();
   renderPinSettings();
   updateAlertAdvice();
+}
+
+function applyTranslations() {
+  const lang = getLanguage();
+  const periodSelected = getSelectedSymptoms("period-symptoms");
+  const dailySelected = getSelectedSymptoms("daily-symptoms");
+  const alertSelected = getSelectedSymptoms("alert-flags");
+  document.documentElement.lang = lang;
+  document.title = t("app.name");
+  document.querySelectorAll("[data-i18n]").forEach((node) => {
+    node.textContent = t(node.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach((node) => {
+    node.innerHTML = t(node.dataset.i18nHtml);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+    node.placeholder = t(node.dataset.i18nPlaceholder);
+  });
+  if (elements.languageSwitchBtn) {
+    elements.languageSwitchBtn.textContent = lang === DEFAULT_LANGUAGE ? "English" : "中文";
+  }
+  if (elements.footerVersion) {
+    elements.footerVersion.textContent = `${t("app.name")} v${VERSION}`;
+  }
+  renderSymptomOptions(elements.symptomOptions, "period-symptoms");
+  renderSymptomOptions(elements.dailySymptomOptions, "daily-symptoms");
+  renderSymptomOptions(elements.alertFlagOptions, "alert-flags", ALERT_FLAGS);
+  setCheckedSymptoms("period-symptoms", periodSelected);
+  setCheckedSymptoms("daily-symptoms", dailySelected);
+  setCheckedSymptoms("alert-flags", alertSelected);
+  syncStaticOptions();
+}
+
+function syncStaticOptions() {
+  document.querySelectorAll("#flow-level option").forEach((option) => {
+    option.textContent = labelFromCatalog("flow", option.value);
+  });
+  document.querySelectorAll("#mood option, #daily-mood-choices .choice-chip").forEach((node) => {
+    if (node.tagName === "OPTION") {
+      node.textContent = labelFromCatalog("mood", node.value);
+      return;
+    }
+    node.querySelector("span:last-child").textContent = labelFromCatalog("mood", node.dataset.value);
+  });
+  document.querySelectorAll("#daily-bleeding-choices .choice-chip").forEach((node) => {
+    node.querySelector("span:last-child").textContent = labelFromCatalog("bleeding", node.dataset.value);
+  });
+  document.querySelectorAll("#daily-pain-choices .choice-chip").forEach((node) => {
+    node.querySelector("span:last-child").textContent = labelFromCatalog("painChoice", node.dataset.value);
+  });
+  document.querySelectorAll("#energy-choices .choice-chip").forEach((node) => {
+    node.querySelector("span:last-child").textContent = labelFromCatalog("energyChoice", node.dataset.value);
+  });
+  document.querySelectorAll("#parent-lock-minutes option").forEach((option) => {
+    option.textContent = labelFromCatalog("lockMinutes", option.value);
+  });
+  document.querySelector("#parent-pin")?.setAttribute("placeholder", getLanguage() === "en" ? "4 digits" : "4 位数字");
+  document.querySelector("#confirm-parent-pin")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter again" : "再次输入");
+  document.querySelector("#manual-cycle-length")?.setAttribute("placeholder", getLanguage() === "en" ? "Empty = auto" : "留空则自动计算");
+  document.querySelector("#manual-period-length")?.setAttribute("placeholder", getLanguage() === "en" ? "Empty = auto" : "留空则自动计算");
+  document.querySelector("#pin-dialog-input")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter PIN" : "请输入 PIN");
+  document.querySelector("#pin-dialog-confirm-input")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter PIN again" : "再次输入 PIN");
 }
 
 function buildInsights() {
@@ -454,26 +831,42 @@ function renderHero(insights) {
   elements.heroPills.innerHTML = "";
 
   if (!insights.lastRecord) {
-    elements.cycleDay.textContent = "尚无数据";
-    elements.cycleSummary.textContent = "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。";
+    elements.cycleDay.textContent = getLanguage() === "en" ? "No data yet" : "尚无数据";
+    elements.cycleSummary.textContent = getLanguage() === "en"
+      ? "Add a few period records first. This area will then show cycle patterns for the child and parent to review together."
+      : "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。";
     return;
   }
 
-  const statusText = insights.currentPeriodRecord ? "经期中" : `周期第 ${Math.max(insights.cycleDay, 1)} 天`;
+  const statusText = insights.currentPeriodRecord
+    ? (getLanguage() === "en" ? "On period" : "经期中")
+    : (getLanguage() === "en" ? `Cycle day ${Math.max(insights.cycleDay, 1)}` : `周期第 ${Math.max(insights.cycleDay, 1)} 天`);
   elements.cycleDay.textContent = statusText;
 
   if (insights.currentPeriodRecord) {
-    elements.cycleSummary.textContent = `本次经期开始于 ${formatDate(insights.currentPeriodRecord.startDate)}，结束日期记录为 ${formatDate(insights.currentPeriodRecord.endDate)}。`;
+    elements.cycleSummary.textContent = getLanguage() === "en"
+      ? `This period started on ${formatDate(insights.currentPeriodRecord.startDate)} and is recorded to end on ${formatDate(insights.currentPeriodRecord.endDate)}.`
+      : `本次经期开始于 ${formatDate(insights.currentPeriodRecord.startDate)}，结束日期记录为 ${formatDate(insights.currentPeriodRecord.endDate)}。`;
   } else if (state.settings.parentMode && insights.nextStartDate) {
-    elements.cycleSummary.textContent = `预计下次来潮时间为 ${formatDate(insights.nextStartDate)}，可根据实际情况调整与修正。`;
+    elements.cycleSummary.textContent = getLanguage() === "en"
+      ? `Estimated next period: around ${formatDate(insights.nextStartDate)}. Adjust based on real records when needed.`
+      : `预计下次来潮时间为 ${formatDate(insights.nextStartDate)}，可根据实际情况调整与修正。`;
   } else {
-    elements.cycleSummary.textContent = "继续记录就好，看到不舒服的时候记得告诉家长。";
+    elements.cycleSummary.textContent = getLanguage() === "en"
+      ? "Keep logging. If anything feels wrong, remember to tell a parent."
+      : "继续记录就好，看到不舒服的时候记得告诉家长。";
   }
 
   const pillTexts = [
-    `已记录 ${insights.sorted.length} 次`,
-    `最近状态 ${insights.todayLog ? `${insights.todayLog.mood}` : "还没填"}`,
-    insights.todayLog ? `今日日报 ${insights.todayLog.bleeding} / 疼痛 ${insights.todayLog.painLevel}` : "今天还没有日报",
+    getLanguage() === "en" ? `${insights.sorted.length} records` : `已记录 ${insights.sorted.length} 次`,
+    getLanguage() === "en"
+      ? `Latest mood ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "Not filled"}`
+      : `最近状态 ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "还没填"}`,
+    insights.todayLog
+      ? (getLanguage() === "en"
+        ? `Today: ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / pain ${insights.todayLog.painLevel}`
+        : `今日日报 ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / 疼痛 ${insights.todayLog.painLevel}`)
+      : (getLanguage() === "en" ? "No daily log today" : "今天还没有日报"),
   ];
 
   pillTexts.forEach((text) => {
@@ -487,19 +880,27 @@ function renderHero(insights) {
 function renderStats(insights) {
   const stats = [
     {
-      label: "经期记录",
-      value: `${insights.sorted.length} 次`,
-      note: insights.sorted.length ? `最近一次：${formatDate(insights.lastRecord.startDate)}` : "建议至少记录 3 个周期。",
+      label: getLanguage() === "en" ? "Period Records" : "经期记录",
+      value: getLanguage() === "en" ? `${insights.sorted.length}` : `${insights.sorted.length} 次`,
+      note: insights.sorted.length
+        ? (getLanguage() === "en" ? `Latest: ${formatDate(insights.lastRecord.startDate)}` : `最近一次：${formatDate(insights.lastRecord.startDate)}`)
+        : (getLanguage() === "en" ? "Try to log at least 3 cycles." : "建议至少记录 3 个周期。"),
     },
     {
-      label: "需要告诉家长",
-      value: `${insights.needsParentAttentionCount} 次`,
-      note: insights.needsParentAttentionCount ? "出现过比较需要留意的日报。" : "目前没有明显异常提醒。",
+      label: getLanguage() === "en" ? "Tell Parent" : "需要告诉家长",
+      value: getLanguage() === "en" ? `${insights.needsParentAttentionCount}` : `${insights.needsParentAttentionCount} 次`,
+      note: insights.needsParentAttentionCount
+        ? (getLanguage() === "en" ? "Some daily logs need extra attention." : "出现过比较需要留意的日报。")
+        : (getLanguage() === "en" ? "No strong alerts right now." : "目前没有明显异常提醒。"),
     },
     {
-      label: "最近 7 天状态",
-      value: `${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"} 疼痛`,
-      note: `平均精力 ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`,
+      label: getLanguage() === "en" ? "Last 7 Days" : "最近 7 天状态",
+      value: getLanguage() === "en"
+        ? `Pain ${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"}`
+        : `${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"} 疼痛`,
+      note: getLanguage() === "en"
+        ? `Avg energy ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`
+        : `平均精力 ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`,
     },
   ];
 
@@ -516,34 +917,38 @@ function renderStats(insights) {
 function renderPrediction(insights) {
   if (!state.settings.parentMode) {
     elements.predictionContent.innerHTML = `
-      <p>这里是家长查看区。</p>
-      <p class="muted">默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。</p>
+      <p>${getLanguage() === "en" ? "This section is for parents." : "这里是家长查看区。"}</p>
+      <p class="muted">${getLanguage() === "en" ? "Predictions and fertility details stay hidden by default so kids do not see unnecessary information." : "默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。"}</p>
     `;
     return;
   }
 
   if (!insights.lastRecord) {
     elements.predictionContent.innerHTML = `
-      <p>暂无足够数据生成预测。</p>
-      <p class="muted">建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。</p>
+      <p>${getLanguage() === "en" ? "Not enough data for predictions yet." : "暂无足够数据生成预测。"}</p>
+      <p class="muted">${getLanguage() === "en" ? "Start with the latest period first. Predictions get better as more records are added." : "建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。"}</p>
     `;
     return;
   }
 
-  const nextText = insights.nextStartDate ? `${formatDate(insights.nextStartDate)} 左右` : "等待更多记录";
+  const nextText = insights.nextStartDate
+    ? (getLanguage() === "en" ? `around ${formatDate(insights.nextStartDate)}` : `${formatDate(insights.nextStartDate)} 左右`)
+    : (getLanguage() === "en" ? "waiting for more records" : "等待更多记录");
   const fertileText = insights.fertileWindow
-    ? `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`
-    : "暂无";
+    ? (getLanguage() === "en"
+      ? `${formatDate(insights.fertileWindow.start)} to ${formatDate(insights.fertileWindow.end)}, estimated ovulation ${formatDate(insights.fertileWindow.ovulation)}`
+      : `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`)
+    : (getLanguage() === "en" ? "none yet" : "暂无");
 
   elements.predictionContent.innerHTML = `
-    <p><strong>下次来潮预测：</strong>${nextText}</p>
-    <p><strong>易孕窗口：</strong>${fertileText}</p>
-    <p><strong>参数来源：</strong>${
+    <p><strong>${getLanguage() === "en" ? "Next period estimate:" : "下次来潮预测："}</strong>${nextText}</p>
+    <p><strong>${getLanguage() === "en" ? "Fertile window:" : "易孕窗口："}</strong>${fertileText}</p>
+    <p><strong>${getLanguage() === "en" ? "Source:" : "参数来源："}</strong>${
       Number(state.settings.manualCycleLength) || Number(state.settings.manualPeriodLength)
-        ? "当前部分使用手动输入参数。"
-        : "当前完全基于历史平均值。"
+        ? (getLanguage() === "en" ? "Partly based on manual settings." : "当前部分使用手动输入参数。")
+        : (getLanguage() === "en" ? "Fully based on historical averages." : "当前完全基于历史平均值。")
     }</p>
-    <p><strong>说明：</strong>这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。</p>
+    <p><strong>${getLanguage() === "en" ? "Note:" : "说明："}</strong>${getLanguage() === "en" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
   `;
 }
 
@@ -558,23 +963,25 @@ function renderTrend(insights) {
 
   const irregularityText = insights.cycleLengths.length
     ? insights.cycleVariation <= 3
-      ? "周期波动较小，整体比较稳定。"
+      ? (getLanguage() === "en" ? "Cycle variation is small and looks fairly stable." : "周期波动较小，整体比较稳定。")
       : insights.cycleVariation <= 7
-        ? "周期有轻微波动，建议继续观察。"
-        : "周期波动较明显，如果长期持续可考虑就医咨询。"
-    : "需要至少两次经期记录才能判断周期波动。";
+        ? (getLanguage() === "en" ? "Cycle variation is mild. Keep watching." : "周期有轻微波动，建议继续观察。")
+        : (getLanguage() === "en" ? "Cycle variation is more noticeable. Consider medical advice if it continues." : "周期波动较明显，如果长期持续可考虑就医咨询。")
+    : (getLanguage() === "en" ? "At least two period records are needed to judge cycle variation." : "需要至少两次经期记录才能判断周期波动。");
 
   const symptomText = insights.frequentSymptoms.length
-    ? insights.frequentSymptoms.map(([name, count]) => `${name}（${count} 次）`).join("、")
-    : "暂无高频症状数据。";
+    ? insights.frequentSymptoms.map(([name, count]) => (
+      getLanguage() === "en" ? `${labelFromCatalog("symptoms", name)} (${count})` : `${labelFromCatalog("symptoms", name)}（${count} 次）`
+    )).join(getLanguage() === "en" ? ", " : "、")
+    : (getLanguage() === "en" ? "No frequent symptom data yet." : "暂无高频症状数据。");
 
   elements.trendContent.innerHTML = `
-    <p><strong>孩子近况：</strong>${insights.lastDailyLog ? "最近有持续记录，可以继续保持。" : "先从不舒服的那几天开始记就可以。"}</p>
-    <p><strong>周期波动：</strong>${state.settings.parentMode ? irregularityText : "这部分放在家长模式里查看。"} </p>
-    <p><strong>波动范围：</strong>${state.settings.parentMode && insights.cycleLengths.length ? `${insights.cycleVariation} 天` : "家长模式可见"}</p>
-    <p><strong>高频症状：</strong>${symptomText}</p>
-    <p><strong>高疼痛日报：</strong>${insights.highPainCount} 次${insights.highPainCount ? "，可以单独留意诱因和缓解方式。" : ""}</p>
-    <p><strong>最近日报：</strong>${insights.lastDailyLog ? `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。` : "还没有日报记录。"}</p>
+    <p><strong>${getLanguage() === "en" ? "Recent status:" : "孩子近况："}</strong>${insights.lastDailyLog ? (getLanguage() === "en" ? "Recent logs are being kept consistently." : "最近有持续记录，可以继续保持。") : (getLanguage() === "en" ? "Start by logging the uncomfortable days first." : "先从不舒服的那几天开始记就可以。")}</p>
+    <p><strong>${getLanguage() === "en" ? "Cycle variation:" : "周期波动："}</strong>${state.settings.parentMode ? irregularityText : (getLanguage() === "en" ? "Visible in Parent Mode." : "这部分放在家长模式里查看。")} </p>
+    <p><strong>${getLanguage() === "en" ? "Variation range:" : "波动范围："}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() === "en" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : (getLanguage() === "en" ? "Parent Mode only" : "家长模式可见")}</p>
+    <p><strong>${getLanguage() === "en" ? "Frequent symptoms:" : "高频症状："}</strong>${symptomText}</p>
+    <p><strong>${getLanguage() === "en" ? "High-pain logs:" : "高疼痛日报："}</strong>${getLanguage() === "en" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? (getLanguage() === "en" ? ", watch for triggers and what helps." : "，可以单独留意诱因和缓解方式。") : ""}</p>
+    <p><strong>${getLanguage() === "en" ? "Latest daily log:" : "最近日报："}</strong>${insights.lastDailyLog ? (getLanguage() === "en" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : (getLanguage() === "en" ? "No daily log yet." : "还没有日报记录。")}</p>
   `;
 }
 
@@ -582,10 +989,13 @@ function renderCalendar(insights) {
   const currentMonth = state.calendarDate;
   const monthStart = startOfMonth(currentMonth);
   const gridStart = addDays(toDateInputValue(monthStart), -monthStart.getDay());
-  const weekdays = ["日", "一", "二", "三", "四", "五", "六"];
+  const weekdays = getLanguage() === "en" ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["日", "一", "二", "三", "四", "五", "六"];
   const cells = [];
 
-  elements.calendarTitle.textContent = `${monthStart.getFullYear()} 年 ${monthStart.getMonth() + 1} 月`;
+  elements.calendarTitle.textContent = new Intl.DateTimeFormat(
+    getLanguage() === "en" ? "en-US" : "zh-CN",
+    { year: "numeric", month: "long" },
+  ).format(monthStart);
   elements.calendarGrid.innerHTML = weekdays.map((day) => `<div class="calendar__weekday">${day}</div>`).join("");
 
   for (let index = 0; index < 42; index += 1) {
@@ -608,19 +1018,19 @@ function buildDayCell(date, monthStart, insights) {
   const dayLog = insights.sortedDailyLogs.find((log) => log.date === date) || null;
 
   if (hasPeriod) {
-    tags.push(`<span>经期</span>`);
+    tags.push(`<span>${getLanguage() === "en" ? "Period" : "经期"}</span>`);
     states.push("period");
   }
   if (hasPredicted) {
-    tags.push(`<span>预测</span>`);
+    tags.push(`<span>${getLanguage() === "en" ? "Predicted" : "预测"}</span>`);
     states.push("predicted");
   }
   if (hasFertile) {
-    tags.push(`<span>${date === insights.fertileWindow.ovulation ? "排卵" : "易孕"}</span>`);
+    tags.push(`<span>${date === insights.fertileWindow.ovulation ? (getLanguage() === "en" ? "Ovulation" : "排卵") : (getLanguage() === "en" ? "Fertile" : "易孕")}</span>`);
     states.push("fertile");
   }
   if (dayLog) {
-    tags.push(`<span class="day-tag--log">日志</span>`);
+    tags.push(`<span class="day-tag--log">${getLanguage() === "en" ? "Log" : "日志"}</span>`);
   }
 
   const classes = ["calendar__day"];
@@ -628,7 +1038,7 @@ function buildDayCell(date, monthStart, insights) {
   if (date === insights.today) classes.push("is-today");
 
   return `
-    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="点击快速记录 ${formatDate(date)}">
+    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="${getLanguage() === "en" ? `Tap to log ${formatDate(date)}` : `点击快速记录 ${formatDate(date)}`}">
       <div class="day-number">${new Date(date).getDate()}</div>
       <div class="day-tags">${tags.join("")}</div>
     </article>
@@ -637,7 +1047,7 @@ function buildDayCell(date, monthStart, insights) {
 
 function renderRecords() {
   if (!state.records.length) {
-    elements.recordList.innerHTML = `<div class="empty-state">还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。</div>`;
+    elements.recordList.innerHTML = `<div class="empty-state">${getLanguage() === "en" ? "No period records yet. Start with the most recent one first. There is no need to add everything at once." : "还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。"}</div>`;
     return;
   }
 
@@ -650,20 +1060,20 @@ function renderRecords() {
           <div class="record-item__top">
             <div>
               <strong>${formatDate(record.startDate)} - ${formatDate(record.endDate)}</strong>
-              <div class="muted">${duration} 天</div>
+              <div class="muted">${getLanguage() === "en" ? `${duration} days` : `${duration} 天`}</div>
             </div>
             <div class="record-item__actions">
-              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">编辑</button>
-              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">删除</button>
+              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${getLanguage() === "en" ? "Edit" : "编辑"}</button>
+              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">${getLanguage() === "en" ? "Delete" : "删除"}</button>
             </div>
           </div>
           <div class="record-meta">
-            <span>流量：${record.flowLevel}</span>
-            <span>疼痛：${record.painLevel}/10</span>
-            <span>情绪：${record.mood}</span>
-            ${record.symptoms.map((symptom) => `<span>${symptom}</span>`).join("")}
+            <span>${getLanguage() === "en" ? "Flow" : "流量"}：${labelFromCatalog("flow", record.flowLevel)}</span>
+            <span>${getLanguage() === "en" ? "Pain" : "疼痛"}：${record.painLevel}/10</span>
+            <span>${getLanguage() === "en" ? "Mood" : "情绪"}：${labelFromCatalog("mood", record.mood)}</span>
+            ${record.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
           </div>
-          <p class="record-notes">${record.notes || "无备注"}</p>
+          <p class="record-notes">${record.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
         </article>
       `;
     })
@@ -675,7 +1085,7 @@ function renderRecords() {
 
 function renderDailyLogs() {
   if (!state.dailyLogs.length) {
-    elements.dailyLogList.innerHTML = `<div class="empty-state">还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。</div>`;
+    elements.dailyLogList.innerHTML = `<div class="empty-state">${getLanguage() === "en" ? "No daily logs yet. Starting with today is fine, and tapping any date on the calendar fills it in quickly." : "还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。"}</div>`;
     return;
   }
 
@@ -687,19 +1097,19 @@ function renderDailyLogs() {
         <div class="record-item__top">
           <div>
             <strong>${formatDate(log.date)}</strong>
-            <div class="muted">出血 ${log.bleeding}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}</div>
+            <div class="muted">${getLanguage() === "en" ? `Bleeding ${labelFromCatalog("bleeding", log.bleeding)}, energy ${log.energyLevel}/5${shouldTellParent(log) ? ", tell a parent" : ""}` : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}`}</div>
           </div>
           <div class="record-item__actions">
-            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">编辑</button>
-            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">删除</button>
+            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${getLanguage() === "en" ? "Edit" : "编辑"}</button>
+            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">${getLanguage() === "en" ? "Delete" : "删除"}</button>
           </div>
         </div>
         <div class="record-meta">
-          <span>疼痛：${log.painLevel}/10</span>
-          <span>情绪：${log.mood}</span>
-          ${log.symptoms.map((symptom) => `<span>${symptom}</span>`).join("")}
+          <span>${getLanguage() === "en" ? "Pain" : "疼痛"}：${log.painLevel}/10</span>
+          <span>${getLanguage() === "en" ? "Mood" : "情绪"}：${labelFromCatalog("mood", log.mood)}</span>
+          ${log.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
         </div>
-        <p class="record-notes">${log.notes || "无备注"}</p>
+        <p class="record-notes">${log.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
       </article>
     `)
     .join("");
@@ -733,7 +1143,7 @@ function editPeriodRecord(recordId) {
   elements.mood.value = record.mood;
   elements.notes.value = record.notes;
   setCheckedSymptoms("period-symptoms", record.symptoms);
-  setFormStatus("已载入经期记录，可直接修改后保存。");
+  setFormStatus(getLanguage() === "en" ? "Period record loaded. Edit and save when ready." : "已载入经期记录，可直接修改后保存。");
   document.querySelector("#record-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -750,7 +1160,7 @@ function editDailyLog(logId) {
   elements.dailyNotes.value = log.notes;
   setCheckedSymptoms("daily-symptoms", log.symptoms);
   setCheckedSymptoms("alert-flags", log.alertFlags || []);
-  setDailyFormStatus("已载入日报，可直接修改后保存。");
+  setDailyFormStatus(getLanguage() === "en" ? "Daily log loaded. Edit and save when ready." : "已载入日报，可直接修改后保存。");
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -798,7 +1208,7 @@ function resetDailyForm() {
 
 function fillDailyDate(date) {
   elements.dailyDate.value = date;
-  setDailyFormStatus(`已选中 ${formatDate(date)}，可直接填写日报。`);
+  setDailyFormStatus(getLanguage() === "en" ? `${formatDate(date)} selected. You can fill the daily log now.` : `已选中 ${formatDate(date)}，可直接填写日报。`);
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -884,10 +1294,10 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `period-tracker-${toDateInputValue(new Date())}.json`;
+  anchor.download = `${getLanguage() === "en" ? "eva-moon-data" : "period-tracker"}-${toDateInputValue(new Date())}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast("原始数据已导出。");
+  showToast(getLanguage() === "en" ? "Raw data exported." : "原始数据已导出。");
 }
 
 function exportSummary() {
@@ -899,25 +1309,25 @@ function exportSummary() {
       (log) => `
         <tr>
           <td>${formatDate(log.date)}</td>
-          <td>${log.bleeding}</td>
+          <td>${labelFromCatalog("bleeding", log.bleeding)}</td>
           <td>${log.painLevel}/10</td>
           <td>${log.energyLevel}/5</td>
-          <td>${log.mood}</td>
-          <td>${shouldTellParent(log) ? "建议告诉家长" : "正常观察"}</td>
+          <td>${labelFromCatalog("mood", log.mood)}</td>
+          <td>${shouldTellParent(log) ? (getLanguage() === "en" ? "Tell a parent" : "建议告诉家长") : (getLanguage() === "en" ? "Observe" : "正常观察")}</td>
         </tr>
       `,
     )
     .join("");
 
   const symptomMarkup = insights.frequentSymptoms.length
-    ? insights.frequentSymptoms.map(([name, count]) => `<li>${name}：${count} 次</li>`).join("")
-    : "<li>暂无</li>";
+    ? insights.frequentSymptoms.map(([name, count]) => `<li>${labelFromCatalog("symptoms", name)}${getLanguage() === "en" ? `: ${count}` : `：${count} 次`}</li>`).join("")
+    : `<li>${getLanguage() === "en" ? "None yet" : "暂无"}</li>`;
 
   const html = `<!DOCTYPE html>
   <html lang="zh-CN">
     <head>
       <meta charset="UTF-8">
-      <title>Eva的月亮 - 家长摘要</title>
+      <title>${t("app.name")} - ${getLanguage() === "en" ? "Parent Summary" : "家长摘要"}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 24px; color: #3f2430; }
         h1, h2 { margin: 0 0 12px; }
@@ -929,26 +1339,26 @@ function exportSummary() {
       </style>
     </head>
     <body>
-      <h1>Eva的月亮 - 家长摘要</h1>
-      <p>导出日期：${formatDate(toDateInputValue(new Date()))}</p>
+      <h1>${t("app.name")} - ${getLanguage() === "en" ? "Parent Summary" : "家长摘要"}</h1>
+      <p>${getLanguage() === "en" ? "Exported on:" : "导出日期："}${formatDate(toDateInputValue(new Date()))}</p>
       <section class="card">
-        <h2>概况</h2>
-        <p>经期记录次数：${state.records.length}</p>
-        <p>日报记录次数：${state.dailyLogs.length}</p>
-        <p>平均周期：${insights.averageCycleLength} 天</p>
-        <p>平均经期：${insights.averagePeriodLength} 天</p>
-        <p>最近一次月经开始：${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : "暂无"}</p>
-        <p>需要告诉家长的日报次数：${insights.needsParentAttentionCount}</p>
+        <h2>${getLanguage() === "en" ? "Overview" : "概况"}</h2>
+        <p>${getLanguage() === "en" ? "Period records:" : "经期记录次数："}${state.records.length}</p>
+        <p>${getLanguage() === "en" ? "Daily logs:" : "日报记录次数："}${state.dailyLogs.length}</p>
+        <p>${getLanguage() === "en" ? "Average cycle:" : "平均周期："}${insights.averageCycleLength}${getLanguage() === "en" ? " days" : " 天"}</p>
+        <p>${getLanguage() === "en" ? "Average period length:" : "平均经期："}${insights.averagePeriodLength}${getLanguage() === "en" ? " days" : " 天"}</p>
+        <p>${getLanguage() === "en" ? "Latest period start:" : "最近一次月经开始："}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : (getLanguage() === "en" ? "None" : "暂无")}</p>
+        <p>${getLanguage() === "en" ? "Logs needing parent attention:" : "需要告诉家长的日报次数："}${insights.needsParentAttentionCount}</p>
       </section>
       <section class="card">
-        <h2>高频身体感觉</h2>
+        <h2>${getLanguage() === "en" ? "Frequent Body Feelings" : "高频身体感觉"}</h2>
         <ul>${symptomMarkup}</ul>
       </section>
       <section class="card">
-        <h2>最近 5 条日报</h2>
+        <h2>${getLanguage() === "en" ? "Latest 5 Daily Logs" : "最近 5 条日报"}</h2>
         <table>
           <thead>
-            <tr><th>日期</th><th>出血</th><th>疼痛</th><th>精力</th><th>心情</th><th>提醒</th></tr>
+            <tr><th>${getLanguage() === "en" ? "Date" : "日期"}</th><th>${getLanguage() === "en" ? "Bleeding" : "出血"}</th><th>${getLanguage() === "en" ? "Pain" : "疼痛"}</th><th>${getLanguage() === "en" ? "Energy" : "精力"}</th><th>${getLanguage() === "en" ? "Mood" : "心情"}</th><th>${getLanguage() === "en" ? "Alert" : "提醒"}</th></tr>
           </thead>
           <tbody>${recentLogs}</tbody>
         </table>
@@ -961,10 +1371,10 @@ function exportSummary() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.html`;
+  anchor.download = `${getLanguage() === "en" ? "eva-moon-summary" : "eva-moon-summary"}-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast("家长摘要已导出。");
+  showToast(getLanguage() === "en" ? "Parent summary exported." : "家长摘要已导出。");
 }
 
 function importData(event) {
@@ -982,11 +1392,11 @@ function importData(event) {
       sortDailyLogs();
       saveState();
       render();
-      setFormStatus("数据已导入。");
-      setDailyFormStatus("数据已导入。");
-      showToast("备份已恢复。");
+      setFormStatus(getLanguage() === "en" ? "Data imported." : "数据已导入。");
+      setDailyFormStatus(getLanguage() === "en" ? "Data imported." : "数据已导入。");
+      showToast(getLanguage() === "en" ? "Backup restored." : "备份已恢复。");
     } catch (error) {
-      window.alert("导入失败：JSON 文件格式不正确。");
+      window.alert(getLanguage() === "en" ? "Import failed: invalid JSON file format." : "导入失败：JSON 文件格式不正确。");
     } finally {
       elements.importInput.value = "";
     }
@@ -995,30 +1405,30 @@ function importData(event) {
 }
 
 function clearAllData() {
-  if (!window.confirm("确认清空当前浏览器中的全部记录吗？此操作无法撤销。")) return;
+  if (!window.confirm(getLanguage() === "en" ? "Clear all records in this browser? This cannot be undone." : "确认清空当前浏览器中的全部记录吗？此操作无法撤销。")) return;
 
   state.records = [];
   state.dailyLogs = [];
-  state.settings = normalizeSettings();
+  state.settings = normalizeSettings({ language: state.settings.language });
   localStorage.removeItem(STORAGE_KEY);
   resetPeriodForm();
   resetDailyForm();
   render();
-  showToast("已清空当前浏览器里的记录。");
+  showToast(getLanguage() === "en" ? "All records in this browser were cleared." : "已清空当前浏览器里的记录。");
 }
 
 function seedData() {
   if (state.records.length || state.dailyLogs.length) {
-    const confirmed = window.confirm("当前已有数据，填充示例数据会覆盖现有内容，是否继续？");
+    const confirmed = window.confirm(getLanguage() === "en" ? "Sample data will overwrite current data. Continue?" : "当前已有数据，填充示例数据会覆盖现有内容，是否继续？");
     if (!confirmed) return;
   }
 
   state.records = SAMPLE_DATA.records.map((record) => ({ ...record }));
   state.dailyLogs = SAMPLE_DATA.dailyLogs.map((log) => ({ ...log }));
-  state.settings = normalizeSettings();
+  state.settings = normalizeSettings({ language: state.settings.language });
   saveState();
   render();
-  showToast("示例数据已填充。");
+  showToast(getLanguage() === "en" ? "Sample data loaded." : "示例数据已填充。");
 }
 
 function saveSettings(event) {
@@ -1030,18 +1440,25 @@ function saveSettings(event) {
     parentLockMinutes: elements.parentLockMinutes.value,
     parentMode: state.settings.parentMode,
     parentPin: state.settings.parentPin,
+    simpleMode: state.settings.simpleMode,
+    language: state.settings.language,
   });
   saveState();
   render();
-  setFormStatus("预测参数已更新。");
-  showToast("家长参数已更新。");
+  setFormStatus(getLanguage() === "en" ? "Prediction settings updated." : "预测参数已更新。");
+  showToast(getLanguage() === "en" ? "Parent settings updated." : "家长参数已更新。");
 }
 
 function resetSettings() {
-  state.settings = normalizeSettings();
+  state.settings = normalizeSettings({
+    parentMode: state.settings.parentMode,
+    parentPin: state.settings.parentPin,
+    simpleMode: state.settings.simpleMode,
+    language: state.settings.language,
+  });
   saveState();
   render();
-  showToast("预测参数已恢复自动计算。");
+  showToast(getLanguage() === "en" ? "Prediction settings reset to automatic values." : "预测参数已恢复自动计算。");
 }
 
 function renderSettings() {
@@ -1055,8 +1472,12 @@ function renderParentMode() {
   if (state.settings.parentMode && !isUnlockedInSession) {
     state.settings.parentMode = false;
   }
-  elements.parentModeBtn.textContent = state.settings.parentMode ? "关闭家长模式" : "打开家长模式";
-  elements.simpleModeBtn.textContent = state.settings.simpleMode ? "关闭超简模式" : "打开超简模式";
+  elements.parentModeBtn.textContent = state.settings.parentMode
+    ? (getLanguage() === "en" ? "Close Parent Mode" : "关闭家长模式")
+    : (getLanguage() === "en" ? "Open Parent Mode" : "打开家长模式");
+  elements.simpleModeBtn.textContent = state.settings.simpleMode
+    ? (getLanguage() === "en" ? "Close Simple Mode" : "关闭超简模式")
+    : (getLanguage() === "en" ? "Open Simple Mode" : "打开超简模式");
   elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
   elements.simpleModeBtn.classList.toggle("mode-active", state.settings.simpleMode);
   elements.parentOnlySections.forEach((node) => {
@@ -1068,8 +1489,8 @@ function renderPinSettings() {
   elements.parentPin.value = "";
   elements.confirmParentPin.value = "";
   elements.pinStatus.textContent = state.settings.parentPin
-    ? "已设置家长 PIN。PIN 只保存在当前浏览器。"
-    : "还没有设置 PIN。建议家长先设置 4 位数字。";
+    ? (getLanguage() === "en" ? "Parent PIN is set. It is only stored in this browser." : "已设置家长 PIN。PIN 只保存在当前浏览器。")
+    : (getLanguage() === "en" ? "No PIN yet. Parents should set a 4-digit PIN first." : "还没有设置 PIN。建议家长先设置 4 位数字。");
 }
 
 function normalizeRecord(record) {
@@ -1109,6 +1530,7 @@ function normalizeSettings(settings = {}) {
     parentPin: normalizePin(settings.parentPin),
     parentLockMinutes: normalizeLockMinutes(settings.parentLockMinutes),
     simpleMode: Boolean(settings.simpleMode),
+    language: SUPPORTED_LANGUAGES.includes(settings.language) ? settings.language : DEFAULT_LANGUAGE,
   };
 }
 
@@ -1118,7 +1540,7 @@ function toggleParentMode() {
     clearParentSessionUnlock();
     saveState();
     render();
-    showToast("家长模式已关闭。");
+    showToast(getLanguage() === "en" ? "Parent Mode closed." : "家长模式已关闭。");
     return;
   }
 
@@ -1137,8 +1559,8 @@ function updateAlertAdvice() {
     alertFlags: getSelectedSymptoms("alert-flags"),
   };
   elements.alertAdviceText.textContent = shouldTellParent(draft)
-    ? "今天建议马上告诉家长，或者让老师帮你联系家长。"
-    : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。";
+    ? (getLanguage() === "en" ? "Tell a parent now, or ask a teacher to help contact one." : "今天建议马上告诉家长，或者让老师帮你联系家长。")
+    : (getLanguage() === "en" ? "A normal record is enough for now. If it gets worse, tell a parent soon." : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。");
 }
 
 function shouldTellParent(log) {
@@ -1155,19 +1577,19 @@ function savePin(event) {
   const confirmPin = normalizePin(elements.confirmParentPin.value);
 
   if (!pin || pin.length !== 4) {
-    elements.pinStatus.textContent = "PIN 需要是 4 位数字。";
+    elements.pinStatus.textContent = getLanguage() === "en" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
     return;
   }
   if (pin !== confirmPin) {
-    elements.pinStatus.textContent = "两次输入的 PIN 不一致。";
+    elements.pinStatus.textContent = getLanguage() === "en" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
     return;
   }
 
   state.settings.parentPin = pin;
   saveState();
   renderPinSettings();
-  elements.pinStatus.textContent = "家长 PIN 已保存。";
-  showToast("家长 PIN 已保存。");
+  elements.pinStatus.textContent = getLanguage() === "en" ? "Parent PIN saved." : "家长 PIN 已保存。";
+  showToast(getLanguage() === "en" ? "Parent PIN saved." : "家长 PIN 已保存。");
 }
 
 function clearPin() {
@@ -1176,8 +1598,8 @@ function clearPin() {
   clearParentSessionUnlock();
   saveState();
   render();
-  elements.pinStatus.textContent = "家长 PIN 已清除。";
-  showToast("家长 PIN 已清除。");
+  elements.pinStatus.textContent = getLanguage() === "en" ? "Parent PIN cleared." : "家长 PIN 已清除。";
+  showToast(getLanguage() === "en" ? "Parent PIN cleared." : "家长 PIN 已清除。");
 }
 
 function handlePinDialogSubmit(event) {
@@ -1193,11 +1615,11 @@ function handlePinDialogSubmit(event) {
   if (state.pinDialogMode === "setup") {
     const confirmPin = normalizePin(elements.pinDialogConfirmInput.value);
     if (!inputPin || inputPin.length !== 4) {
-      elements.pinDialogStatus.textContent = "PIN 需要是 4 位数字。";
+      elements.pinDialogStatus.textContent = getLanguage() === "en" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
       return;
     }
     if (inputPin !== confirmPin) {
-      elements.pinDialogStatus.textContent = "两次输入的 PIN 不一致。";
+      elements.pinDialogStatus.textContent = getLanguage() === "en" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
       return;
     }
 
@@ -1207,7 +1629,7 @@ function handlePinDialogSubmit(event) {
     saveState();
     render();
     elements.pinDialog.close();
-    showToast("家长模式已开启。");
+    showToast(getLanguage() === "en" ? "Parent Mode opened." : "家长模式已开启。");
     return;
   }
 
@@ -1215,7 +1637,9 @@ function handlePinDialogSubmit(event) {
     state.pinAttempts += 1;
     const remaining = Math.max(MAX_PIN_ATTEMPTS - state.pinAttempts, 0);
     elements.pinDialogStatus.textContent =
-      remaining > 0 ? `PIN 不正确，请重试。还可以再试 ${remaining} 次。` : "PIN 连续输错太多次，请关闭后再试。";
+      remaining > 0
+        ? (getLanguage() === "en" ? `Wrong PIN. Try again. ${remaining} attempt(s) left.` : `PIN 不正确，请重试。还可以再试 ${remaining} 次。`)
+        : (getLanguage() === "en" ? "Too many wrong PIN attempts. Close and try again." : "PIN 连续输错太多次，请关闭后再试。");
     if (remaining === 0) {
       elements.pinDialog.close();
       state.pinAttempts = 0;
@@ -1229,7 +1653,7 @@ function handlePinDialogSubmit(event) {
   saveState();
   render();
   elements.pinDialog.close();
-  showToast("家长模式已开启。");
+  showToast(getLanguage() === "en" ? "Parent Mode opened." : "家长模式已开启。");
 }
 
 function normalizePin(value) {
@@ -1254,9 +1678,13 @@ function openPinDialog(mode) {
   elements.pinDialogConfirmInput.value = "";
   setPinInputsVisibility(false);
   elements.pinDialogConfirmWrap.classList.toggle("is-hidden", mode !== "setup");
-  elements.pinDialogTitle.textContent = mode === "setup" ? "设置家长 PIN" : "输入家长 PIN";
+  elements.pinDialogTitle.textContent = mode === "setup"
+    ? (getLanguage() === "en" ? "Set Parent PIN" : "设置家长 PIN")
+    : (getLanguage() === "en" ? "Enter Parent PIN" : "输入家长 PIN");
   elements.pinDialogStatus.textContent =
-    mode === "setup" ? "第一次使用家长模式，请先设置一个 4 位数字 PIN。" : "只有家长知道这个 PIN。";
+    mode === "setup"
+      ? (getLanguage() === "en" ? "First time in Parent Mode. Please set a 4-digit PIN." : "第一次使用家长模式，请先设置一个 4 位数字 PIN。")
+      : (getLanguage() === "en" ? "Only a parent should know this PIN." : "只有家长知道这个 PIN。");
   elements.pinDialog.showModal();
 }
 
@@ -1269,7 +1697,9 @@ function setPinInputsVisibility(visible) {
   const type = visible ? "text" : "password";
   elements.pinDialogInput.type = type;
   elements.pinDialogConfirmInput.type = type;
-  elements.pinDialogToggleVisibility.textContent = visible ? "隐藏 PIN" : "显示 PIN";
+  elements.pinDialogToggleVisibility.textContent = visible
+    ? (getLanguage() === "en" ? "Hide PIN" : "隐藏 PIN")
+    : (getLanguage() === "en" ? "Show PIN" : "显示 PIN");
 }
 
 function normalizeNumberWithinRange(value, min, max) {
@@ -1308,14 +1738,23 @@ function isParentSessionUnlocked() {
 
 function quickLogToday() {
   fillDailyDate(toDateInputValue(new Date()));
-  showToast("已帮你选中今天，可以直接填写。");
+  showToast(getLanguage() === "en" ? "Today is selected. You can fill it in now." : "已帮你选中今天，可以直接填写。");
 }
 
 function toggleSimpleMode() {
   state.settings.simpleMode = !state.settings.simpleMode;
   saveState();
   render();
-  showToast(state.settings.simpleMode ? "已打开超简模式。" : "已关闭超简模式。");
+  showToast(state.settings.simpleMode
+    ? (getLanguage() === "en" ? "Simple Mode is on." : "已打开超简模式。")
+    : (getLanguage() === "en" ? "Simple Mode is off." : "已关闭超简模式。"));
+}
+
+function toggleLanguage() {
+  state.settings.language = getLanguage() === DEFAULT_LANGUAGE ? "en" : DEFAULT_LANGUAGE;
+  saveState();
+  render();
+  showToast(getLanguage() === "en" ? "Language switched to English." : "语言已切换为中文。");
 }
 
 function installApp() {
@@ -1388,7 +1827,7 @@ function toDateInputValue(date) {
 }
 
 function formatDate(dateString) {
-  return new Intl.DateTimeFormat("zh-CN", {
+  return new Intl.DateTimeFormat(getLanguage() === "en" ? "en-US" : "zh-CN", {
     year: "numeric",
     month: "long",
     day: "numeric",
