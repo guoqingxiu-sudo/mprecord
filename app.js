@@ -991,12 +991,30 @@ function renderReminderCenter(insights) {
       ? `Parent view: flags ${formatAlertFlags(latestAttention)}.`
       : `家长查看：提醒原因包括 ${formatAlertFlags(latestAttention)}。`)
     : "";
+  const recentAlertList = insights.attentionLogs.length
+    ? `
+      <div class="reminder-list">
+        ${insights.attentionLogs.map((log) => `
+          <article class="reminder-item" data-level="${getLogSeverity(log)}">
+            <div class="reminder-item__top">
+              <strong>${formatDate(log.date)}</strong>
+              <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
+            </div>
+            <p>${getLanguage() === "en"
+              ? `${labelFromCatalog("bleeding", log.bleeding)}, pain ${log.painLevel}/10, ${formatAlertFlags(log) || "watch symptoms"}`
+              : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，疼痛 ${log.painLevel}/10，${formatAlertFlags(log) || "继续观察身体感觉"}`}</p>
+          </article>
+        `).join("")}
+      </div>
+    `
+    : "";
 
   elements.reminderCenterContent.innerHTML = `
     <p><strong>${getLanguage() === "en" ? "Now:" : "现在："}</strong>${topMessage}</p>
     <p><strong>${getLanguage() === "en" ? "Pain:" : "疼痛："}</strong>${painMessage}</p>
     <p><strong>${getLanguage() === "en" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
     ${parentOnlyDetail ? `<p><strong>${getLanguage() === "en" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
+    ${recentAlertList}
   `;
 }
 
@@ -1008,6 +1026,17 @@ function getReminderSeverity(insights) {
     return "alert";
   }
   if (insights.highPainCount > 0 || insights.needsParentAttentionCount > 0) {
+    return "watch";
+  }
+  return "ok";
+}
+
+function getLogSeverity(log) {
+  const hasCriticalFlag = Array.isArray(log.alertFlags) && log.alertFlags.length > 0;
+  if (hasCriticalFlag || log.bleeding === "重" || log.painLevel >= 8) {
+    return "alert";
+  }
+  if (shouldTellParent(log)) {
     return "watch";
   }
   return "ok";

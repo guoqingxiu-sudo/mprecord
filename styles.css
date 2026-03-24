@@ -759,6 +759,42 @@ textarea {
   gap: 12px;
 }
 
+.reminder-list {
+  display: grid;
+  gap: 10px;
+}
+
+.reminder-item {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(110, 63, 77, 0.08);
+}
+
+.reminder-item[data-level="watch"] {
+  border-color: rgba(225, 157, 41, 0.28);
+  background: rgba(255, 247, 224, 0.92);
+}
+
+.reminder-item[data-level="alert"] {
+  border-color: rgba(183, 67, 77, 0.28);
+  background: rgba(255, 236, 239, 0.94);
+}
+
+.reminder-item__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.reminder-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .record-item {
   padding: 16px;
   border-radius: var(--radius-md);
