@@ -416,6 +416,37 @@ textarea {
   display: block;
 }
 
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: rgba(92, 138, 112, 0.14);
+  color: #355441;
+}
+
+#reminder-center-panel[data-level="watch"] {
+  border-color: rgba(225, 157, 41, 0.28);
+  background: linear-gradient(180deg, rgba(255, 245, 214, 0.9), rgba(255, 255, 255, 0.88));
+}
+
+#reminder-center-panel[data-level="alert"] {
+  border-color: rgba(183, 67, 77, 0.28);
+  background: linear-gradient(180deg, rgba(255, 229, 233, 0.94), rgba(255, 255, 255, 0.88));
+}
+
+#reminder-center-panel[data-level="watch"] .status-pill {
+  background: rgba(225, 157, 41, 0.16);
+  color: #8a5b08;
+}
+
+#reminder-center-panel[data-level="alert"] .status-pill {
+  background: rgba(183, 67, 77, 0.16);
+  color: #8c2835;
+}
+
 .choice-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));

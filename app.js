@@ -424,6 +424,8 @@ const elements = {
   predictionContent: document.querySelector("#prediction-content"),
   trendContent: document.querySelector("#trend-content"),
   reminderCenterContent: document.querySelector("#reminder-center-content"),
+  reminderCenterPanel: document.querySelector("#reminder-center-panel"),
+  reminderCenterBadge: document.querySelector("#reminder-center-badge"),
   recordList: document.querySelector("#record-list"),
   dailyLogList: document.querySelector("#daily-log-list"),
   cycleDay: document.querySelector("#cycle-day"),
@@ -956,6 +958,14 @@ function renderReminderCenter(insights) {
   const hasAttention = insights.needsParentAttentionCount > 0;
   const hasHighPain = insights.highPainCount > 0;
   const noLogs = !insights.sorted.length && !insights.sortedDailyLogs.length;
+  const severity = getReminderSeverity(insights);
+
+  if (elements.reminderCenterPanel) {
+    elements.reminderCenterPanel.dataset.level = severity;
+  }
+  if (elements.reminderCenterBadge) {
+    elements.reminderCenterBadge.textContent = getReminderSeverityLabel(severity);
+  }
 
   if (noLogs) {
     elements.reminderCenterContent.innerHTML = `
@@ -988,6 +998,29 @@ function renderReminderCenter(insights) {
     <p><strong>${getLanguage() === "en" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
     ${parentOnlyDetail ? `<p><strong>${getLanguage() === "en" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
   `;
+}
+
+function getReminderSeverity(insights) {
+  const latestAttention = insights.attentionLogs[0] || null;
+  if (!latestAttention) return "ok";
+  const hasCriticalFlag = Array.isArray(latestAttention.alertFlags) && latestAttention.alertFlags.length > 0;
+  if (hasCriticalFlag || latestAttention.bleeding === "重" || latestAttention.painLevel >= 8) {
+    return "alert";
+  }
+  if (insights.highPainCount > 0 || insights.needsParentAttentionCount > 0) {
+    return "watch";
+  }
+  return "ok";
+}
+
+function getReminderSeverityLabel(level) {
+  if (level === "alert") {
+    return getLanguage() === "en" ? "Tell Parent Now" : "尽快告诉家长";
+  }
+  if (level === "watch") {
+    return getLanguage() === "en" ? "Watch Closely" : "需要留意";
+  }
+  return getLanguage() === "en" ? "Normal Check" : "正常观察";
 }
 
 function renderPrediction(insights) {
