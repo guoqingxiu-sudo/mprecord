@@ -87,6 +87,7 @@ const state = {
     manualCycleLength: "",
     manualPeriodLength: "",
     parentMode: false,
+    parentPin: "",
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -145,6 +146,15 @@ const elements = {
   alertAdviceText: document.querySelector("#alert-advice-text"),
   parentModeBtn: document.querySelector("#parent-mode-btn"),
   parentOnlySections: document.querySelectorAll(".parent-only"),
+  pinForm: document.querySelector("#pin-form"),
+  parentPin: document.querySelector("#parent-pin"),
+  confirmParentPin: document.querySelector("#confirm-parent-pin"),
+  clearPinBtn: document.querySelector("#clear-pin-btn"),
+  pinStatus: document.querySelector("#pin-status"),
+  pinDialog: document.querySelector("#pin-dialog"),
+  pinDialogForm: document.querySelector("#pin-dialog-form"),
+  pinDialogInput: document.querySelector("#pin-dialog-input"),
+  pinDialogStatus: document.querySelector("#pin-dialog-status"),
 };
 
 bootstrap();
@@ -200,6 +210,9 @@ function attachEvents() {
   elements.resetSettingsBtn.addEventListener("click", resetSettings);
   elements.installBtn.addEventListener("click", installApp);
   elements.parentModeBtn.addEventListener("click", toggleParentMode);
+  elements.pinForm.addEventListener("submit", savePin);
+  elements.clearPinBtn.addEventListener("click", clearPin);
+  elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -316,6 +329,7 @@ function render() {
   renderDailyLogs();
   renderSettings();
   renderParentMode();
+  renderPinSettings();
   updateAlertAdvice();
 }
 
@@ -905,6 +919,14 @@ function renderParentMode() {
   });
 }
 
+function renderPinSettings() {
+  elements.parentPin.value = "";
+  elements.confirmParentPin.value = "";
+  elements.pinStatus.textContent = state.settings.parentPin
+    ? "已设置家长 PIN。PIN 只保存在当前浏览器。"
+    : "还没有设置 PIN。建议家长先设置 4 位数字。";
+}
+
 function normalizeRecord(record) {
   if (!record || !record.startDate || !record.endDate) return null;
   return {
@@ -939,13 +961,27 @@ function normalizeSettings(settings = {}) {
     manualCycleLength: normalizeNumberWithinRange(settings.manualCycleLength, 15, 60),
     manualPeriodLength: normalizeNumberWithinRange(settings.manualPeriodLength, 2, 14),
     parentMode: Boolean(settings.parentMode),
+    parentPin: normalizePin(settings.parentPin),
   };
 }
 
 function toggleParentMode() {
-  state.settings.parentMode = !state.settings.parentMode;
-  saveState();
-  render();
+  if (state.settings.parentMode) {
+    state.settings.parentMode = false;
+    saveState();
+    render();
+    return;
+  }
+
+  if (!state.settings.parentPin) {
+    elements.pinStatus.textContent = "请先在家长锁里设置 4 位数字 PIN。";
+    document.querySelector(".panel--history")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  elements.pinDialogInput.value = "";
+  elements.pinDialogStatus.textContent = "只有家长知道这个 PIN。";
+  elements.pinDialog.showModal();
 }
 
 function updateAlertAdvice() {
@@ -965,6 +1001,59 @@ function shouldTellParent(log) {
     log.bleeding === "重" ||
     (Array.isArray(log.alertFlags) && log.alertFlags.length > 0)
   );
+}
+
+function savePin(event) {
+  event.preventDefault();
+  const pin = normalizePin(elements.parentPin.value);
+  const confirmPin = normalizePin(elements.confirmParentPin.value);
+
+  if (!pin || pin.length !== 4) {
+    elements.pinStatus.textContent = "PIN 需要是 4 位数字。";
+    return;
+  }
+  if (pin !== confirmPin) {
+    elements.pinStatus.textContent = "两次输入的 PIN 不一致。";
+    return;
+  }
+
+  state.settings.parentPin = pin;
+  saveState();
+  renderPinSettings();
+  elements.pinStatus.textContent = "家长 PIN 已保存。";
+}
+
+function clearPin() {
+  state.settings.parentPin = "";
+  state.settings.parentMode = false;
+  saveState();
+  render();
+  elements.pinStatus.textContent = "家长 PIN 已清除。";
+}
+
+function handlePinDialogSubmit(event) {
+  event.preventDefault();
+  const submitter = event.submitter?.value;
+  if (submitter === "cancel") {
+    elements.pinDialog.close();
+    return;
+  }
+
+  const inputPin = normalizePin(elements.pinDialogInput.value);
+  if (inputPin !== state.settings.parentPin) {
+    elements.pinDialogStatus.textContent = "PIN 不正确，请重试。";
+    return;
+  }
+
+  state.settings.parentMode = true;
+  saveState();
+  render();
+  elements.pinDialog.close();
+}
+
+function normalizePin(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  return digits.slice(0, 4);
 }
 
 function normalizeNumberWithinRange(value, min, max) {

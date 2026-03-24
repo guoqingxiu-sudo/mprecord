@@ -153,6 +153,41 @@ h2 {
   padding: 24px;
 }
 
+.kid-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.kid-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 110px;
+  height: 110px;
+  border-radius: 0 0 999px 0;
+  opacity: 0.35;
+}
+
+.kid-card--peach::before {
+  background: #ffd8c6;
+}
+
+.kid-card--blue::before {
+  background: #cfe0ff;
+}
+
+.kid-card--yellow::before {
+  background: #ffe7a6;
+}
+
+.kid-card--mint::before {
+  background: #ccefdc;
+}
+
+.kid-card--lavender::before {
+  background: #e5d8ff;
+}
+
 .section-heading {
   display: flex;
   justify-content: space-between;
@@ -335,6 +370,22 @@ textarea {
 
 .parent-only.is-hidden-by-mode {
   display: none;
+}
+
+.pin-dialog {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.pin-dialog::backdrop {
+  background: rgba(63, 36, 48, 0.42);
+  backdrop-filter: blur(6px);
+}
+
+.pin-dialog__card {
+  width: min(420px, calc(100vw - 24px));
+  margin: auto;
 }
 
 .calendar-nav {

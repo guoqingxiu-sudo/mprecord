@@ -35,7 +35,7 @@
       </header>
 
       <main class="layout">
-        <section class="panel panel--form card" id="record-form">
+        <section class="panel panel--form card kid-card kid-card--peach" id="record-form">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Record</p>
@@ -106,7 +106,7 @@
           </form>
         </section>
 
-        <section class="card">
+        <section class="card kid-card kid-card--blue">
           <div class="section-heading">
             <div>
               <p class="eyebrow">Daily Log</p>
@@ -189,7 +189,7 @@
         </section>
 
         <section class="panel panel--insights">
-          <section class="card">
+          <section class="card kid-card kid-card--yellow">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Care</p>
@@ -201,6 +201,20 @@
               <p><strong>肚子疼时先告诉大人：</strong>可以休息、喝温水、热敷，不要自己随便吃药。</p>
               <p><strong>这些情况要尽快告诉家长：</strong>连续痛得厉害、量特别大、头晕、发烧，或两次月经之间又出血。</p>
               <p><strong>月经不丢脸：</strong>它是身体长大的正常变化，记录下来是为了更了解自己。</p>
+            </div>
+          </section>
+
+          <section class="card kid-card kid-card--mint">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Quick Check</p>
+                <h2>今天要做什么</h2>
+              </div>
+            </div>
+            <div class="prediction-copy">
+              <p>1. 看看今天有没有来月经，或者有没有不舒服。</p>
+              <p>2. 选一选心情、疼痛和身体感觉。</p>
+              <p>3. 如果很难受，就点记录并告诉家长。</p>
             </div>
           </section>
 
@@ -226,7 +240,7 @@
             <div id="trend-content" class="prediction-copy"></div>
           </section>
 
-          <section class="card" id="calendar-panel">
+          <section class="card kid-card kid-card--lavender" id="calendar-panel">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Calendar</p>
@@ -250,6 +264,32 @@
         </section>
 
         <aside class="panel panel--history">
+          <section class="card parent-only">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Security</p>
+                <h2>家长锁</h2>
+              </div>
+            </div>
+            <form id="pin-form" class="stack">
+              <div class="grid-two">
+                <label>
+                  新 PIN
+                  <input id="parent-pin" type="password" inputmode="numeric" maxlength="4" placeholder="4 位数字" />
+                </label>
+                <label>
+                  确认 PIN
+                  <input id="confirm-parent-pin" type="password" inputmode="numeric" maxlength="4" placeholder="再次输入" />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button id="save-pin-btn" class="ghost-btn" type="submit">保存 PIN</button>
+                <button id="clear-pin-btn" class="text-btn" type="button">清除 PIN</button>
+              </div>
+              <p id="pin-status" class="muted">PIN 只保存在当前浏览器，用于控制家长模式入口。</p>
+            </form>
+          </section>
+
           <section class="card parent-only">
             <div class="section-heading">
               <div>
@@ -329,6 +369,26 @@
         <p class="muted"></p>
       </article>
     </template>
+
+    <dialog id="pin-dialog" class="pin-dialog">
+      <form method="dialog" class="card pin-dialog__card" id="pin-dialog-form">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Parent Lock</p>
+            <h2>输入家长 PIN</h2>
+          </div>
+        </div>
+        <label>
+          4 位数字 PIN
+          <input id="pin-dialog-input" type="password" inputmode="numeric" maxlength="4" placeholder="请输入 PIN" />
+        </label>
+        <p id="pin-dialog-status" class="muted">只有家长知道这个 PIN。</p>
+        <div class="form-actions">
+          <button class="primary-btn" id="pin-dialog-submit" type="submit" value="submit">确认</button>
+          <button class="text-btn" type="submit" value="cancel">取消</button>
+        </div>
+      </form>
+    </dialog>
 
     <script src="./app.js"></script>
   </body>
