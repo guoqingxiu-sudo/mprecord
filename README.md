@@ -26,3 +26,18 @@ python3 -m http.server 8000
 ```
 
 然后访问 `http://localhost:8000`。
+
+## GitHub Pages
+
+仓库已经包含 GitHub Pages 自动部署工作流：
+[deploy-pages.yml](/mnt/c/test/mprecord/.github/workflows/deploy-pages.yml)
+
+首次启用时，在 GitHub 仓库页面执行：
+
+1. 打开 `Settings > Pages`
+2. 在 `Build and deployment` 里将 `Source` 设为 `GitHub Actions`
+3. 推送到 `main` 分支后，等待 Actions 工作流完成部署
+
+部署成功后，站点地址通常为：
+
+`https://guoqingxiu-sudo.github.io/mprecord/`
