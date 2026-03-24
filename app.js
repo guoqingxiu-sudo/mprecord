@@ -1567,6 +1567,54 @@ const RUNTIME_TEXT = {
     tr: "Gozlemle",
     ru: "Nablyudat",
   },
+  countRecords: {
+    "zh-CN": "{count} 次",
+    en: "{count}",
+    tr: "{count}",
+    ru: "{count}",
+  },
+  countDays: {
+    "zh-CN": "{count} 天",
+    en: "{count} days",
+    tr: "{count} gun",
+    ru: "{count} dney",
+  },
+  symptomCount: {
+    "zh-CN": "{name}（{count} 次）",
+    en: "{name} ({count})",
+    tr: "{name} ({count})",
+    ru: "{name} ({count})",
+  },
+  trendLatestSummary: {
+    "zh-CN": "{date}，精力 {energy}/5，疼痛 {pain}/10。",
+    en: "{date}, energy {energy}/5, pain {pain}/10.",
+    tr: "{date}, enerji {energy}/5, agri {pain}/10.",
+    ru: "{date}, energiya {energy}/5, bol {pain}/10.",
+  },
+  dailyListSummary: {
+    "zh-CN": "出血 {bleeding}，精力 {energy}/5{attention}",
+    en: "Bleeding {bleeding}, energy {energy}/5{attention}",
+    tr: "Kanama {bleeding}, enerji {energy}/5{attention}",
+    ru: "Vydeleniya {bleeding}, energiya {energy}/5{attention}",
+  },
+  dailyListAttentionSuffix: {
+    "zh-CN": "，建议告诉家长",
+    en: ", tell a parent",
+    tr: ", ebeveyne soyle",
+    ru: ", skazat roditelyu",
+  },
+  exportRawFilename: {
+    "zh-CN": "period-tracker",
+    en: "eva-moon-data",
+    tr: "eva-moon-data",
+    ru: "eva-moon-data",
+  },
+  summaryFrequencyNone: {
+    "zh-CN": "暂无",
+    en: "None yet",
+    tr: "Henuz yok",
+    ru: "Poka net",
+  },
 };
 const VALUE_LABELS = {
   symptoms: {
@@ -1855,6 +1903,18 @@ function rt(key, variables = {}) {
     (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
     template,
   );
+}
+
+function formatCountRecords(count) {
+  return rt("countRecords", { count });
+}
+
+function formatCountDays(count) {
+  return rt("countDays", { count });
+}
+
+function localizedJoin(values) {
+  return values.join(getLanguage() !== "zh-CN" ? ", " : "、");
 }
 
 function labelFromCatalog(catalog, value) {
@@ -2287,14 +2347,14 @@ function renderStats(insights) {
   const stats = [
     {
       label: rt("statPeriodRecords"),
-      value: getLanguage() !== "zh-CN" ? `${insights.sorted.length}` : `${insights.sorted.length} 次`,
+      value: formatCountRecords(insights.sorted.length),
       note: insights.sorted.length
         ? rt("statLatest", { date: formatDate(insights.lastRecord.startDate) })
         : rt("statTry3Cycles"),
     },
     {
       label: rt("statTellParent"),
-      value: getLanguage() !== "zh-CN" ? `${insights.needsParentAttentionCount}` : `${insights.needsParentAttentionCount} 次`,
+      value: formatCountRecords(insights.needsParentAttentionCount),
       note: insights.needsParentAttentionCount
         ? rt("statNeedAttention")
         : rt("statNoAlerts"),
@@ -2345,9 +2405,10 @@ function renderReminderCenter(insights) {
     ? rt("reminderPainSome", { count: insights.highPainCount })
     : rt("reminderPainNone");
   const latestMessage = latestAttention
-    ? (getLanguage() !== "zh-CN"
-      ? `Latest alert: ${formatDate(latestAttention.date)}, ${labelFromCatalog("bleeding", latestAttention.bleeding)}, pain ${latestAttention.painLevel}/10.`
-      : `最近一次提醒：${formatDate(latestAttention.date)}，出血 ${labelFromCatalog("bleeding", latestAttention.bleeding)}，疼痛 ${latestAttention.painLevel}/10。`)
+    ? rt("heroTodayLog", {
+      bleeding: labelFromCatalog("bleeding", latestAttention.bleeding),
+      pain: latestAttention.painLevel,
+    }).replace(/^Today:\s*/, `${formatDate(latestAttention.date)}: `).replace(/^今日日报\s*/, `${formatDate(latestAttention.date)}，`)
     : rt("reminderLatestNone");
   const parentOnlyDetail = latestAttention && state.settings.parentMode
     ? rt("reminderParentView", { flags: formatAlertFlags(latestAttention) })
@@ -2361,9 +2422,10 @@ function renderReminderCenter(insights) {
               <strong>${formatDate(log.date)}</strong>
               <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
             </div>
-            <p>${getLanguage() !== "zh-CN"
-              ? `${labelFromCatalog("bleeding", log.bleeding)}, pain ${log.painLevel}/10, ${formatAlertFlags(log) || rt("reminderWatchSymptoms")}`
-              : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，疼痛 ${log.painLevel}/10，${formatAlertFlags(log) || rt("reminderWatchSymptoms")}`}</p>
+            <p>${rt("heroTodayLog", {
+              bleeding: labelFromCatalog("bleeding", log.bleeding),
+              pain: log.painLevel,
+            })}${formatAlertFlags(log) ? `${getLanguage() !== "zh-CN" ? ", " : "，"}${formatAlertFlags(log)}` : `${getLanguage() !== "zh-CN" ? ", " : "，"}${rt("reminderWatchSymptoms")}`}</p>
           </article>
         `).join("")}
       </div>
@@ -2440,9 +2502,12 @@ function renderPrediction(insights) {
     ? rt("predictionAround", { date: formatDate(insights.nextStartDate) })
     : rt("predictionWaiting");
   const fertileText = insights.fertileWindow
-    ? (getLanguage() !== "zh-CN"
-      ? `${formatDate(insights.fertileWindow.start)} to ${formatDate(insights.fertileWindow.end)}, estimated ovulation ${formatDate(insights.fertileWindow.ovulation)}`
-      : `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`)
+    ? ({
+      "zh-CN": `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`,
+      en: `${formatDate(insights.fertileWindow.start)} to ${formatDate(insights.fertileWindow.end)}, estimated ovulation ${formatDate(insights.fertileWindow.ovulation)}`,
+      tr: `${formatDate(insights.fertileWindow.start)} ile ${formatDate(insights.fertileWindow.end)} arasi, tahmini ovulasyon ${formatDate(insights.fertileWindow.ovulation)}`,
+      ru: `${formatDate(insights.fertileWindow.start)} - ${formatDate(insights.fertileWindow.end)}, predpolagaemaya ovulyatsiya ${formatDate(insights.fertileWindow.ovulation)}`,
+    }[getLanguage()])
     : rt("predictionNoneYet");
 
   elements.predictionContent.innerHTML = `
@@ -2460,8 +2525,8 @@ function renderPrediction(insights) {
 function renderTrend(insights) {
   if (!insights.sorted.length && !insights.sortedDailyLogs.length) {
     elements.trendContent.innerHTML = `
-      <p>暂无趋势数据。</p>
-      <p class="muted">随着记录数量增加，这里会总结周期波动、症状和最近状态。</p>
+      <p>${getLanguage() !== "zh-CN" ? "No trend data yet." : "暂无趋势数据。"}</p>
+      <p class="muted">${getLanguage() !== "zh-CN" ? "As more records are added, this area will summarize cycle changes, symptoms, and recent status." : "随着记录数量增加，这里会总结周期波动、症状和最近状态。"}</p>
     `;
     return;
   }
@@ -2475,18 +2540,22 @@ function renderTrend(insights) {
     : rt("trendNeedTwoRecords");
 
   const symptomText = insights.frequentSymptoms.length
-    ? insights.frequentSymptoms.map(([name, count]) => (
-      getLanguage() !== "zh-CN" ? `${labelFromCatalog("symptoms", name)} (${count})` : `${labelFromCatalog("symptoms", name)}（${count} 次）`
-    )).join(getLanguage() !== "zh-CN" ? ", " : "、")
+    ? localizedJoin(insights.frequentSymptoms.map(([name, count]) => (
+      rt("symptomCount", { name: labelFromCatalog("symptoms", name), count })
+    )))
     : rt("trendNoSymptoms");
 
   elements.trendContent.innerHTML = `
     <p><strong>${rt("trendRecentLabel")}</strong>${insights.lastDailyLog ? rt("trendRecentHasLogs") : rt("trendRecentNoLogs")}</p>
     <p><strong>${rt("trendVariationLabel")}</strong>${state.settings.parentMode ? irregularityText : rt("trendParentOnlyVisible")} </p>
-    <p><strong>${rt("trendRangeLabel")}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() !== "zh-CN" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : rt("trendParentOnly")}</p>
+    <p><strong>${rt("trendRangeLabel")}</strong>${state.settings.parentMode && insights.cycleLengths.length ? formatCountDays(insights.cycleVariation) : rt("trendParentOnly")}</p>
     <p><strong>${rt("trendFrequentLabel")}</strong>${symptomText}</p>
-    <p><strong>${rt("trendHighPainLabel")}</strong>${getLanguage() !== "zh-CN" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? rt("trendHighPainNote") : ""}</p>
-    <p><strong>${rt("trendLatestLabel")}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : rt("trendNoDaily")}</p>
+    <p><strong>${rt("trendHighPainLabel")}</strong>${formatCountRecords(insights.highPainCount)}${insights.highPainCount ? rt("trendHighPainNote") : ""}</p>
+    <p><strong>${rt("trendLatestLabel")}</strong>${insights.lastDailyLog ? rt("trendLatestSummary", {
+      date: formatDate(insights.lastDailyLog.date),
+      energy: insights.lastDailyLog.energyLevel,
+      pain: insights.lastDailyLog.painLevel,
+    }) : rt("trendNoDaily")}</p>
   `;
 }
 
@@ -2494,7 +2563,6 @@ function renderCalendar(insights) {
   const currentMonth = state.calendarDate;
   const monthStart = startOfMonth(currentMonth);
   const gridStart = addDays(toDateInputValue(monthStart), -monthStart.getDay());
-  const weekdays = getLanguage() !== "zh-CN" ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["日", "一", "二", "三", "四", "五", "六"];
   const cells = [];
 
   const localizedWeekdays = {
@@ -2508,7 +2576,7 @@ function renderCalendar(insights) {
     getDateLocale(),
     { year: "numeric", month: "long" },
   ).format(monthStart);
-  elements.calendarGrid.innerHTML = (localizedWeekdays[getLanguage()] || weekdays)
+  elements.calendarGrid.innerHTML = (localizedWeekdays[getLanguage()] || localizedWeekdays[DEFAULT_LANGUAGE])
     .map((day) => `<div class="calendar__weekday">${day}</div>`).join("");
 
   for (let index = 0; index < 42; index += 1) {
@@ -2573,7 +2641,7 @@ function renderRecords() {
           <div class="record-item__top">
             <div>
               <strong>${formatDate(record.startDate)} - ${formatDate(record.endDate)}</strong>
-              <div class="muted">${getLanguage() !== "zh-CN" ? `${duration} days` : `${duration} 天`}</div>
+              <div class="muted">${formatCountDays(duration)}</div>
             </div>
             <div class="record-item__actions">
               <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${rt("listEdit")}</button>
@@ -2610,7 +2678,11 @@ function renderDailyLogs() {
         <div class="record-item__top">
           <div>
             <strong>${formatDate(log.date)}</strong>
-            <div class="muted">${getLanguage() !== "zh-CN" ? `Bleeding ${labelFromCatalog("bleeding", log.bleeding)}, energy ${log.energyLevel}/5${shouldTellParent(log) ? ", tell a parent" : ""}` : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}`}</div>
+            <div class="muted">${rt("dailyListSummary", {
+              bleeding: labelFromCatalog("bleeding", log.bleeding),
+              energy: log.energyLevel,
+              attention: shouldTellParent(log) ? rt("dailyListAttentionSuffix") : "",
+            })}</div>
           </div>
           <div class="record-item__actions">
             <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${rt("listEdit")}</button>
@@ -2687,7 +2759,7 @@ function openDailyLogDetail(logId) {
     <p><strong>${rt("detailPain")}</strong>${log.painLevel}/10</p>
     <p><strong>${rt("detailEnergy")}</strong>${log.energyLevel}/5</p>
     <p><strong>${rt("detailMood")}</strong>${labelFromCatalog("mood", log.mood)}</p>
-    <p><strong>${rt("detailBodyFeelings")}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() !== "zh-CN" ? ", " : "、") : rt("detailNormalObservation")}</p>
+    <p><strong>${rt("detailBodyFeelings")}</strong>${log.symptoms.length ? localizedJoin(log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom))) : rt("detailNormalObservation")}</p>
     <p><strong>${rt("detailAlertFlags")}</strong>${formatAlertFlags(log) || rt("detailNormalObservation")}</p>
     <p><strong>${rt("detailNotes")}</strong>${log.notes || rt("listNoNotes")}</p>
   `;
@@ -2840,7 +2912,7 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-data" : "period-tracker"}-${toDateInputValue(new Date())}.json`;
+  anchor.download = `${rt("exportRawFilename")}-${toDateInputValue(new Date())}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
   showToast(rt("rawExported"));
@@ -2866,8 +2938,8 @@ function exportSummary() {
     .join("");
 
   const symptomMarkup = insights.frequentSymptoms.length
-    ? insights.frequentSymptoms.map(([name, count]) => `<li>${labelFromCatalog("symptoms", name)}${getLanguage() !== "zh-CN" ? `: ${count}` : `：${count} 次`}</li>`).join("")
-    : `<li>${rt("summaryNone")}</li>`;
+    ? insights.frequentSymptoms.map(([name, count]) => `<li>${rt("symptomCount", { name: labelFromCatalog("symptoms", name), count })}</li>`).join("")
+    : `<li>${rt("summaryFrequencyNone")}</li>`;
 
   const html = `<!DOCTYPE html>
   <html lang="${getLanguage()}">
@@ -2891,8 +2963,8 @@ function exportSummary() {
         <h2>${rt("summaryOverview")}</h2>
         <p>${rt("summaryPeriodRecords")}${state.records.length}</p>
         <p>${rt("summaryDailyLogs")}${state.dailyLogs.length}</p>
-        <p>${rt("summaryAverageCycle")}${insights.averageCycleLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
-        <p>${rt("summaryAveragePeriod")}${insights.averagePeriodLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
+        <p>${rt("summaryAverageCycle")}${formatCountDays(insights.averageCycleLength)}</p>
+        <p>${rt("summaryAveragePeriod")}${formatCountDays(insights.averagePeriodLength)}</p>
         <p>${rt("summaryLatestPeriod")}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : rt("summaryNone")}</p>
         <p>${rt("summaryNeedParent")}${insights.needsParentAttentionCount}</p>
       </section>
@@ -2917,7 +2989,7 @@ function exportSummary() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-summary" : "eva-moon-summary"}-${toDateInputValue(new Date())}.html`;
+  anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
   showToast(rt("summaryExported"));
@@ -3211,9 +3283,9 @@ function formatAlertFlags(log) {
     }[getLanguage()]);
   }
   if (Array.isArray(log.alertFlags) && log.alertFlags.length) {
-    parts.push(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag)).join(getLanguage() !== "zh-CN" ? ", " : "、"));
+    parts.push(localizedJoin(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag))));
   }
-  return parts.join(getLanguage() !== "zh-CN" ? ", " : "、");
+  return localizedJoin(parts);
 }
 
 function savePin(event) {
