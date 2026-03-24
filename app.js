@@ -155,6 +155,7 @@ const elements = {
   pinDialogForm: document.querySelector("#pin-dialog-form"),
   pinDialogInput: document.querySelector("#pin-dialog-input"),
   pinDialogStatus: document.querySelector("#pin-dialog-status"),
+  printChecklistBtn: document.querySelector("#print-checklist-btn"),
 };
 
 bootstrap();
@@ -218,6 +219,7 @@ function attachEvents() {
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
+  elements.printChecklistBtn?.addEventListener("click", () => window.print());
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {

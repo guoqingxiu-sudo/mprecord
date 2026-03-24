@@ -283,6 +283,11 @@ textarea {
   color: var(--text);
   padding: 10px 12px;
   font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
 
 .choice-chip.is-selected {
@@ -290,6 +295,11 @@ textarea {
   color: #fff;
   border-color: transparent;
   box-shadow: 0 10px 20px rgba(214, 91, 125, 0.18);
+}
+
+.choice-emoji {
+  font-size: 20px;
+  line-height: 1;
 }
 
 .tag-check {
@@ -419,6 +429,10 @@ textarea {
 .pin-dialog__card {
   width: min(420px, calc(100vw - 24px));
   margin: auto;
+}
+
+.print-sheet {
+  border-style: dashed;
 }
 
 .calendar-nav {
@@ -643,5 +657,32 @@ textarea {
   .calendar__weekday,
   .calendar__day {
     min-height: 72px;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .hero,
+  .panel--form,
+  .kid-card,
+  .record-list,
+  #calendar-panel,
+  #parent-mode-btn,
+  #install-btn,
+  #print-checklist-btn {
+    display: none !important;
+  }
+
+  .parent-only {
+    display: block !important;
+  }
+
+  #parent-checklist {
+    display: block !important;
+    box-shadow: none;
+    border: 1px solid #999;
   }
 }
