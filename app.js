@@ -995,7 +995,7 @@ function renderReminderCenter(insights) {
     ? `
       <div class="reminder-list">
         ${insights.attentionLogs.map((log) => `
-          <article class="reminder-item" data-level="${getLogSeverity(log)}">
+          <article class="reminder-item" data-level="${getLogSeverity(log)}" data-log-id="${log.id}" title="${getLanguage() === "en" ? "Open this daily log" : "打开这条日报"}">
             <div class="reminder-item__top">
               <strong>${formatDate(log.date)}</strong>
               <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
@@ -1016,6 +1016,12 @@ function renderReminderCenter(insights) {
     ${parentOnlyDetail ? `<p><strong>${getLanguage() === "en" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
     ${recentAlertList}
   `;
+
+  elements.reminderCenterContent.querySelectorAll("[data-log-id]").forEach((item) => {
+    item.addEventListener("click", () => {
+      editDailyLog(item.dataset.logId);
+    });
+  });
 }
 
 function getReminderSeverity(insights) {
