@@ -1800,6 +1800,8 @@ const state = {
   deferredInstallPrompt: null,
   pinDialogMode: "unlock",
   pinAttempts: 0,
+  pendingNotificationRoute: null,
+  isReady: false,
 };
 
 const elements = {
@@ -1952,9 +1954,17 @@ function bootstrap() {
   renderSymptomOptions(elements.dailySymptomOptions, "daily-symptoms");
   renderSymptomOptions(elements.alertFlagOptions, "alert-flags", ALERT_FLAGS);
   resetDailyForm();
+  const initialNotificationRoute = getNotificationRouteFromUrl();
+  if (initialNotificationRoute) {
+    queueNotificationRoute(initialNotificationRoute);
+  }
   render();
+  state.isReady = true;
+  processPendingNotificationRoute();
   registerServiceWorker();
-  maybeShowOnboarding();
+  if (!initialNotificationRoute) {
+    maybeShowOnboarding();
+  }
 }
 
 function detectPreferredLanguage() {
@@ -2061,6 +2071,14 @@ function attachEvents() {
       void evaluateNotificationTriggers(buildInsights());
     }
   });
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (event.data?.type === "notification-route") {
+        queueNotificationRoute(normalizeNotificationRoute(event.data.payload));
+      }
+    });
+  }
 }
 
 function renderSymptomOptions(container, groupName, items = SYMPTOMS) {
@@ -2794,6 +2812,91 @@ function openDailyLogDetail(logId) {
   elements.dailyDetailEditBtn.dataset.logId = log.id;
   elements.dailyDetailEditBtn.textContent = rt("editThisLog");
   elements.dailyDetailDialog.showModal();
+}
+
+function normalizeNotificationRoute(route) {
+  if (!route || typeof route !== "object") return null;
+  if (route.type === "daily-log-detail" && typeof route.logId === "string" && route.logId) {
+    return {
+      type: "daily-log-detail",
+      logId: route.logId,
+      date: isValidRouteDate(route.date) ? route.date : "",
+    };
+  }
+  if (route.type === "daily-check") {
+    return {
+      type: "daily-check",
+      date: isValidRouteDate(route.date) ? route.date : toDateInputValue(new Date()),
+    };
+  }
+  return null;
+}
+
+function isValidRouteDate(value) {
+  return typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value);
+}
+
+function getNotificationRouteFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const open = params.get("open");
+  if (open === "daily-log-detail") {
+    return normalizeNotificationRoute({
+      type: "daily-log-detail",
+      logId: params.get("logId"),
+      date: params.get("date"),
+    });
+  }
+  if (open === "daily-check") {
+    return normalizeNotificationRoute({
+      type: "daily-check",
+      date: params.get("date"),
+    });
+  }
+  return null;
+}
+
+function clearNotificationRouteFromUrl() {
+  const url = new URL(window.location.href);
+  url.searchParams.delete("open");
+  url.searchParams.delete("logId");
+  url.searchParams.delete("date");
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  window.history.replaceState({}, "", nextUrl);
+}
+
+function queueNotificationRoute(route) {
+  if (!route) return;
+  state.pendingNotificationRoute = route;
+  clearNotificationRouteFromUrl();
+  if (state.isReady) {
+    processPendingNotificationRoute();
+  }
+}
+
+function processPendingNotificationRoute() {
+  if (!state.pendingNotificationRoute) return;
+  const route = state.pendingNotificationRoute;
+  state.pendingNotificationRoute = null;
+  handleNotificationRoute(route);
+}
+
+function handleNotificationRoute(route) {
+  if (!route) return;
+  if (route.type === "daily-log-detail") {
+    if (state.dailyLogs.some((log) => log.id === route.logId)) {
+      openDailyLogDetail(route.logId);
+      return;
+    }
+    if (route.date) {
+      fillDailyDate(route.date);
+      showToast(rt("todaySelected"));
+    }
+    return;
+  }
+  if (route.type === "daily-check") {
+    fillDailyDate(route.date || toDateInputValue(new Date()));
+    showToast(rt("todaySelected"));
+  }
 }
 
 function openDetailLogEditor() {
@@ -3611,6 +3714,12 @@ async function sendTestNotification() {
       ru: "Na etom ustroistve uvedomleniya rabotayut.",
     }[getLanguage()],
     tag: "eva-moon-test",
+    data: {
+      route: {
+        type: "daily-check",
+        date: toDateInputValue(new Date()),
+      },
+    },
   });
   if (sent) {
     showToast({
@@ -3652,6 +3761,13 @@ async function evaluateNotificationTriggers(insights) {
             ru: `${formatDate(latestAttention.date)}: bol ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "nuzhno vnimanie"}.`,
           }[getLanguage()],
           tag: `attention-${latestAttention.id}`,
+          data: {
+            route: {
+              type: "daily-log-detail",
+              logId: latestAttention.id,
+              date: latestAttention.date,
+            },
+          },
         });
         if (sent) {
           localStorage.setItem(NOTIFICATION_ATTENTION_KEY, latestAttention.id);
@@ -3678,13 +3794,19 @@ async function evaluateNotificationTriggers(insights) {
       ru: "Za segodnya eshche net zapisi. Bystruyu otmetku mozhno sdelat za paru nazhatii.",
     }[getLanguage()],
     tag: `daily-check-${insights.today}`,
+    data: {
+      route: {
+        type: "daily-check",
+        date: insights.today,
+      },
+    },
   });
   if (sent) {
     localStorage.setItem(NOTIFICATION_DAILY_KEY, insights.today);
   }
 }
 
-async function sendLocalNotification({ title, body, tag }) {
+async function sendLocalNotification({ title, body, tag, data = null }) {
   if (getNotificationPermissionState() !== "granted") return false;
 
   const options = {
@@ -3692,6 +3814,7 @@ async function sendLocalNotification({ title, body, tag }) {
     tag,
     icon: "./icon.svg",
     badge: "./icon.svg",
+    data,
   };
 
   try {

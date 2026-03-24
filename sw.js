@@ -1,4 +1,4 @@
-const CACHE_NAME = "moon-log-cache-v2";
+const CACHE_NAME = "moon-log-cache-v3";
 const ASSETS = [
   "./",
   "./index.html",
@@ -42,14 +42,28 @@ self.addEventListener("fetch", (event) => {
 
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
+  const route = event.notification.data?.route || null;
+  const targetUrl = new URL("./", self.location.origin);
+  if (route?.type === "daily-log-detail" && route.logId) {
+    targetUrl.searchParams.set("open", "daily-log-detail");
+    targetUrl.searchParams.set("logId", route.logId);
+    if (route.date) targetUrl.searchParams.set("date", route.date);
+  } else if (route?.type === "daily-check") {
+    targetUrl.searchParams.set("open", "daily-check");
+    if (route.date) targetUrl.searchParams.set("date", route.date);
+  }
+
   event.waitUntil(
     self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clients) => {
       const existing = clients.find((client) => "focus" in client);
       if (existing) {
+        if (route) {
+          existing.postMessage({ type: "notification-route", payload: route });
+        }
         return existing.focus();
       }
       if (self.clients.openWindow) {
-        return self.clients.openWindow("./");
+        return self.clients.openWindow(targetUrl.toString());
       }
       return undefined;
     }),
