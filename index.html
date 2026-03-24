@@ -14,6 +14,12 @@
         <div class="hero__copy">
           <p class="eyebrow">Eva's Moon</p>
           <h1>Eva的月亮</h1>
+          <div class="hero__deco" aria-hidden="true">
+            <span class="moon moon--big"></span>
+            <span class="moon moon--small"></span>
+            <span class="star star--one">✦</span>
+            <span class="star star--two">✦</span>
+          </div>
           <p class="hero__text">
             帮助孩子温和记录月经、身体感受和情绪变化，也方便家长一起观察周期和照顾需要。
           </p>
@@ -414,6 +420,7 @@
             </div>
             <div class="data-actions">
               <button id="export-btn" class="ghost-btn" type="button">导出 JSON</button>
+              <button id="export-summary-btn" class="ghost-btn" type="button">导出家长摘要</button>
               <label class="upload-btn">
                 导入 JSON
                 <input id="import-input" type="file" accept="application/json" hidden />
@@ -453,6 +460,25 @@
         <div class="form-actions">
           <button class="primary-btn" id="pin-dialog-submit" type="submit" value="submit">确认</button>
           <button class="text-btn" type="submit" value="cancel">取消</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="welcome-dialog" class="pin-dialog">
+      <form method="dialog" class="card pin-dialog__card" id="welcome-dialog-form">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Welcome</p>
+            <h2>第一次使用看看这里</h2>
+          </div>
+        </div>
+        <div class="prediction-copy">
+          <p>1. 孩子平时只用“每日状态”和“月视图”就够了。</p>
+          <p>2. 如果今天很不舒服，记录后要马上告诉家长或老师。</p>
+          <p>3. 家长模式可以设置 PIN，里面能看更完整的信息和观察清单。</p>
+        </div>
+        <div class="form-actions">
+          <button class="primary-btn" id="welcome-close-btn" type="submit" value="close">开始使用</button>
         </div>
       </form>
     </dialog>

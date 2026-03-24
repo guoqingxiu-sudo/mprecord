@@ -1,4 +1,5 @@
 const STORAGE_KEY = "moon-log-period-tracker-v2";
+const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const SYMPTOMS = [
   "腹痛",
   "腰酸",
@@ -120,6 +121,7 @@ const elements = {
   prevMonth: document.querySelector("#prev-month"),
   nextMonth: document.querySelector("#next-month"),
   exportBtn: document.querySelector("#export-btn"),
+  exportSummaryBtn: document.querySelector("#export-summary-btn"),
   importInput: document.querySelector("#import-input"),
   clearBtn: document.querySelector("#clear-btn"),
   seedBtn: document.querySelector("#seed-btn"),
@@ -156,6 +158,8 @@ const elements = {
   pinDialogInput: document.querySelector("#pin-dialog-input"),
   pinDialogStatus: document.querySelector("#pin-dialog-status"),
   printChecklistBtn: document.querySelector("#print-checklist-btn"),
+  welcomeDialog: document.querySelector("#welcome-dialog"),
+  welcomeDialogForm: document.querySelector("#welcome-dialog-form"),
 };
 
 bootstrap();
@@ -169,6 +173,7 @@ function bootstrap() {
   resetDailyForm();
   render();
   registerServiceWorker();
+  maybeShowOnboarding();
 }
 
 function attachEvents() {
@@ -209,6 +214,7 @@ function attachEvents() {
   });
 
   elements.exportBtn.addEventListener("click", exportData);
+  elements.exportSummaryBtn.addEventListener("click", exportSummary);
   elements.importInput.addEventListener("change", importData);
   elements.clearBtn.addEventListener("click", clearAllData);
   elements.seedBtn.addEventListener("click", seedData);
@@ -220,6 +226,7 @@ function attachEvents() {
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
   elements.printChecklistBtn?.addEventListener("click", () => window.print());
+  elements.welcomeDialogForm?.addEventListener("submit", closeOnboarding);
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -812,7 +819,7 @@ function loadState() {
     const parsed = JSON.parse(raw);
     state.records = Array.isArray(parsed.records) ? parsed.records.map(normalizeRecord).filter(Boolean) : [];
     state.dailyLogs = Array.isArray(parsed.dailyLogs) ? parsed.dailyLogs.map(normalizeDailyLog).filter(Boolean) : [];
-  state.settings = normalizeSettings(parsed.settings);
+    state.settings = normalizeSettings(parsed.settings);
     sortRecords();
     sortDailyLogs();
   } catch (error) {
@@ -850,6 +857,44 @@ function exportData() {
   const anchor = document.createElement("a");
   anchor.href = url;
   anchor.download = `period-tracker-${toDateInputValue(new Date())}.json`;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
+function exportSummary() {
+  const insights = buildInsights();
+  const lines = [
+    "Eva的月亮 - 家长摘要",
+    `导出日期：${formatDate(toDateInputValue(new Date()))}`,
+    "",
+    `经期记录次数：${state.records.length}`,
+    `日报记录次数：${state.dailyLogs.length}`,
+    `平均周期：${insights.averageCycleLength} 天`,
+    `平均经期：${insights.averagePeriodLength} 天`,
+    `最近一次月经开始：${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : "暂无"}`,
+    `最近一条日报：${insights.lastDailyLog ? formatDate(insights.lastDailyLog.date) : "暂无"}`,
+    `需要告诉家长的日报次数：${insights.needsParentAttentionCount}`,
+    "",
+    "高频身体感觉：",
+    insights.frequentSymptoms.length
+      ? insights.frequentSymptoms.map(([name, count]) => `- ${name}：${count} 次`).join("\n")
+      : "- 暂无",
+    "",
+    "最近 5 条日报：",
+    ...[...state.dailyLogs]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .slice(0, 5)
+      .map(
+        (log) =>
+          `- ${formatDate(log.date)} | 出血:${log.bleeding} | 疼痛:${log.painLevel}/10 | 精力:${log.energyLevel}/5 | 心情:${log.mood}${shouldTellParent(log) ? " | 建议告诉家长" : ""}`,
+      ),
+  ];
+
+  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.txt`;
   anchor.click();
   URL.revokeObjectURL(url);
 }
@@ -1071,6 +1116,16 @@ function handlePinDialogSubmit(event) {
 function normalizePin(value) {
   const digits = String(value || "").replace(/\D/g, "");
   return digits.slice(0, 4);
+}
+
+function maybeShowOnboarding() {
+  if (localStorage.getItem(ONBOARDING_KEY)) return;
+  elements.welcomeDialog?.showModal();
+}
+
+function closeOnboarding() {
+  localStorage.setItem(ONBOARDING_KEY, "1");
+  elements.welcomeDialog?.close();
 }
 
 function normalizeNumberWithinRange(value, min, max) {
