@@ -8,7 +8,13 @@ const DEFAULT_LANGUAGE = "zh-CN";
 const VERSION = "1.2.0";
 const MAX_PIN_ATTEMPTS = 3;
 const TOAST_DURATION = 2200;
-const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "en"];
+const SUPPORTED_LANGUAGES = [DEFAULT_LANGUAGE, "en", "tr", "ru"];
+const LANGUAGE_LOCALES = {
+  "zh-CN": "zh-CN",
+  en: "en-US",
+  tr: "tr-TR",
+  ru: "ru-RU",
+};
 const I18N = {
   "zh-CN": {
     "app.name": "Eva的月亮",
@@ -274,65 +280,329 @@ const I18N = {
     "updates.v110": "<strong>v1.2.0</strong> Added Chinese and English switching, with buttons, messages, dates, and summaries updating together.",
     "updates.v100": "<strong>v1.0.0</strong> Child mode, parent mode, PIN lock, auto lock, and printable summaries are included.",
   },
+  tr: {
+    "app.name": "Eva'nin Ayi",
+    "hero.eyebrow": "Eva's Moon",
+    "hero.text": "Bugun bedeninin nasil hissettigini sakin ve kolay bir sekilde kaydet, anne babalar da durumu rahatca gorebilsin.",
+    "hero.currentCycle": "Guncel Dongu",
+    "actions.quickLog": "Bugunu Hizlica Kaydet",
+    "actions.recordNow": "Kayit Ekle",
+    "actions.viewCalendar": "Takvimi Ac",
+    "actions.install": "Uygulamayi Yukle",
+    "common.clearForm": "Formu Temizle",
+    "common.symptoms": "Beden Hisleri",
+    "common.notes": "Notlar",
+    "common.date": "Tarih",
+    "common.ok": "Tamam",
+    "common.close": "Kapat",
+    "periodForm.title": "Adet Kaydi Ekle",
+    "periodForm.startDate": "Baslangic Tarihi",
+    "periodForm.endDate": "Bitis Tarihi",
+    "periodForm.flowLevel": "Kanama Duzeyi",
+    "periodForm.painLevel": "Agri Duzeyi",
+    "periodForm.mood": "Bugunku Ruh Hali",
+    "periodForm.notesPlaceholder": "Ornek: 1. gun kramplar daha gucluydu, 3. gun akinti azaldi, agri kesici alindi",
+    "periodForm.save": "Kaydi Kaydet",
+    "dailyForm.title": "Gunluk Kontrol",
+    "dailyForm.bleedingQuestion": "Bugun kanama var mi?",
+    "dailyForm.painQuestion": "Bugun ne kadar agri var?",
+    "dailyForm.energyQuestion": "Bugun enerjin nasil?",
+    "dailyForm.moodQuestion": "Bugun ruh halin nasil?",
+    "dailyForm.alertFlags": "Bugun bunlardan biri oldu mu?",
+    "dailyForm.tellParent": "Anne Babaya Soyle",
+    "dailyForm.dailyNotes": "Gunluk Notlar",
+    "dailyForm.notesPlaceholder": "Ornek: az uyudum, egzersizden sonra daha iyi hissettim, hafif lekelenme oldu",
+    "dailyForm.save": "Gunlugu Kaydet",
+    "care.title": "Cocuklar Icin Kucuk Hatirlatmalar",
+    "care.tip1": "<strong>Pedleri sik kontrol et:</strong> islaninca degistir.",
+    "care.tip2": "<strong>Agriyinca soyle:</strong> dinlenmek, ilik su ve sicak kompres yardim edebilir.",
+    "care.tip3": "<strong>Bir buyukten yardim iste:</strong> anne, baba, ogretmen ya da okul hemsiresi yardim edebilir.",
+    "care.tip4": "<strong>Bu utanilacak bir sey degil:</strong> bedenindeki degisimleri izlemek kendine bakmanin bir parcasi.",
+    "help.title": "Kendini Kotu Hissedersen Ne Yapmali",
+    "help.step1": "1. Oturup dinlen. Yavas nefes al ve kendini zorlama.",
+    "help.step2": "2. Biraz ilik su ic ya da bir buyukten sicak kompres iste.",
+    "help.step3": "3. Cok agriyorsa, basin donuyorsa ya da miden bulaniyorsa hemen anne babana veya ogretmenine soyle.",
+    "help.step4": "4. Kiyafetine leke olursa sorun degil. Bir buyukten yardim iste.",
+    "quickCheck.title": "Bugun Ne Yapmali",
+    "quickCheck.step1": "1. Bugun adetin basladi mi kontrol et.",
+    "quickCheck.step2": "2. Ruh halini ve beden hislerini sec.",
+    "quickCheck.step3": "3. Kendini kotu hissediyorsan kaydet ve anne babana soyle.",
+    "schoolBag.title": "Okul Cantasi Listesi",
+    "schoolBag.item1": "□ 2 veya 3 ped ya da gunluk ped",
+    "schoolBag.item2": "□ Temiz bir ic camasiri",
+    "schoolBag.item3": "□ Koyu renk pantolon veya hirka",
+    "schoolBag.item4": "□ Kucuk bir canta ve pecete",
+    "schoolBag.item5": "□ Unutma: kendini kotu hissedersen ogretmeninden yardim isteyebilirsin.",
+    "parentView.title": "Ebeveyn Gorunumu",
+    "parentGuide.title": "Ebeveynler Icin Notlar",
+    "parentGuide.tip1": "<strong>Ilk 1 ila 2 yil duzensizlik olabilir:</strong> kesinlikten cok duzenli takip daha onemlidir.",
+    "parentGuide.tip2": "<strong>Uc seye bakin:</strong> agri okul hayatini etkiliyor mu, kanama cok mu fazla, ruh hali veya enerji belirgin sekilde degisiyor mu.",
+    "parentGuide.tip3": "<strong>Destekleyici yaklasim:</strong> hijyen urunleri, isinma urunleri ve yedek kiyafet hazirlayin; cocugun rahatca konusabilecegi bir ortam kurun.",
+    "parentGuide.tip4": "<strong>Gerekirse yakinda tibbi destek alin:</strong> surekli siddetli agri, belirgin bas donmesi veya halsizlik, ates, cok yogun kanama ya da uzun sure adet olmamasi.",
+    "checklist.title": "Ebeveyn Kontrol Listesi",
+    "checklist.print": "Listeyi Yazdir",
+    "checklist.head1": "<strong>Bu ay bunlardan biri oldu mu?</strong>",
+    "checklist.item1": "□ Agri okul veya uyku duzenini etkiledi",
+    "checklist.item2": "□ Bir ped bir saat icinde tamamen doldu",
+    "checklist.item3": "□ Bas donmesi, halsizlik veya yuzde solukluk",
+    "checklist.item4": "□ Ates veya belirgin rahatsizlik",
+    "checklist.item5": "□ Adetler arasinda kanama",
+    "checklist.item6": "□ Belirgin mutsuzluk veya kaygi",
+    "checklist.head2": "<strong>Bakim esyalari kontrolu:</strong>",
+    "checklist.item7": "□ Ped/gunluk ped □ Yedek ic camasiri □ Koyu renk pantolon □ Sicak kompres □ Ilik su bardagi",
+    "trend.title": "Dongu Notlari",
+    "reminders.title": "Hatirlatici Merkezi",
+    "reminderSettings.title": "Hatirlatici Ayarlari",
+    "reminderSettings.enable": "Tarayici Bildirimleri",
+    "reminderSettings.enableHelp": "Gerektiginde uygulamanin yerel hatirlatici gondermesine izin ver.",
+    "reminderSettings.daily": "Bugun kayit yoksa hatirlat",
+    "reminderSettings.dailyHelp": "Aksam, uygulama acildiginda bugunun gunlugu eksikse hatirlatabilir.",
+    "reminderSettings.attention": "Anne babaya soylenmesi gerekiyorsa hatirlat",
+    "reminderSettings.attentionHelp": "Siddetli agri, fazla kanama veya uyari isaretlerinde bildirim gosterir.",
+    "reminderSettings.request": "Bildirim Izni Ver",
+    "reminderSettings.test": "Test Bildirimi Gonder",
+    "reminderSettings.save": "Hatirlatici Ayarlarini Kaydet",
+    "reminderSettings.note": "Tarayici bildirimleri once izin ister. Bu surum, uygulama acildiginda bugunun kaydi eksik mi veya anne babayla paylasilmasi gereken bir durum var mi diye kontrol eder.",
+    "calendar.title": "Ay Gorunumu",
+    "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>Kayitli adet",
+    "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>Tahmini adet",
+    "calendar.legendFertile": "<i class=\"swatch swatch--fertile\"></i>Dogurgan gunler",
+    "calendar.legendLog": "<i class=\"swatch swatch--log\"></i>Gunluk kayit",
+    "calendar.legendToday": "<i class=\"swatch swatch--today\"></i>Bugun",
+    "security.title": "Ebeveyn Kilidi",
+    "security.newPin": "Yeni PIN",
+    "security.confirmPin": "PIN'i Onayla",
+    "security.savePin": "PIN'i Kaydet",
+    "security.clearPin": "PIN'i Temizle",
+    "settings.title": "Tahmin Ayarlari",
+    "settings.manualCycleLength": "Manuel Dongu Suresi",
+    "settings.manualPeriodLength": "Manuel Adet Suresi",
+    "settings.autoLock": "Otomatik Kilit Suresi",
+    "settings.save": "Ayarlari Kaydet",
+    "settings.reset": "Otomatik Degerlere Don",
+    "settings.help": "Dongunun daha duzenli oldugunu biliyorsan ortalamayi gecersiz kilmak icin manuel sure girebilirsin.",
+    "history.title": "Gecmis",
+    "history.dailyFeed": "Son Gunluk Kayitlar",
+    "data.title": "Yedekleme ve Geri Yukleme",
+    "data.tip1": "<strong>Yedekleme:</strong> ham veriyi veya ebeveyn dostu ozeti disa aktarabilirsin.",
+    "data.tip2": "<strong>Geri yukleme:</strong> daha once kaydedilmis JSON yedegini buradan ice aktar.",
+    "data.tip3": "<strong>Not:</strong> tum verileri silmek geri alinamaz. Gerekirse once yedek al.",
+    "data.exportRaw": "Ham Veriyi Disa Aktar",
+    "data.exportSummary": "Ebeveyn Ozetini Disa Aktar",
+    "data.restore": "Yedegi Geri Yukle",
+    "data.seed": "Ornek Veri Yukle",
+    "data.clear": "Tum Veriyi Temizle",
+    "data.localOnly": "Veriler varsayilan olarak yalnizca bu tarayicida kalir ve otomatik yuklenmez.",
+    "footer.changelog": "Guncellemeleri Goster",
+    "preferences.title": "Tercihler",
+    "preferences.language": "Arayuz Dili",
+    "preferences.simpleMode": "Basit Mod",
+    "preferences.simpleModeHelp": "Daha fazla icerigi gizler ve daha sade bir kayit akisi sunar.",
+    "preferences.save": "Tercihleri Kaydet",
+    "preferences.replay": "Rehberi Yeniden Goster",
+    "settingsHub.title": "Ayar Merkezi",
+    "dialog.pinLabel": "4 haneli PIN",
+    "dialog.pinConfirm": "PIN'i Tekrar Gir",
+    "welcome.title": "Ilk Kullanim? Buradan Basla",
+    "welcome.tip1": "1. Cocuklar icin genelde yalnizca Gunluk Kontrol ve Ay Gorunumu yeterlidir.",
+    "welcome.tip2": "2. Bugun kendini cok kotu hissediyorsan kayit gir ve hemen anne babana veya ogretmenine soyle.",
+    "welcome.tip3": "3. Ebeveyn Modu PIN ile korunabilir ve daha ayrintili bilgi ile kontrol listeleri gosterir.",
+    "welcome.start": "Basla",
+    "updates.title": "Son Guncellemeler",
+    "updates.v110": "<strong>v1.2.0</strong> Cince ve Ingilizce dil degisimi eklendi; dugmeler, mesajlar, tarihler ve ozetler dile gore birlikte guncelleniyor.",
+    "updates.v100": "<strong>v1.0.0</strong> Cocuk modu, ebeveyn modu, PIN kilidi, otomatik kilit ve yazdirilabilir ozetler hazir.",
+  },
+  ru: {
+    "app.name": "Luna Evy",
+    "hero.eyebrow": "Eva's Moon",
+    "hero.text": "Spokoino i prosto otmechai, kak segodnya chuvstvuet sebya telo, chtoby roditelyam tozhe bylo spokoino.",
+    "hero.currentCycle": "Tekushchii Tsikl",
+    "actions.quickLog": "Bystro Otnot Segodnya",
+    "actions.recordNow": "Dobavit Zapis",
+    "actions.viewCalendar": "Otkryt Kalendar",
+    "actions.install": "Ustanovit Prilozhenie",
+    "common.clearForm": "Ochistit Formu",
+    "common.symptoms": "Oshchushcheniya v Tele",
+    "common.notes": "Zametki",
+    "common.date": "Data",
+    "common.ok": "OK",
+    "common.close": "Zakryt",
+    "periodForm.title": "Dobavit Zapis o Menstruatsii",
+    "periodForm.startDate": "Data Nachala",
+    "periodForm.endDate": "Data Okonchaniya",
+    "periodForm.flowLevel": "Uroven Vydelenii",
+    "periodForm.painLevel": "Uroven Boli",
+    "periodForm.mood": "Nastroenie Segodnya",
+    "periodForm.notesPlaceholder": "Primer: v 1-i den spasmy byli silnee, k 3-mu dnyu vydeleniya umenshilis, prinimali obezbolivayushchee",
+    "periodForm.save": "Sohranit Zapis",
+    "dailyForm.title": "Ezhednevnaia Otmetka",
+    "dailyForm.bleedingQuestion": "Segodnya est vydeleniya?",
+    "dailyForm.painQuestion": "Naskolko bolit segodnya?",
+    "dailyForm.energyQuestion": "Kak segodnya s energiiei?",
+    "dailyForm.moodQuestion": "Kakoe segodnya nastroenie?",
+    "dailyForm.alertFlags": "Bylo li segodnya chto-to iz etogo?",
+    "dailyForm.tellParent": "Skazat Roditelyu",
+    "dailyForm.dailyNotes": "Zametki za Den",
+    "dailyForm.notesPlaceholder": "Primer: malo spala, posle uprazhnenii stalo legche, byla legkaya mazhushchaya krov",
+    "dailyForm.save": "Sohranit Dnevnik",
+    "care.title": "Podskazki Dlya Rebenka",
+    "care.tip1": "<strong>Chashche proveriai prokladku:</strong> esli ona vlazhnaya, pominiai ee.",
+    "care.tip2": "<strong>Govori, esli bolit:</strong> pomogaet otdyh, teplaya voda i grelka.",
+    "care.tip3": "<strong>Prosi pomoshchi u vzroslogo:</strong> roditel, uchitel ili medsestra v shkole mogut pomoch.",
+    "care.tip4": "<strong>V etom net nichego stydnogo:</strong> nablyudat za izmeneniyami tela eto zabota o sebe.",
+    "help.title": "Chto Delat, Esli Ploho Sebya Chuvstvuesh",
+    "help.step1": "1. Syad i otdohni. Dyshi spokoino i ne napryagaisya.",
+    "help.step2": "2. Vypi nemnogo teploi vody ili poprosi vzroslogo pomoch s teplym kompressom.",
+    "help.step3": "3. Esli ochen bolit, kruzhitsya golova ili toshnit, srazu skazhi roditelyu ili uchitelyu.",
+    "help.step4": "4. Esli ispacalas odezhda, eto ne strashno. Poprosi vzroslogo pomoch.",
+    "quickCheck.title": "Chto Sdelat Segodnya",
+    "quickCheck.step1": "1. Prover, nachalas li segodnya menstruatsiya.",
+    "quickCheck.step2": "2. Vyberi nastroenie i oshchushcheniya v tele.",
+    "quickCheck.step3": "3. Esli chuvstvuesh sebya ploho, sohrani zapis i skazhi roditelyu.",
+    "schoolBag.title": "Spisok v Shkolnuyu Sumku",
+    "schoolBag.item1": "□ 2 ili 3 prokladki ili ezhednevnye prokladki",
+    "schoolBag.item2": "□ Chistoe nizhnee belio",
+    "schoolBag.item3": "□ Temnye bryuki ili kofta",
+    "schoolBag.item4": "□ Malenkaya sumka i salfetki",
+    "schoolBag.item5": "□ Pomni: esli ploho, mozhno obratitsya za pomoshchyu k uchitelyu.",
+    "parentView.title": "Rezhim Dlya Roditelei",
+    "parentGuide.title": "Zametki Dlya Roditelei",
+    "parentGuide.tip1": "<strong>V pervye 1-2 goda tsikl mozhet byt neregulyarnym:</strong> vazhnee regulyarno nablyudat, chem dobitsya tochnosti.",
+    "parentGuide.tip2": "<strong>Obrashchaite vnimanie na tri veshchi:</strong> meshaet li bol shkolnym zanyatiyam, ne slishkom li silnoe krovotechenie, i est li zametnye izmeneniya nastroeniya ili energii.",
+    "parentGuide.tip3": "<strong>Kak podderzhat:</strong> podgotovte sredstva gigieny, teplye veshchi i smennuyu odezhdu, chtoby rebenok ne boyalsya govorit o samochuvstvii.",
+    "parentGuide.tip4": "<strong>Stoit skoro obratitsya k vrachu, esli:</strong> bol silnaya i ne prohodit, est zametnaya slabost ili golovokruzhenie, temperatura, ochen obilnoe krovotechenie ili dlitelno net menstruatsii.",
+    "checklist.title": "Spisok Dlya Roditelei",
+    "checklist.print": "Raspechatat Spisok",
+    "checklist.head1": "<strong>Bylo li v etom mesyatse chto-to iz etogo?</strong>",
+    "checklist.item1": "□ Bol vliyala na shkolu ili son",
+    "checklist.item2": "□ Odna prokladka polnostyu promokala za chas",
+    "checklist.item3": "□ Golovokruzhenie, slabost ili blednost",
+    "checklist.item4": "□ Temperatura ili yavnoe nedomoganie",
+    "checklist.item5": "□ Krovyanistye vydeleniya mezhdu menstruatsiyami",
+    "checklist.item6": "□ Zametnaya trevozhnost ili podavlennoe nastroenie",
+    "checklist.head2": "<strong>Proverka nuzhnyh veshchei:</strong>",
+    "checklist.item7": "□ Prokladki □ Smennoe belio □ Temnye shtany □ Grelka □ Chashka s teploi vodoi",
+    "trend.title": "Zametki o Tsikle",
+    "reminders.title": "Tsentr Napominanii",
+    "reminderSettings.title": "Nastroiki Napominanii",
+    "reminderSettings.enable": "Uvedomleniya Brauzera",
+    "reminderSettings.enableHelp": "Razreshit prilozheniyu posylat lokalnye napominaniya, kogda eto nuzhno.",
+    "reminderSettings.daily": "Napominat, esli segodnya eshche net zapisi",
+    "reminderSettings.dailyHelp": "Vecherom pri otkrytii prilozheniya budet napominanie dobavit segodnyashnyuyu zapis.",
+    "reminderSettings.attention": "Napominat, kogda nuzhno skazat roditelyu",
+    "reminderSettings.attentionHelp": "Pokazyvaet uvedomlenie pri silnoi boli, obilnyh vydeleniyah ili vazhnyh flagah.",
+    "reminderSettings.request": "Razreshit Uvedomleniya",
+    "reminderSettings.test": "Otpravit Test",
+    "reminderSettings.save": "Sohranit Nastroiki",
+    "reminderSettings.note": "Dlya uvedomlenii snachala nuzhno dat razreshenie. Eta versiya proveriaet pri otkrytii prilozheniya, net li segodnya zapisi i est li povod skazat roditelyu.",
+    "calendar.title": "Vid Mesyatsa",
+    "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>Zapisi o menstruatsii",
+    "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>Predpolagaemaya menstruatsiya",
+    "calendar.legendFertile": "<i class=\"swatch swatch--fertile\"></i>Fertilnoe okno",
+    "calendar.legendLog": "<i class=\"swatch swatch--log\"></i>Ezhednevnaya zapis",
+    "calendar.legendToday": "<i class=\"swatch swatch--today\"></i>Segodnya",
+    "security.title": "Roditelskii Zashchitnyi Kod",
+    "security.newPin": "Novyi PIN",
+    "security.confirmPin": "Podtverdi PIN",
+    "security.savePin": "Sohranit PIN",
+    "security.clearPin": "Ochistit PIN",
+    "settings.title": "Nastroiki Prognoza",
+    "settings.manualCycleLength": "Dlina Tsikla Vruchnuyu",
+    "settings.manualPeriodLength": "Dlina Menstruatsii Vruchnuyu",
+    "settings.autoLock": "Vremya Avtoblokirovki",
+    "settings.save": "Sohranit Nastroiki",
+    "settings.reset": "Vernut Avtoznacheniya",
+    "settings.help": "Esli tsikl stalen, mozhno vruchnuyu zadat dlitelnost i perepisat srednie znacheniya.",
+    "history.title": "Istoriya",
+    "history.dailyFeed": "Poslednie Ezhednevnye Zapisi",
+    "data.title": "Rezervnoe Kopirovanie i Vosstanovlenie",
+    "data.tip1": "<strong>Rezervnoe kopirovanie:</strong> mozhno vygruzit ishodnye dannye ili udobnoe dlya roditelei rezyume.",
+    "data.tip2": "<strong>Vosstanovlenie:</strong> zdes mozhno zagruzit sohranennyi JSON-backup.",
+    "data.tip3": "<strong>Vnimanie:</strong> ochistka vseh dannyh neotmenyaema. Pri neobhodimosti snachala sdelay backup.",
+    "data.exportRaw": "Eksport Ishodnyh Dannyh",
+    "data.exportSummary": "Eksport Svodki Dlya Roditelei",
+    "data.restore": "Vosstanovit Backup",
+    "data.seed": "Zagruzit Primer Dannykh",
+    "data.clear": "Ochistit Vse Dannye",
+    "data.localOnly": "Po umolchaniyu dannye hranjatsya tolko v etom brauzere i ne zagruzhayutsya avtomaticheski.",
+    "footer.changelog": "Posmotret Obnovleniya",
+    "preferences.title": "Predpochteniya",
+    "preferences.language": "Yazyk Interfeisa",
+    "preferences.simpleMode": "Prostoi Rezhim",
+    "preferences.simpleModeHelp": "Skryvaet bolshe razdelov i ostavlyaet bolee prostoi protsess zapolneniya.",
+    "preferences.save": "Sohranit Predpochteniya",
+    "preferences.replay": "Pokazat Gid Snova",
+    "settingsHub.title": "Tsentr Nastroek",
+    "dialog.pinLabel": "4-znachnyi PIN",
+    "dialog.pinConfirm": "Vvedi PIN Eshche Raz",
+    "welcome.title": "Pervyi Raz? Nachni Zdes",
+    "welcome.tip1": "1. Rebenku obychno dostatochno razdelov Ezhednevnaya Otmetka i Vid Mesyatsa.",
+    "welcome.tip2": "2. Esli segodnya ochen ploho, sohrani zapis i srazu skazhi roditelyu ili uchitelyu.",
+    "welcome.tip3": "3. Rezhim dlya roditelei mozhno zashchitit PIN-kodom; tam bolshe podrobnostei i est kontrolnye spiski.",
+    "welcome.start": "Nachat",
+    "updates.title": "Poslednie Obnovleniya",
+    "updates.v110": "<strong>v1.2.0</strong> Dobavleno pereklyuchenie mezhdu kitaiskim i angliiskim; knopki, soobshcheniya, daty i svodki menyayutsya vmeste s yazykom.",
+    "updates.v100": "<strong>v1.0.0</strong> Uje est detskii rezhim, roditelskii rezhim, PIN-zamok, avtoblokirovka i pechatnye svodki.",
+  },
 };
 const VALUE_LABELS = {
   symptoms: {
-    "腹痛": { "zh-CN": "腹痛", en: "Cramps" },
-    "腰酸": { "zh-CN": "腰酸", en: "Back pain" },
-    "头痛": { "zh-CN": "头痛", en: "Headache" },
-    "乳房胀痛": { "zh-CN": "乳房胀痛", en: "Breast tenderness" },
-    "乏力": { "zh-CN": "乏力", en: "Low energy" },
-    "失眠": { "zh-CN": "失眠", en: "Trouble sleeping" },
-    "爆痘": { "zh-CN": "爆痘", en: "Breakouts" },
-    "食欲变化": { "zh-CN": "食欲变化", en: "Appetite change" },
-    "情绪波动": { "zh-CN": "情绪波动", en: "Mood swings" },
-    "腹胀": { "zh-CN": "腹胀", en: "Bloating" },
+    "腹痛": { "zh-CN": "腹痛", en: "Cramps", tr: "Kramplar", ru: "Spazmy" },
+    "腰酸": { "zh-CN": "腰酸", en: "Back pain", tr: "Bel agrisi", ru: "Bol v spine" },
+    "头痛": { "zh-CN": "头痛", en: "Headache", tr: "Bas agrisi", ru: "Golovnaya bol" },
+    "乳房胀痛": { "zh-CN": "乳房胀痛", en: "Breast tenderness", tr: "Gogus hassasiyeti", ru: "Chuvstvitelnost grudi" },
+    "乏力": { "zh-CN": "乏力", en: "Low energy", tr: "Dusuk enerji", ru: "Malo sil" },
+    "失眠": { "zh-CN": "失眠", en: "Trouble sleeping", tr: "Uyku sorunu", ru: "Problemy so snom" },
+    "爆痘": { "zh-CN": "爆痘", en: "Breakouts", tr: "Sivilce", ru: "Vysypaniya" },
+    "食欲变化": { "zh-CN": "食欲变化", en: "Appetite change", tr: "Istah degisikligi", ru: "Izmenenie appetita" },
+    "情绪波动": { "zh-CN": "情绪波动", en: "Mood swings", tr: "Ruh hali dalgalanmasi", ru: "Perepady nastroeniya" },
+    "腹胀": { "zh-CN": "腹胀", en: "Bloating", tr: "Sislik", ru: "Vzdu tie zhivota" },
   },
   alertFlags: {
-    "痛得没法上课": { "zh-CN": "痛得没法上课", en: "Pain too strong for class" },
-    "一小时湿透一片": { "zh-CN": "一小时湿透一片", en: "Soaked one pad in an hour" },
-    "头晕想吐": { "zh-CN": "头晕想吐", en: "Dizzy or nauseous" },
-    "发烧不舒服": { "zh-CN": "发烧不舒服", en: "Fever or feeling unwell" },
+    "痛得没法上课": { "zh-CN": "痛得没法上课", en: "Pain too strong for class", tr: "Agri derste duramayacak kadar guclu", ru: "Bol slishkom silnaya dlya zanyatii" },
+    "一小时湿透一片": { "zh-CN": "一小时湿透一片", en: "Soaked one pad in an hour", tr: "Bir saatte bir ped tamamen doldu", ru: "Odna prokladka promokla za chas" },
+    "头晕想吐": { "zh-CN": "头晕想吐", en: "Dizzy or nauseous", tr: "Bas donmesi veya mide bulantisi", ru: "Golovokruzhenie ili toshnota" },
+    "发烧不舒服": { "zh-CN": "发烧不舒服", en: "Fever or feeling unwell", tr: "Ates veya kotu hissetme", ru: "Temperatura ili silnoe nedomoganie" },
   },
   flow: {
-    "轻": { "zh-CN": "轻", en: "Light" },
-    "中": { "zh-CN": "中", en: "Medium" },
-    "重": { "zh-CN": "重", en: "Heavy" },
-    "不规则": { "zh-CN": "不规则", en: "Irregular" },
+    "轻": { "zh-CN": "轻", en: "Light", tr: "Hafif", ru: "Slabyi" },
+    "中": { "zh-CN": "中", en: "Medium", tr: "Orta", ru: "Srednii" },
+    "重": { "zh-CN": "重", en: "Heavy", tr: "Yogun", ru: "Silnyi" },
+    "不规则": { "zh-CN": "不规则", en: "Irregular", tr: "Duzensiz", ru: "Neregulyarnyi" },
   },
   bleeding: {
-    "无": { "zh-CN": "无", en: "None" },
-    "点滴": { "zh-CN": "点滴", en: "Spotting" },
-    "轻": { "zh-CN": "轻", en: "Light" },
-    "中": { "zh-CN": "中", en: "Medium" },
-    "重": { "zh-CN": "重", en: "Heavy" },
+    "无": { "zh-CN": "无", en: "None", tr: "Yok", ru: "Net" },
+    "点滴": { "zh-CN": "点滴", en: "Spotting", tr: "Lekelenme", ru: "Mazhushchie vydeleniya" },
+    "轻": { "zh-CN": "轻", en: "Light", tr: "Hafif", ru: "Slabye" },
+    "中": { "zh-CN": "中", en: "Medium", tr: "Orta", ru: "Srednie" },
+    "重": { "zh-CN": "重", en: "Heavy", tr: "Yogun", ru: "Silnye" },
   },
   mood: {
-    "平稳": { "zh-CN": "平稳", en: "Steady" },
-    "轻松": { "zh-CN": "轻松", en: "Calm" },
-    "疲惫": { "zh-CN": "疲惫", en: "Tired" },
-    "烦躁": { "zh-CN": "烦躁", en: "Irritable" },
-    "低落": { "zh-CN": "低落", en: "Low" },
+    "平稳": { "zh-CN": "平稳", en: "Steady", tr: "Sakin", ru: "Spokoinoe" },
+    "轻松": { "zh-CN": "轻松", en: "Calm", tr: "Rahat", ru: "Spokoinoe" },
+    "疲惫": { "zh-CN": "疲惫", en: "Tired", tr: "Yorgun", ru: "Ustalost" },
+    "烦躁": { "zh-CN": "烦躁", en: "Irritable", tr: "Sinirli", ru: "Razdrazhitelnost" },
+    "低落": { "zh-CN": "低落", en: "Low", tr: "Modu dusuk", ru: "Podavlennoe" },
   },
   painChoice: {
-    "0": { "zh-CN": "不疼", en: "No pain" },
-    "2": { "zh-CN": "普通", en: "Okay" },
-    "3": { "zh-CN": "有一点", en: "A little" },
-    "6": { "zh-CN": "比较疼", en: "Hurts" },
-    "8": { "zh-CN": "很疼", en: "Very painful" },
+    "0": { "zh-CN": "不疼", en: "No pain", tr: "Agri yok", ru: "Ne bolit" },
+    "2": { "zh-CN": "普通", en: "Okay", tr: "Normal", ru: "Normalno" },
+    "3": { "zh-CN": "有一点", en: "A little", tr: "Biraz", ru: "Nemnogo" },
+    "6": { "zh-CN": "比较疼", en: "Hurts", tr: "Oldukca agriyor", ru: "Bolit" },
+    "8": { "zh-CN": "很疼", en: "Very painful", tr: "Cok agriyor", ru: "Ochen bolit" },
   },
   energyChoice: {
-    "1": { "zh-CN": "很累", en: "Very tired" },
-    "2": { "zh-CN": "有点累", en: "A bit tired" },
-    "3": { "zh-CN": "还行", en: "Okay" },
-    "4": { "zh-CN": "不错", en: "Good" },
-    "5": { "zh-CN": "很好", en: "Great" },
+    "1": { "zh-CN": "很累", en: "Very tired", tr: "Cok yorgun", ru: "Ochen ustala" },
+    "2": { "zh-CN": "有点累", en: "A bit tired", tr: "Biraz yorgun", ru: "Nemnogo ustala" },
+    "3": { "zh-CN": "还行", en: "Okay", tr: "Idare eder", ru: "Normalno" },
+    "4": { "zh-CN": "不错", en: "Good", tr: "Iyi", ru: "Horosho" },
+    "5": { "zh-CN": "很好", en: "Great", tr: "Harika", ru: "Otlichno" },
   },
   lockMinutes: {
-    "5": { "zh-CN": "5 分钟", en: "5 min" },
-    "10": { "zh-CN": "10 分钟", en: "10 min" },
-    "30": { "zh-CN": "30 分钟", en: "30 min" },
-    "60": { "zh-CN": "60 分钟", en: "60 min" },
+    "5": { "zh-CN": "5 分钟", en: "5 min", tr: "5 dk", ru: "5 min" },
+    "10": { "zh-CN": "10 分钟", en: "10 min", tr: "10 dk", ru: "10 min" },
+    "30": { "zh-CN": "30 分钟", en: "30 min", tr: "30 dk", ru: "30 min" },
+    "60": { "zh-CN": "60 分钟", en: "60 min", tr: "60 dk", ru: "60 min" },
   },
 };
 const SYMPTOMS = [
@@ -574,8 +844,14 @@ function bootstrap() {
 function detectPreferredLanguage() {
   const browserLanguage = String(navigator.language || navigator.userLanguage || DEFAULT_LANGUAGE).toLowerCase();
   if (browserLanguage.startsWith("en")) return "en";
+  if (browserLanguage.startsWith("tr")) return "tr";
+  if (browserLanguage.startsWith("ru")) return "ru";
   if (browserLanguage.startsWith("zh")) return "zh-CN";
   return DEFAULT_LANGUAGE;
+}
+
+function getDateLocale() {
+  return LANGUAGE_LOCALES[getLanguage()] || LANGUAGE_LOCALES[DEFAULT_LANGUAGE];
 }
 
 function attachEvents() {
@@ -698,19 +974,19 @@ function onSubmitPeriod(event) {
   };
 
   if (!payload.startDate || !payload.endDate) {
-    setFormStatus(getLanguage() === "en" ? "Please fill in both start and end dates." : "请填写开始和结束日期。");
+    setFormStatus(getLanguage() !== "zh-CN" ? "Please fill in both start and end dates." : "请填写开始和结束日期。");
     return;
   }
 
   if (payload.endDate < payload.startDate) {
-    setFormStatus(getLanguage() === "en" ? "End date cannot be earlier than start date." : "结束日期不能早于开始日期。");
+    setFormStatus(getLanguage() !== "zh-CN" ? "End date cannot be earlier than start date." : "结束日期不能早于开始日期。");
     return;
   }
 
   const existsIndex = state.records.findIndex((record) => record.id === payload.id);
   const statusMessage = existsIndex >= 0
-    ? (getLanguage() === "en" ? "Record updated." : "记录已更新。")
-    : (getLanguage() === "en" ? "Record saved." : "记录已保存。");
+    ? (getLanguage() !== "zh-CN" ? "Record updated." : "记录已更新。")
+    : (getLanguage() !== "zh-CN" ? "Record saved." : "记录已保存。");
   if (existsIndex >= 0) {
     state.records[existsIndex] = payload;
   } else {
@@ -741,14 +1017,14 @@ function onSubmitDailyLog(event) {
   };
 
   if (!payload.date) {
-    setDailyFormStatus(getLanguage() === "en" ? "Please choose a date." : "请选择日期。");
+    setDailyFormStatus(getLanguage() !== "zh-CN" ? "Please choose a date." : "请选择日期。");
     return;
   }
 
   const existsIndex = state.dailyLogs.findIndex((log) => log.id === payload.id);
   const statusMessage = existsIndex >= 0
-    ? (getLanguage() === "en" ? "Daily log updated." : "日报已更新。")
-    : (getLanguage() === "en" ? "Daily log saved." : "日报已保存。");
+    ? (getLanguage() !== "zh-CN" ? "Daily log updated." : "日报已更新。")
+    : (getLanguage() !== "zh-CN" ? "Daily log saved." : "日报已保存。");
   if (existsIndex >= 0) {
     state.dailyLogs[existsIndex] = payload;
   } else {
@@ -839,12 +1115,12 @@ function syncStaticOptions() {
   document.querySelectorAll("#parent-lock-minutes option").forEach((option) => {
     option.textContent = labelFromCatalog("lockMinutes", option.value);
   });
-  document.querySelector("#parent-pin")?.setAttribute("placeholder", getLanguage() === "en" ? "4 digits" : "4 位数字");
-  document.querySelector("#confirm-parent-pin")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter again" : "再次输入");
-  document.querySelector("#manual-cycle-length")?.setAttribute("placeholder", getLanguage() === "en" ? "Empty = auto" : "留空则自动计算");
-  document.querySelector("#manual-period-length")?.setAttribute("placeholder", getLanguage() === "en" ? "Empty = auto" : "留空则自动计算");
-  document.querySelector("#pin-dialog-input")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter PIN" : "请输入 PIN");
-  document.querySelector("#pin-dialog-confirm-input")?.setAttribute("placeholder", getLanguage() === "en" ? "Enter PIN again" : "再次输入 PIN");
+  document.querySelector("#parent-pin")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "4 digits" : "4 位数字");
+  document.querySelector("#confirm-parent-pin")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter again" : "再次输入");
+  document.querySelector("#manual-cycle-length")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Empty = auto" : "留空则自动计算");
+  document.querySelector("#manual-period-length")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Empty = auto" : "留空则自动计算");
+  document.querySelector("#pin-dialog-input")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter PIN" : "请输入 PIN");
+  document.querySelector("#pin-dialog-confirm-input")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter PIN again" : "再次输入 PIN");
 }
 
 function buildInsights() {
@@ -931,42 +1207,42 @@ function renderHero(insights) {
   elements.heroPills.innerHTML = "";
 
   if (!insights.lastRecord) {
-    elements.cycleDay.textContent = getLanguage() === "en" ? "No data yet" : "尚无数据";
-    elements.cycleSummary.textContent = getLanguage() === "en"
+    elements.cycleDay.textContent = getLanguage() !== "zh-CN" ? "No data yet" : "尚无数据";
+    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
       ? "Add a few period records first. This area will then show cycle patterns for the child and parent to review together."
       : "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。";
     return;
   }
 
   const statusText = insights.currentPeriodRecord
-    ? (getLanguage() === "en" ? "On period" : "经期中")
-    : (getLanguage() === "en" ? `Cycle day ${Math.max(insights.cycleDay, 1)}` : `周期第 ${Math.max(insights.cycleDay, 1)} 天`);
+    ? (getLanguage() !== "zh-CN" ? "On period" : "经期中")
+    : (getLanguage() !== "zh-CN" ? `Cycle day ${Math.max(insights.cycleDay, 1)}` : `周期第 ${Math.max(insights.cycleDay, 1)} 天`);
   elements.cycleDay.textContent = statusText;
 
   if (insights.currentPeriodRecord) {
-    elements.cycleSummary.textContent = getLanguage() === "en"
+    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
       ? `This period started on ${formatDate(insights.currentPeriodRecord.startDate)} and is recorded to end on ${formatDate(insights.currentPeriodRecord.endDate)}.`
       : `本次经期开始于 ${formatDate(insights.currentPeriodRecord.startDate)}，结束日期记录为 ${formatDate(insights.currentPeriodRecord.endDate)}。`;
   } else if (state.settings.parentMode && insights.nextStartDate) {
-    elements.cycleSummary.textContent = getLanguage() === "en"
+    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
       ? `Estimated next period: around ${formatDate(insights.nextStartDate)}. Adjust based on real records when needed.`
       : `预计下次来潮时间为 ${formatDate(insights.nextStartDate)}，可根据实际情况调整与修正。`;
   } else {
-    elements.cycleSummary.textContent = getLanguage() === "en"
+    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
       ? "Keep logging. If anything feels wrong, remember to tell a parent."
       : "继续记录就好，看到不舒服的时候记得告诉家长。";
   }
 
   const pillTexts = [
-    getLanguage() === "en" ? `${insights.sorted.length} records` : `已记录 ${insights.sorted.length} 次`,
-    getLanguage() === "en"
+    getLanguage() !== "zh-CN" ? `${insights.sorted.length} records` : `已记录 ${insights.sorted.length} 次`,
+    getLanguage() !== "zh-CN"
       ? `Latest mood ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "Not filled"}`
       : `最近状态 ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "还没填"}`,
     insights.todayLog
-      ? (getLanguage() === "en"
+      ? (getLanguage() !== "zh-CN"
         ? `Today: ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / pain ${insights.todayLog.painLevel}`
         : `今日日报 ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / 疼痛 ${insights.todayLog.painLevel}`)
-      : (getLanguage() === "en" ? "No daily log today" : "今天还没有日报"),
+      : (getLanguage() !== "zh-CN" ? "No daily log today" : "今天还没有日报"),
   ];
 
   pillTexts.forEach((text) => {
@@ -980,25 +1256,25 @@ function renderHero(insights) {
 function renderStats(insights) {
   const stats = [
     {
-      label: getLanguage() === "en" ? "Period Records" : "经期记录",
-      value: getLanguage() === "en" ? `${insights.sorted.length}` : `${insights.sorted.length} 次`,
+      label: getLanguage() !== "zh-CN" ? "Period Records" : "经期记录",
+      value: getLanguage() !== "zh-CN" ? `${insights.sorted.length}` : `${insights.sorted.length} 次`,
       note: insights.sorted.length
-        ? (getLanguage() === "en" ? `Latest: ${formatDate(insights.lastRecord.startDate)}` : `最近一次：${formatDate(insights.lastRecord.startDate)}`)
-        : (getLanguage() === "en" ? "Try to log at least 3 cycles." : "建议至少记录 3 个周期。"),
+        ? (getLanguage() !== "zh-CN" ? `Latest: ${formatDate(insights.lastRecord.startDate)}` : `最近一次：${formatDate(insights.lastRecord.startDate)}`)
+        : (getLanguage() !== "zh-CN" ? "Try to log at least 3 cycles." : "建议至少记录 3 个周期。"),
     },
     {
-      label: getLanguage() === "en" ? "Tell Parent" : "需要告诉家长",
-      value: getLanguage() === "en" ? `${insights.needsParentAttentionCount}` : `${insights.needsParentAttentionCount} 次`,
+      label: getLanguage() !== "zh-CN" ? "Tell Parent" : "需要告诉家长",
+      value: getLanguage() !== "zh-CN" ? `${insights.needsParentAttentionCount}` : `${insights.needsParentAttentionCount} 次`,
       note: insights.needsParentAttentionCount
-        ? (getLanguage() === "en" ? "Some daily logs need extra attention." : "出现过比较需要留意的日报。")
-        : (getLanguage() === "en" ? "No strong alerts right now." : "目前没有明显异常提醒。"),
+        ? (getLanguage() !== "zh-CN" ? "Some daily logs need extra attention." : "出现过比较需要留意的日报。")
+        : (getLanguage() !== "zh-CN" ? "No strong alerts right now." : "目前没有明显异常提醒。"),
     },
     {
-      label: getLanguage() === "en" ? "Last 7 Days" : "最近 7 天状态",
-      value: getLanguage() === "en"
+      label: getLanguage() !== "zh-CN" ? "Last 7 Days" : "最近 7 天状态",
+      value: getLanguage() !== "zh-CN"
         ? `Pain ${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"}`
         : `${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"} 疼痛`,
-      note: getLanguage() === "en"
+      note: getLanguage() !== "zh-CN"
         ? `Avg energy ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`
         : `平均精力 ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`,
     },
@@ -1030,25 +1306,25 @@ function renderReminderCenter(insights) {
 
   if (noLogs) {
     elements.reminderCenterContent.innerHTML = `
-      <p>${getLanguage() === "en" ? "No reminders yet. Start with one period record or one daily log." : "现在还没有提醒。先记一条经期或日报就可以。"}</p>
-      <p>${getLanguage() === "en" ? "When there is pain, heavy bleeding, or anything unusual, this card will summarize it here." : "如果出现疼痛、出血多或其他需要留意的情况，这里会自动帮你汇总。"}</p>
+      <p>${getLanguage() !== "zh-CN" ? "No reminders yet. Start with one period record or one daily log." : "现在还没有提醒。先记一条经期或日报就可以。"}</p>
+      <p>${getLanguage() !== "zh-CN" ? "When there is pain, heavy bleeding, or anything unusual, this card will summarize it here." : "如果出现疼痛、出血多或其他需要留意的情况，这里会自动帮你汇总。"}</p>
     `;
     return;
   }
 
   const topMessage = hasAttention
-    ? (getLanguage() === "en" ? "Some recent records should be shared with a parent." : "最近有一些记录建议告诉家长。")
-    : (getLanguage() === "en" ? "No urgent alerts right now. Keep logging." : "现在没有明显的紧急提醒，继续记录就好。");
+    ? (getLanguage() !== "zh-CN" ? "Some recent records should be shared with a parent." : "最近有一些记录建议告诉家长。")
+    : (getLanguage() !== "zh-CN" ? "No urgent alerts right now. Keep logging." : "现在没有明显的紧急提醒，继续记录就好。");
   const painMessage = hasHighPain
-    ? (getLanguage() === "en" ? `${insights.highPainCount} high-pain log(s) were recorded recently.` : `最近记录到 ${insights.highPainCount} 次高疼痛日报。`)
-    : (getLanguage() === "en" ? "No very high pain logs recently." : "最近没有很高疼痛的日报。");
+    ? (getLanguage() !== "zh-CN" ? `${insights.highPainCount} high-pain log(s) were recorded recently.` : `最近记录到 ${insights.highPainCount} 次高疼痛日报。`)
+    : (getLanguage() !== "zh-CN" ? "No very high pain logs recently." : "最近没有很高疼痛的日报。");
   const latestMessage = latestAttention
-    ? (getLanguage() === "en"
+    ? (getLanguage() !== "zh-CN"
       ? `Latest alert: ${formatDate(latestAttention.date)}, ${labelFromCatalog("bleeding", latestAttention.bleeding)}, pain ${latestAttention.painLevel}/10.`
       : `最近一次提醒：${formatDate(latestAttention.date)}，出血 ${labelFromCatalog("bleeding", latestAttention.bleeding)}，疼痛 ${latestAttention.painLevel}/10。`)
-    : (getLanguage() === "en" ? "No recent records need parent attention." : "最近没有需要告诉家长的记录。");
+    : (getLanguage() !== "zh-CN" ? "No recent records need parent attention." : "最近没有需要告诉家长的记录。");
   const parentOnlyDetail = latestAttention && state.settings.parentMode
-    ? (getLanguage() === "en"
+    ? (getLanguage() !== "zh-CN"
       ? `Parent view: flags ${formatAlertFlags(latestAttention)}.`
       : `家长查看：提醒原因包括 ${formatAlertFlags(latestAttention)}。`)
     : "";
@@ -1056,12 +1332,12 @@ function renderReminderCenter(insights) {
     ? `
       <div class="reminder-list">
         ${insights.attentionLogs.map((log) => `
-          <article class="reminder-item" data-level="${getLogSeverity(log)}" data-log-id="${log.id}" title="${getLanguage() === "en" ? "Open this daily log" : "打开这条日报"}">
+          <article class="reminder-item" data-level="${getLogSeverity(log)}" data-log-id="${log.id}" title="${getLanguage() !== "zh-CN" ? "Open this daily log" : "打开这条日报"}">
             <div class="reminder-item__top">
               <strong>${formatDate(log.date)}</strong>
               <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
             </div>
-            <p>${getLanguage() === "en"
+            <p>${getLanguage() !== "zh-CN"
               ? `${labelFromCatalog("bleeding", log.bleeding)}, pain ${log.painLevel}/10, ${formatAlertFlags(log) || "watch symptoms"}`
               : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，疼痛 ${log.painLevel}/10，${formatAlertFlags(log) || "继续观察身体感觉"}`}</p>
           </article>
@@ -1071,10 +1347,10 @@ function renderReminderCenter(insights) {
     : "";
 
   elements.reminderCenterContent.innerHTML = `
-    <p><strong>${getLanguage() === "en" ? "Now:" : "现在："}</strong>${topMessage}</p>
-    <p><strong>${getLanguage() === "en" ? "Pain:" : "疼痛："}</strong>${painMessage}</p>
-    <p><strong>${getLanguage() === "en" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
-    ${parentOnlyDetail ? `<p><strong>${getLanguage() === "en" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
+    <p><strong>${getLanguage() !== "zh-CN" ? "Now:" : "现在："}</strong>${topMessage}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Pain:" : "疼痛："}</strong>${painMessage}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
+    ${parentOnlyDetail ? `<p><strong>${getLanguage() !== "zh-CN" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
     ${recentAlertList}
   `;
 
@@ -1111,49 +1387,49 @@ function getLogSeverity(log) {
 
 function getReminderSeverityLabel(level) {
   if (level === "alert") {
-    return getLanguage() === "en" ? "Tell Parent Now" : "尽快告诉家长";
+    return getLanguage() !== "zh-CN" ? "Tell Parent Now" : "尽快告诉家长";
   }
   if (level === "watch") {
-    return getLanguage() === "en" ? "Watch Closely" : "需要留意";
+    return getLanguage() !== "zh-CN" ? "Watch Closely" : "需要留意";
   }
-  return getLanguage() === "en" ? "Normal Check" : "正常观察";
+  return getLanguage() !== "zh-CN" ? "Normal Check" : "正常观察";
 }
 
 function renderPrediction(insights) {
   if (!state.settings.parentMode) {
     elements.predictionContent.innerHTML = `
-      <p>${getLanguage() === "en" ? "This section is for parents." : "这里是家长查看区。"}</p>
-      <p class="muted">${getLanguage() === "en" ? "Predictions and fertility details stay hidden by default so kids do not see unnecessary information." : "默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。"}</p>
+      <p>${getLanguage() !== "zh-CN" ? "This section is for parents." : "这里是家长查看区。"}</p>
+      <p class="muted">${getLanguage() !== "zh-CN" ? "Predictions and fertility details stay hidden by default so kids do not see unnecessary information." : "默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。"}</p>
     `;
     return;
   }
 
   if (!insights.lastRecord) {
     elements.predictionContent.innerHTML = `
-      <p>${getLanguage() === "en" ? "Not enough data for predictions yet." : "暂无足够数据生成预测。"}</p>
-      <p class="muted">${getLanguage() === "en" ? "Start with the latest period first. Predictions get better as more records are added." : "建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。"}</p>
+      <p>${getLanguage() !== "zh-CN" ? "Not enough data for predictions yet." : "暂无足够数据生成预测。"}</p>
+      <p class="muted">${getLanguage() !== "zh-CN" ? "Start with the latest period first. Predictions get better as more records are added." : "建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。"}</p>
     `;
     return;
   }
 
   const nextText = insights.nextStartDate
-    ? (getLanguage() === "en" ? `around ${formatDate(insights.nextStartDate)}` : `${formatDate(insights.nextStartDate)} 左右`)
-    : (getLanguage() === "en" ? "waiting for more records" : "等待更多记录");
+    ? (getLanguage() !== "zh-CN" ? `around ${formatDate(insights.nextStartDate)}` : `${formatDate(insights.nextStartDate)} 左右`)
+    : (getLanguage() !== "zh-CN" ? "waiting for more records" : "等待更多记录");
   const fertileText = insights.fertileWindow
-    ? (getLanguage() === "en"
+    ? (getLanguage() !== "zh-CN"
       ? `${formatDate(insights.fertileWindow.start)} to ${formatDate(insights.fertileWindow.end)}, estimated ovulation ${formatDate(insights.fertileWindow.ovulation)}`
       : `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`)
-    : (getLanguage() === "en" ? "none yet" : "暂无");
+    : (getLanguage() !== "zh-CN" ? "none yet" : "暂无");
 
   elements.predictionContent.innerHTML = `
-    <p><strong>${getLanguage() === "en" ? "Next period estimate:" : "下次来潮预测："}</strong>${nextText}</p>
-    <p><strong>${getLanguage() === "en" ? "Fertile window:" : "易孕窗口："}</strong>${fertileText}</p>
-    <p><strong>${getLanguage() === "en" ? "Source:" : "参数来源："}</strong>${
+    <p><strong>${getLanguage() !== "zh-CN" ? "Next period estimate:" : "下次来潮预测："}</strong>${nextText}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Fertile window:" : "易孕窗口："}</strong>${fertileText}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Source:" : "参数来源："}</strong>${
       Number(state.settings.manualCycleLength) || Number(state.settings.manualPeriodLength)
-        ? (getLanguage() === "en" ? "Partly based on manual settings." : "当前部分使用手动输入参数。")
-        : (getLanguage() === "en" ? "Fully based on historical averages." : "当前完全基于历史平均值。")
+        ? (getLanguage() !== "zh-CN" ? "Partly based on manual settings." : "当前部分使用手动输入参数。")
+        : (getLanguage() !== "zh-CN" ? "Fully based on historical averages." : "当前完全基于历史平均值。")
     }</p>
-    <p><strong>${getLanguage() === "en" ? "Note:" : "说明："}</strong>${getLanguage() === "en" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Note:" : "说明："}</strong>${getLanguage() !== "zh-CN" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
   `;
 }
 
@@ -1168,25 +1444,25 @@ function renderTrend(insights) {
 
   const irregularityText = insights.cycleLengths.length
     ? insights.cycleVariation <= 3
-      ? (getLanguage() === "en" ? "Cycle variation is small and looks fairly stable." : "周期波动较小，整体比较稳定。")
+      ? (getLanguage() !== "zh-CN" ? "Cycle variation is small and looks fairly stable." : "周期波动较小，整体比较稳定。")
       : insights.cycleVariation <= 7
-        ? (getLanguage() === "en" ? "Cycle variation is mild. Keep watching." : "周期有轻微波动，建议继续观察。")
-        : (getLanguage() === "en" ? "Cycle variation is more noticeable. Consider medical advice if it continues." : "周期波动较明显，如果长期持续可考虑就医咨询。")
-    : (getLanguage() === "en" ? "At least two period records are needed to judge cycle variation." : "需要至少两次经期记录才能判断周期波动。");
+        ? (getLanguage() !== "zh-CN" ? "Cycle variation is mild. Keep watching." : "周期有轻微波动，建议继续观察。")
+        : (getLanguage() !== "zh-CN" ? "Cycle variation is more noticeable. Consider medical advice if it continues." : "周期波动较明显，如果长期持续可考虑就医咨询。")
+    : (getLanguage() !== "zh-CN" ? "At least two period records are needed to judge cycle variation." : "需要至少两次经期记录才能判断周期波动。");
 
   const symptomText = insights.frequentSymptoms.length
     ? insights.frequentSymptoms.map(([name, count]) => (
-      getLanguage() === "en" ? `${labelFromCatalog("symptoms", name)} (${count})` : `${labelFromCatalog("symptoms", name)}（${count} 次）`
-    )).join(getLanguage() === "en" ? ", " : "、")
-    : (getLanguage() === "en" ? "No frequent symptom data yet." : "暂无高频症状数据。");
+      getLanguage() !== "zh-CN" ? `${labelFromCatalog("symptoms", name)} (${count})` : `${labelFromCatalog("symptoms", name)}（${count} 次）`
+    )).join(getLanguage() !== "zh-CN" ? ", " : "、")
+    : (getLanguage() !== "zh-CN" ? "No frequent symptom data yet." : "暂无高频症状数据。");
 
   elements.trendContent.innerHTML = `
-    <p><strong>${getLanguage() === "en" ? "Recent status:" : "孩子近况："}</strong>${insights.lastDailyLog ? (getLanguage() === "en" ? "Recent logs are being kept consistently." : "最近有持续记录，可以继续保持。") : (getLanguage() === "en" ? "Start by logging the uncomfortable days first." : "先从不舒服的那几天开始记就可以。")}</p>
-    <p><strong>${getLanguage() === "en" ? "Cycle variation:" : "周期波动："}</strong>${state.settings.parentMode ? irregularityText : (getLanguage() === "en" ? "Visible in Parent Mode." : "这部分放在家长模式里查看。")} </p>
-    <p><strong>${getLanguage() === "en" ? "Variation range:" : "波动范围："}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() === "en" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : (getLanguage() === "en" ? "Parent Mode only" : "家长模式可见")}</p>
-    <p><strong>${getLanguage() === "en" ? "Frequent symptoms:" : "高频症状："}</strong>${symptomText}</p>
-    <p><strong>${getLanguage() === "en" ? "High-pain logs:" : "高疼痛日报："}</strong>${getLanguage() === "en" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? (getLanguage() === "en" ? ", watch for triggers and what helps." : "，可以单独留意诱因和缓解方式。") : ""}</p>
-    <p><strong>${getLanguage() === "en" ? "Latest daily log:" : "最近日报："}</strong>${insights.lastDailyLog ? (getLanguage() === "en" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : (getLanguage() === "en" ? "No daily log yet." : "还没有日报记录。")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Recent status:" : "孩子近况："}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? "Recent logs are being kept consistently." : "最近有持续记录，可以继续保持。") : (getLanguage() !== "zh-CN" ? "Start by logging the uncomfortable days first." : "先从不舒服的那几天开始记就可以。")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Cycle variation:" : "周期波动："}</strong>${state.settings.parentMode ? irregularityText : (getLanguage() !== "zh-CN" ? "Visible in Parent Mode." : "这部分放在家长模式里查看。")} </p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Variation range:" : "波动范围："}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() !== "zh-CN" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : (getLanguage() !== "zh-CN" ? "Parent Mode only" : "家长模式可见")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Frequent symptoms:" : "高频症状："}</strong>${symptomText}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "High-pain logs:" : "高疼痛日报："}</strong>${getLanguage() !== "zh-CN" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? (getLanguage() !== "zh-CN" ? ", watch for triggers and what helps." : "，可以单独留意诱因和缓解方式。") : ""}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Latest daily log:" : "最近日报："}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : (getLanguage() !== "zh-CN" ? "No daily log yet." : "还没有日报记录。")}</p>
   `;
 }
 
@@ -1194,14 +1470,22 @@ function renderCalendar(insights) {
   const currentMonth = state.calendarDate;
   const monthStart = startOfMonth(currentMonth);
   const gridStart = addDays(toDateInputValue(monthStart), -monthStart.getDay());
-  const weekdays = getLanguage() === "en" ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["日", "一", "二", "三", "四", "五", "六"];
+  const weekdays = getLanguage() !== "zh-CN" ? ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] : ["日", "一", "二", "三", "四", "五", "六"];
   const cells = [];
 
+  const localizedWeekdays = {
+    "zh-CN": ["日", "一", "二", "三", "四", "五", "六"],
+    en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    tr: ["Paz", "Pzt", "Sal", "Car", "Per", "Cum", "Cmt"],
+    ru: ["Vsk", "Pon", "Vtr", "Srd", "Cht", "Ptn", "Sbt"],
+  };
+
   elements.calendarTitle.textContent = new Intl.DateTimeFormat(
-    getLanguage() === "en" ? "en-US" : "zh-CN",
+    getDateLocale(),
     { year: "numeric", month: "long" },
   ).format(monthStart);
-  elements.calendarGrid.innerHTML = weekdays.map((day) => `<div class="calendar__weekday">${day}</div>`).join("");
+  elements.calendarGrid.innerHTML = (localizedWeekdays[getLanguage()] || weekdays)
+    .map((day) => `<div class="calendar__weekday">${day}</div>`).join("");
 
   for (let index = 0; index < 42; index += 1) {
     const date = addDays(gridStart, index);
@@ -1223,19 +1507,19 @@ function buildDayCell(date, monthStart, insights) {
   const dayLog = insights.sortedDailyLogs.find((log) => log.date === date) || null;
 
   if (hasPeriod) {
-    tags.push(`<span>${getLanguage() === "en" ? "Period" : "经期"}</span>`);
+    tags.push(`<span>${getLanguage() !== "zh-CN" ? "Period" : "经期"}</span>`);
     states.push("period");
   }
   if (hasPredicted) {
-    tags.push(`<span>${getLanguage() === "en" ? "Predicted" : "预测"}</span>`);
+    tags.push(`<span>${getLanguage() !== "zh-CN" ? "Predicted" : "预测"}</span>`);
     states.push("predicted");
   }
   if (hasFertile) {
-    tags.push(`<span>${date === insights.fertileWindow.ovulation ? (getLanguage() === "en" ? "Ovulation" : "排卵") : (getLanguage() === "en" ? "Fertile" : "易孕")}</span>`);
+    tags.push(`<span>${date === insights.fertileWindow.ovulation ? (getLanguage() !== "zh-CN" ? "Ovulation" : "排卵") : (getLanguage() !== "zh-CN" ? "Fertile" : "易孕")}</span>`);
     states.push("fertile");
   }
   if (dayLog) {
-    tags.push(`<span class="day-tag--log">${getLanguage() === "en" ? "Log" : "日志"}</span>`);
+    tags.push(`<span class="day-tag--log">${getLanguage() !== "zh-CN" ? "Log" : "日志"}</span>`);
   }
 
   const classes = ["calendar__day"];
@@ -1243,7 +1527,7 @@ function buildDayCell(date, monthStart, insights) {
   if (date === insights.today) classes.push("is-today");
 
   return `
-    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="${getLanguage() === "en" ? `Tap to log ${formatDate(date)}` : `点击快速记录 ${formatDate(date)}`}">
+    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="${getLanguage() !== "zh-CN" ? `Tap to log ${formatDate(date)}` : `点击快速记录 ${formatDate(date)}`}">
       <div class="day-number">${new Date(date).getDate()}</div>
       <div class="day-tags">${tags.join("")}</div>
     </article>
@@ -1252,7 +1536,7 @@ function buildDayCell(date, monthStart, insights) {
 
 function renderRecords() {
   if (!state.records.length) {
-    elements.recordList.innerHTML = `<div class="empty-state">${getLanguage() === "en" ? "No period records yet. Start with the most recent one first. There is no need to add everything at once." : "还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。"}</div>`;
+    elements.recordList.innerHTML = `<div class="empty-state">${getLanguage() !== "zh-CN" ? "No period records yet. Start with the most recent one first. There is no need to add everything at once." : "还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。"}</div>`;
     return;
   }
 
@@ -1265,20 +1549,20 @@ function renderRecords() {
           <div class="record-item__top">
             <div>
               <strong>${formatDate(record.startDate)} - ${formatDate(record.endDate)}</strong>
-              <div class="muted">${getLanguage() === "en" ? `${duration} days` : `${duration} 天`}</div>
+              <div class="muted">${getLanguage() !== "zh-CN" ? `${duration} days` : `${duration} 天`}</div>
             </div>
             <div class="record-item__actions">
-              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${getLanguage() === "en" ? "Edit" : "编辑"}</button>
-              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">${getLanguage() === "en" ? "Delete" : "删除"}</button>
+              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${getLanguage() !== "zh-CN" ? "Edit" : "编辑"}</button>
+              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">${getLanguage() !== "zh-CN" ? "Delete" : "删除"}</button>
             </div>
           </div>
           <div class="record-meta">
-            <span>${getLanguage() === "en" ? "Flow" : "流量"}：${labelFromCatalog("flow", record.flowLevel)}</span>
-            <span>${getLanguage() === "en" ? "Pain" : "疼痛"}：${record.painLevel}/10</span>
-            <span>${getLanguage() === "en" ? "Mood" : "情绪"}：${labelFromCatalog("mood", record.mood)}</span>
+            <span>${getLanguage() !== "zh-CN" ? "Flow" : "流量"}：${labelFromCatalog("flow", record.flowLevel)}</span>
+            <span>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}：${record.painLevel}/10</span>
+            <span>${getLanguage() !== "zh-CN" ? "Mood" : "情绪"}：${labelFromCatalog("mood", record.mood)}</span>
             ${record.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
           </div>
-          <p class="record-notes">${record.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
+          <p class="record-notes">${record.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
         </article>
       `;
     })
@@ -1290,7 +1574,7 @@ function renderRecords() {
 
 function renderDailyLogs() {
   if (!state.dailyLogs.length) {
-    elements.dailyLogList.innerHTML = `<div class="empty-state">${getLanguage() === "en" ? "No daily logs yet. Starting with today is fine, and tapping any date on the calendar fills it in quickly." : "还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。"}</div>`;
+    elements.dailyLogList.innerHTML = `<div class="empty-state">${getLanguage() !== "zh-CN" ? "No daily logs yet. Starting with today is fine, and tapping any date on the calendar fills it in quickly." : "还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。"}</div>`;
     return;
   }
 
@@ -1302,19 +1586,19 @@ function renderDailyLogs() {
         <div class="record-item__top">
           <div>
             <strong>${formatDate(log.date)}</strong>
-            <div class="muted">${getLanguage() === "en" ? `Bleeding ${labelFromCatalog("bleeding", log.bleeding)}, energy ${log.energyLevel}/5${shouldTellParent(log) ? ", tell a parent" : ""}` : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}`}</div>
+            <div class="muted">${getLanguage() !== "zh-CN" ? `Bleeding ${labelFromCatalog("bleeding", log.bleeding)}, energy ${log.energyLevel}/5${shouldTellParent(log) ? ", tell a parent" : ""}` : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}`}</div>
           </div>
           <div class="record-item__actions">
-            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${getLanguage() === "en" ? "Edit" : "编辑"}</button>
-            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">${getLanguage() === "en" ? "Delete" : "删除"}</button>
+            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${getLanguage() !== "zh-CN" ? "Edit" : "编辑"}</button>
+            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">${getLanguage() !== "zh-CN" ? "Delete" : "删除"}</button>
           </div>
         </div>
         <div class="record-meta">
-          <span>${getLanguage() === "en" ? "Pain" : "疼痛"}：${log.painLevel}/10</span>
-          <span>${getLanguage() === "en" ? "Mood" : "情绪"}：${labelFromCatalog("mood", log.mood)}</span>
+          <span>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}：${log.painLevel}/10</span>
+          <span>${getLanguage() !== "zh-CN" ? "Mood" : "情绪"}：${labelFromCatalog("mood", log.mood)}</span>
           ${log.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
         </div>
-        <p class="record-notes">${log.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
+        <p class="record-notes">${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
       </article>
     `)
     .join("");
@@ -1348,7 +1632,7 @@ function editPeriodRecord(recordId) {
   elements.mood.value = record.mood;
   elements.notes.value = record.notes;
   setCheckedSymptoms("period-symptoms", record.symptoms);
-  setFormStatus(getLanguage() === "en" ? "Period record loaded. Edit and save when ready." : "已载入经期记录，可直接修改后保存。");
+  setFormStatus(getLanguage() !== "zh-CN" ? "Period record loaded. Edit and save when ready." : "已载入经期记录，可直接修改后保存。");
   document.querySelector("#record-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1365,7 +1649,7 @@ function editDailyLog(logId) {
   elements.dailyNotes.value = log.notes;
   setCheckedSymptoms("daily-symptoms", log.symptoms);
   setCheckedSymptoms("alert-flags", log.alertFlags || []);
-  setDailyFormStatus(getLanguage() === "en" ? "Daily log loaded. Edit and save when ready." : "已载入日报，可直接修改后保存。");
+  setDailyFormStatus(getLanguage() !== "zh-CN" ? "Daily log loaded. Edit and save when ready." : "已载入日报，可直接修改后保存。");
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1373,20 +1657,20 @@ function openDailyLogDetail(logId) {
   const log = state.dailyLogs.find((item) => item.id === logId);
   if (!log || !elements.dailyDetailDialog) return;
 
-  elements.dailyDetailTitle.textContent = getLanguage() === "en"
+  elements.dailyDetailTitle.textContent = getLanguage() !== "zh-CN"
     ? `Daily Log: ${formatDate(log.date)}`
     : `日报详情：${formatDate(log.date)}`;
   elements.dailyDetailContent.innerHTML = `
-    <p><strong>${getLanguage() === "en" ? "Bleeding:" : "出血："}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
-    <p><strong>${getLanguage() === "en" ? "Pain:" : "疼痛："}</strong>${log.painLevel}/10</p>
-    <p><strong>${getLanguage() === "en" ? "Energy:" : "精力："}</strong>${log.energyLevel}/5</p>
-    <p><strong>${getLanguage() === "en" ? "Mood:" : "心情："}</strong>${labelFromCatalog("mood", log.mood)}</p>
-    <p><strong>${getLanguage() === "en" ? "Body feelings:" : "身体感觉："}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() === "en" ? ", " : "、") : (getLanguage() === "en" ? "None" : "无")}</p>
-    <p><strong>${getLanguage() === "en" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || (getLanguage() === "en" ? "Normal observation" : "正常观察")}</p>
-    <p><strong>${getLanguage() === "en" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() === "en" ? "No notes" : "无备注")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Bleeding:" : "出血："}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Pain:" : "疼痛："}</strong>${log.painLevel}/10</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Energy:" : "精力："}</strong>${log.energyLevel}/5</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Mood:" : "心情："}</strong>${labelFromCatalog("mood", log.mood)}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Body feelings:" : "身体感觉："}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() !== "zh-CN" ? ", " : "、") : (getLanguage() !== "zh-CN" ? "None" : "无")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || (getLanguage() !== "zh-CN" ? "Normal observation" : "正常观察")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
   `;
   elements.dailyDetailEditBtn.dataset.logId = log.id;
-  elements.dailyDetailEditBtn.textContent = getLanguage() === "en" ? "Edit This Log" : "编辑这条日报";
+  elements.dailyDetailEditBtn.textContent = getLanguage() !== "zh-CN" ? "Edit This Log" : "编辑这条日报";
   elements.dailyDetailDialog.showModal();
 }
 
@@ -1441,7 +1725,7 @@ function resetDailyForm() {
 
 function fillDailyDate(date) {
   elements.dailyDate.value = date;
-  setDailyFormStatus(getLanguage() === "en" ? `${formatDate(date)} selected. You can fill the daily log now.` : `已选中 ${formatDate(date)}，可直接填写日报。`);
+  setDailyFormStatus(getLanguage() !== "zh-CN" ? `${formatDate(date)} selected. You can fill the daily log now.` : `已选中 ${formatDate(date)}，可直接填写日报。`);
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1534,10 +1818,10 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `${getLanguage() === "en" ? "eva-moon-data" : "period-tracker"}-${toDateInputValue(new Date())}.json`;
+  anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-data" : "period-tracker"}-${toDateInputValue(new Date())}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast(getLanguage() === "en" ? "Raw data exported." : "原始数据已导出。");
+  showToast(getLanguage() !== "zh-CN" ? "Raw data exported." : "原始数据已导出。");
 }
 
 function exportSummary() {
@@ -1553,21 +1837,21 @@ function exportSummary() {
           <td>${log.painLevel}/10</td>
           <td>${log.energyLevel}/5</td>
           <td>${labelFromCatalog("mood", log.mood)}</td>
-          <td>${shouldTellParent(log) ? (getLanguage() === "en" ? "Tell a parent" : "建议告诉家长") : (getLanguage() === "en" ? "Observe" : "正常观察")}</td>
+          <td>${shouldTellParent(log) ? (getLanguage() !== "zh-CN" ? "Tell a parent" : "建议告诉家长") : (getLanguage() !== "zh-CN" ? "Observe" : "正常观察")}</td>
         </tr>
       `,
     )
     .join("");
 
   const symptomMarkup = insights.frequentSymptoms.length
-    ? insights.frequentSymptoms.map(([name, count]) => `<li>${labelFromCatalog("symptoms", name)}${getLanguage() === "en" ? `: ${count}` : `：${count} 次`}</li>`).join("")
-    : `<li>${getLanguage() === "en" ? "None yet" : "暂无"}</li>`;
+    ? insights.frequentSymptoms.map(([name, count]) => `<li>${labelFromCatalog("symptoms", name)}${getLanguage() !== "zh-CN" ? `: ${count}` : `：${count} 次`}</li>`).join("")
+    : `<li>${getLanguage() !== "zh-CN" ? "None yet" : "暂无"}</li>`;
 
   const html = `<!DOCTYPE html>
-  <html lang="zh-CN">
+  <html lang="${getLanguage()}">
     <head>
       <meta charset="UTF-8">
-      <title>${t("app.name")} - ${getLanguage() === "en" ? "Parent Summary" : "家长摘要"}</title>
+      <title>${t("app.name")} - ${getLanguage() !== "zh-CN" ? "Parent Summary" : "家长摘要"}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 24px; color: #3f2430; }
         h1, h2 { margin: 0 0 12px; }
@@ -1579,26 +1863,26 @@ function exportSummary() {
       </style>
     </head>
     <body>
-      <h1>${t("app.name")} - ${getLanguage() === "en" ? "Parent Summary" : "家长摘要"}</h1>
-      <p>${getLanguage() === "en" ? "Exported on:" : "导出日期："}${formatDate(toDateInputValue(new Date()))}</p>
+      <h1>${t("app.name")} - ${getLanguage() !== "zh-CN" ? "Parent Summary" : "家长摘要"}</h1>
+      <p>${getLanguage() !== "zh-CN" ? "Exported on:" : "导出日期："}${formatDate(toDateInputValue(new Date()))}</p>
       <section class="card">
-        <h2>${getLanguage() === "en" ? "Overview" : "概况"}</h2>
-        <p>${getLanguage() === "en" ? "Period records:" : "经期记录次数："}${state.records.length}</p>
-        <p>${getLanguage() === "en" ? "Daily logs:" : "日报记录次数："}${state.dailyLogs.length}</p>
-        <p>${getLanguage() === "en" ? "Average cycle:" : "平均周期："}${insights.averageCycleLength}${getLanguage() === "en" ? " days" : " 天"}</p>
-        <p>${getLanguage() === "en" ? "Average period length:" : "平均经期："}${insights.averagePeriodLength}${getLanguage() === "en" ? " days" : " 天"}</p>
-        <p>${getLanguage() === "en" ? "Latest period start:" : "最近一次月经开始："}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : (getLanguage() === "en" ? "None" : "暂无")}</p>
-        <p>${getLanguage() === "en" ? "Logs needing parent attention:" : "需要告诉家长的日报次数："}${insights.needsParentAttentionCount}</p>
+        <h2>${getLanguage() !== "zh-CN" ? "Overview" : "概况"}</h2>
+        <p>${getLanguage() !== "zh-CN" ? "Period records:" : "经期记录次数："}${state.records.length}</p>
+        <p>${getLanguage() !== "zh-CN" ? "Daily logs:" : "日报记录次数："}${state.dailyLogs.length}</p>
+        <p>${getLanguage() !== "zh-CN" ? "Average cycle:" : "平均周期："}${insights.averageCycleLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
+        <p>${getLanguage() !== "zh-CN" ? "Average period length:" : "平均经期："}${insights.averagePeriodLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
+        <p>${getLanguage() !== "zh-CN" ? "Latest period start:" : "最近一次月经开始："}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : (getLanguage() !== "zh-CN" ? "None" : "暂无")}</p>
+        <p>${getLanguage() !== "zh-CN" ? "Logs needing parent attention:" : "需要告诉家长的日报次数："}${insights.needsParentAttentionCount}</p>
       </section>
       <section class="card">
-        <h2>${getLanguage() === "en" ? "Frequent Body Feelings" : "高频身体感觉"}</h2>
+        <h2>${getLanguage() !== "zh-CN" ? "Frequent Body Feelings" : "高频身体感觉"}</h2>
         <ul>${symptomMarkup}</ul>
       </section>
       <section class="card">
-        <h2>${getLanguage() === "en" ? "Latest 5 Daily Logs" : "最近 5 条日报"}</h2>
+        <h2>${getLanguage() !== "zh-CN" ? "Latest 5 Daily Logs" : "最近 5 条日报"}</h2>
         <table>
           <thead>
-            <tr><th>${getLanguage() === "en" ? "Date" : "日期"}</th><th>${getLanguage() === "en" ? "Bleeding" : "出血"}</th><th>${getLanguage() === "en" ? "Pain" : "疼痛"}</th><th>${getLanguage() === "en" ? "Energy" : "精力"}</th><th>${getLanguage() === "en" ? "Mood" : "心情"}</th><th>${getLanguage() === "en" ? "Alert" : "提醒"}</th></tr>
+            <tr><th>${getLanguage() !== "zh-CN" ? "Date" : "日期"}</th><th>${getLanguage() !== "zh-CN" ? "Bleeding" : "出血"}</th><th>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}</th><th>${getLanguage() !== "zh-CN" ? "Energy" : "精力"}</th><th>${getLanguage() !== "zh-CN" ? "Mood" : "心情"}</th><th>${getLanguage() !== "zh-CN" ? "Alert" : "提醒"}</th></tr>
           </thead>
           <tbody>${recentLogs}</tbody>
         </table>
@@ -1611,10 +1895,10 @@ function exportSummary() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `${getLanguage() === "en" ? "eva-moon-summary" : "eva-moon-summary"}-${toDateInputValue(new Date())}.html`;
+  anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-summary" : "eva-moon-summary"}-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast(getLanguage() === "en" ? "Parent summary exported." : "家长摘要已导出。");
+  showToast(getLanguage() !== "zh-CN" ? "Parent summary exported." : "家长摘要已导出。");
 }
 
 function importData(event) {
@@ -1632,11 +1916,11 @@ function importData(event) {
       sortDailyLogs();
       saveState();
       render();
-      setFormStatus(getLanguage() === "en" ? "Data imported." : "数据已导入。");
-      setDailyFormStatus(getLanguage() === "en" ? "Data imported." : "数据已导入。");
-      showToast(getLanguage() === "en" ? "Backup restored." : "备份已恢复。");
+      setFormStatus(getLanguage() !== "zh-CN" ? "Data imported." : "数据已导入。");
+      setDailyFormStatus(getLanguage() !== "zh-CN" ? "Data imported." : "数据已导入。");
+      showToast(getLanguage() !== "zh-CN" ? "Backup restored." : "备份已恢复。");
     } catch (error) {
-      window.alert(getLanguage() === "en" ? "Import failed: invalid JSON file format." : "导入失败：JSON 文件格式不正确。");
+      window.alert(getLanguage() !== "zh-CN" ? "Import failed: invalid JSON file format." : "导入失败：JSON 文件格式不正确。");
     } finally {
       elements.importInput.value = "";
     }
@@ -1645,7 +1929,7 @@ function importData(event) {
 }
 
 function clearAllData() {
-  if (!window.confirm(getLanguage() === "en" ? "Clear all records in this browser? This cannot be undone." : "确认清空当前浏览器中的全部记录吗？此操作无法撤销。")) return;
+  if (!window.confirm(getLanguage() !== "zh-CN" ? "Clear all records in this browser? This cannot be undone." : "确认清空当前浏览器中的全部记录吗？此操作无法撤销。")) return;
 
   state.records = [];
   state.dailyLogs = [];
@@ -1654,12 +1938,12 @@ function clearAllData() {
   resetPeriodForm();
   resetDailyForm();
   render();
-  showToast(getLanguage() === "en" ? "All records in this browser were cleared." : "已清空当前浏览器里的记录。");
+  showToast(getLanguage() !== "zh-CN" ? "All records in this browser were cleared." : "已清空当前浏览器里的记录。");
 }
 
 function seedData() {
   if (state.records.length || state.dailyLogs.length) {
-    const confirmed = window.confirm(getLanguage() === "en" ? "Sample data will overwrite current data. Continue?" : "当前已有数据，填充示例数据会覆盖现有内容，是否继续？");
+    const confirmed = window.confirm(getLanguage() !== "zh-CN" ? "Sample data will overwrite current data. Continue?" : "当前已有数据，填充示例数据会覆盖现有内容，是否继续？");
     if (!confirmed) return;
   }
 
@@ -1668,7 +1952,7 @@ function seedData() {
   state.settings = normalizeSettings({ language: state.settings.language });
   saveState();
   render();
-  showToast(getLanguage() === "en" ? "Sample data loaded." : "示例数据已填充。");
+  showToast(getLanguage() !== "zh-CN" ? "Sample data loaded." : "示例数据已填充。");
 }
 
 function saveSettings(event) {
@@ -1685,8 +1969,8 @@ function saveSettings(event) {
   });
   saveState();
   render();
-  setFormStatus(getLanguage() === "en" ? "Prediction settings updated." : "预测参数已更新。");
-  showToast(getLanguage() === "en" ? "Parent settings updated." : "家长参数已更新。");
+  setFormStatus(getLanguage() !== "zh-CN" ? "Prediction settings updated." : "预测参数已更新。");
+  showToast(getLanguage() !== "zh-CN" ? "Parent settings updated." : "家长参数已更新。");
 }
 
 function resetSettings() {
@@ -1698,7 +1982,7 @@ function resetSettings() {
   });
   saveState();
   render();
-  showToast(getLanguage() === "en" ? "Prediction settings reset to automatic values." : "预测参数已恢复自动计算。");
+  showToast(getLanguage() !== "zh-CN" ? "Prediction settings reset to automatic values." : "预测参数已恢复自动计算。");
 }
 
 function renderSettings() {
@@ -1726,7 +2010,7 @@ function savePreferences(event) {
   });
   saveState();
   render();
-  showToast(getLanguage() === "en" ? "Preferences saved." : "偏好设置已保存。");
+  showToast(getLanguage() !== "zh-CN" ? "Preferences saved." : "偏好设置已保存。");
 }
 
 function renderNotificationSettings() {
@@ -1762,7 +2046,7 @@ function saveNotificationSettings(event) {
   });
   saveState();
   renderNotificationSettings();
-  showToast(getLanguage() === "en" ? "Reminder settings saved." : "提醒设置已保存。");
+  showToast(getLanguage() !== "zh-CN" ? "Reminder settings saved." : "提醒设置已保存。");
   void evaluateNotificationTriggers(buildInsights());
 }
 
@@ -1772,11 +2056,11 @@ function renderParentMode() {
     state.settings.parentMode = false;
   }
   elements.parentModeBtn.textContent = state.settings.parentMode
-    ? (getLanguage() === "en" ? "Close Parent Mode" : "关闭家长模式")
-    : (getLanguage() === "en" ? "Open Parent Mode" : "打开家长模式");
+    ? (getLanguage() !== "zh-CN" ? "Close Parent Mode" : "关闭家长模式")
+    : (getLanguage() !== "zh-CN" ? "Open Parent Mode" : "打开家长模式");
   elements.simpleModeBtn.textContent = state.settings.simpleMode
-    ? (getLanguage() === "en" ? "Close Simple Mode" : "关闭超简模式")
-    : (getLanguage() === "en" ? "Open Simple Mode" : "打开超简模式");
+    ? (getLanguage() !== "zh-CN" ? "Close Simple Mode" : "关闭超简模式")
+    : (getLanguage() !== "zh-CN" ? "Open Simple Mode" : "打开超简模式");
   elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
   elements.simpleModeBtn.classList.toggle("mode-active", state.settings.simpleMode);
   elements.parentOnlySections.forEach((node) => {
@@ -1794,8 +2078,8 @@ function renderPinSettings() {
   elements.parentPin.value = "";
   elements.confirmParentPin.value = "";
   elements.pinStatus.textContent = state.settings.parentPin
-    ? (getLanguage() === "en" ? "Parent PIN is set. It is only stored in this browser." : "已设置家长 PIN。PIN 只保存在当前浏览器。")
-    : (getLanguage() === "en" ? "No PIN yet. Parents should set a 4-digit PIN first." : "还没有设置 PIN。建议家长先设置 4 位数字。");
+    ? (getLanguage() !== "zh-CN" ? "Parent PIN is set. It is only stored in this browser." : "已设置家长 PIN。PIN 只保存在当前浏览器。")
+    : (getLanguage() !== "zh-CN" ? "No PIN yet. Parents should set a 4-digit PIN first." : "还没有设置 PIN。建议家长先设置 4 位数字。");
 }
 
 function setActiveSettingsTab(panelId) {
@@ -1863,7 +2147,7 @@ function toggleParentMode() {
     clearParentSessionUnlock();
     saveState();
     render();
-    showToast(getLanguage() === "en" ? "Parent Mode closed." : "家长模式已关闭。");
+    showToast(getLanguage() !== "zh-CN" ? "Parent Mode closed." : "家长模式已关闭。");
     return;
   }
 
@@ -1882,8 +2166,8 @@ function updateAlertAdvice() {
     alertFlags: getSelectedSymptoms("alert-flags"),
   };
   elements.alertAdviceText.textContent = shouldTellParent(draft)
-    ? (getLanguage() === "en" ? "Tell a parent now, or ask a teacher to help contact one." : "今天建议马上告诉家长，或者让老师帮你联系家长。")
-    : (getLanguage() === "en" ? "A normal record is enough for now. If it gets worse, tell a parent soon." : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。");
+    ? (getLanguage() !== "zh-CN" ? "Tell a parent now, or ask a teacher to help contact one." : "今天建议马上告诉家长，或者让老师帮你联系家长。")
+    : (getLanguage() !== "zh-CN" ? "A normal record is enough for now. If it gets worse, tell a parent soon." : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。");
 }
 
 function shouldTellParent(log) {
@@ -1897,15 +2181,15 @@ function shouldTellParent(log) {
 function formatAlertFlags(log) {
   const parts = [];
   if (Number(log.painLevel) >= 7) {
-    parts.push(getLanguage() === "en" ? "high pain" : "疼痛较高");
+    parts.push(getLanguage() !== "zh-CN" ? "high pain" : "疼痛较高");
   }
   if (log.bleeding === "重") {
-    parts.push(getLanguage() === "en" ? "heavy bleeding" : "出血偏多");
+    parts.push(getLanguage() !== "zh-CN" ? "heavy bleeding" : "出血偏多");
   }
   if (Array.isArray(log.alertFlags) && log.alertFlags.length) {
-    parts.push(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag)).join(getLanguage() === "en" ? ", " : "、"));
+    parts.push(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag)).join(getLanguage() !== "zh-CN" ? ", " : "、"));
   }
-  return parts.join(getLanguage() === "en" ? ", " : "、");
+  return parts.join(getLanguage() !== "zh-CN" ? ", " : "、");
 }
 
 function savePin(event) {
@@ -1914,19 +2198,19 @@ function savePin(event) {
   const confirmPin = normalizePin(elements.confirmParentPin.value);
 
   if (!pin || pin.length !== 4) {
-    elements.pinStatus.textContent = getLanguage() === "en" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
+    elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
     return;
   }
   if (pin !== confirmPin) {
-    elements.pinStatus.textContent = getLanguage() === "en" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
+    elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
     return;
   }
 
   state.settings.parentPin = pin;
   saveState();
   renderPinSettings();
-  elements.pinStatus.textContent = getLanguage() === "en" ? "Parent PIN saved." : "家长 PIN 已保存。";
-  showToast(getLanguage() === "en" ? "Parent PIN saved." : "家长 PIN 已保存。");
+  elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "Parent PIN saved." : "家长 PIN 已保存。";
+  showToast(getLanguage() !== "zh-CN" ? "Parent PIN saved." : "家长 PIN 已保存。");
 }
 
 function clearPin() {
@@ -1935,8 +2219,8 @@ function clearPin() {
   clearParentSessionUnlock();
   saveState();
   render();
-  elements.pinStatus.textContent = getLanguage() === "en" ? "Parent PIN cleared." : "家长 PIN 已清除。";
-  showToast(getLanguage() === "en" ? "Parent PIN cleared." : "家长 PIN 已清除。");
+  elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "Parent PIN cleared." : "家长 PIN 已清除。";
+  showToast(getLanguage() !== "zh-CN" ? "Parent PIN cleared." : "家长 PIN 已清除。");
 }
 
 function handlePinDialogSubmit(event) {
@@ -1952,11 +2236,11 @@ function handlePinDialogSubmit(event) {
   if (state.pinDialogMode === "setup") {
     const confirmPin = normalizePin(elements.pinDialogConfirmInput.value);
     if (!inputPin || inputPin.length !== 4) {
-      elements.pinDialogStatus.textContent = getLanguage() === "en" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
+      elements.pinDialogStatus.textContent = getLanguage() !== "zh-CN" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
       return;
     }
     if (inputPin !== confirmPin) {
-      elements.pinDialogStatus.textContent = getLanguage() === "en" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
+      elements.pinDialogStatus.textContent = getLanguage() !== "zh-CN" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
       return;
     }
 
@@ -1966,7 +2250,7 @@ function handlePinDialogSubmit(event) {
     saveState();
     render();
     elements.pinDialog.close();
-    showToast(getLanguage() === "en" ? "Parent Mode opened." : "家长模式已开启。");
+    showToast(getLanguage() !== "zh-CN" ? "Parent Mode opened." : "家长模式已开启。");
     return;
   }
 
@@ -1975,8 +2259,8 @@ function handlePinDialogSubmit(event) {
     const remaining = Math.max(MAX_PIN_ATTEMPTS - state.pinAttempts, 0);
     elements.pinDialogStatus.textContent =
       remaining > 0
-        ? (getLanguage() === "en" ? `Wrong PIN. Try again. ${remaining} attempt(s) left.` : `PIN 不正确，请重试。还可以再试 ${remaining} 次。`)
-        : (getLanguage() === "en" ? "Too many wrong PIN attempts. Close and try again." : "PIN 连续输错太多次，请关闭后再试。");
+        ? (getLanguage() !== "zh-CN" ? `Wrong PIN. Try again. ${remaining} attempt(s) left.` : `PIN 不正确，请重试。还可以再试 ${remaining} 次。`)
+        : (getLanguage() !== "zh-CN" ? "Too many wrong PIN attempts. Close and try again." : "PIN 连续输错太多次，请关闭后再试。");
     if (remaining === 0) {
       elements.pinDialog.close();
       state.pinAttempts = 0;
@@ -1990,7 +2274,7 @@ function handlePinDialogSubmit(event) {
   saveState();
   render();
   elements.pinDialog.close();
-  showToast(getLanguage() === "en" ? "Parent Mode opened." : "家长模式已开启。");
+  showToast(getLanguage() !== "zh-CN" ? "Parent Mode opened." : "家长模式已开启。");
 }
 
 function normalizePin(value) {
@@ -2011,7 +2295,7 @@ function closeOnboarding() {
 function replayOnboarding() {
   localStorage.removeItem(ONBOARDING_KEY);
   elements.welcomeDialog?.showModal();
-  showToast(getLanguage() === "en" ? "Guide opened again." : "已重新打开首次引导。");
+  showToast(getLanguage() !== "zh-CN" ? "Guide opened again." : "已重新打开首次引导。");
 }
 
 function openPinDialog(mode) {
@@ -2022,12 +2306,12 @@ function openPinDialog(mode) {
   setPinInputsVisibility(false);
   elements.pinDialogConfirmWrap.classList.toggle("is-hidden", mode !== "setup");
   elements.pinDialogTitle.textContent = mode === "setup"
-    ? (getLanguage() === "en" ? "Set Parent PIN" : "设置家长 PIN")
-    : (getLanguage() === "en" ? "Enter Parent PIN" : "输入家长 PIN");
+    ? (getLanguage() !== "zh-CN" ? "Set Parent PIN" : "设置家长 PIN")
+    : (getLanguage() !== "zh-CN" ? "Enter Parent PIN" : "输入家长 PIN");
   elements.pinDialogStatus.textContent =
     mode === "setup"
-      ? (getLanguage() === "en" ? "First time in Parent Mode. Please set a 4-digit PIN." : "第一次使用家长模式，请先设置一个 4 位数字 PIN。")
-      : (getLanguage() === "en" ? "Only a parent should know this PIN." : "只有家长知道这个 PIN。");
+      ? (getLanguage() !== "zh-CN" ? "First time in Parent Mode. Please set a 4-digit PIN." : "第一次使用家长模式，请先设置一个 4 位数字 PIN。")
+      : (getLanguage() !== "zh-CN" ? "Only a parent should know this PIN." : "只有家长知道这个 PIN。");
   elements.pinDialog.showModal();
 }
 
@@ -2041,8 +2325,8 @@ function setPinInputsVisibility(visible) {
   elements.pinDialogInput.type = type;
   elements.pinDialogConfirmInput.type = type;
   elements.pinDialogToggleVisibility.textContent = visible
-    ? (getLanguage() === "en" ? "Hide PIN" : "隐藏 PIN")
-    : (getLanguage() === "en" ? "Show PIN" : "显示 PIN");
+    ? (getLanguage() !== "zh-CN" ? "Hide PIN" : "隐藏 PIN")
+    : (getLanguage() !== "zh-CN" ? "Show PIN" : "显示 PIN");
 }
 
 function normalizeNumberWithinRange(value, min, max) {
@@ -2081,7 +2365,7 @@ function isParentSessionUnlocked() {
 
 function quickLogToday() {
   fillDailyDate(toDateInputValue(new Date()));
-  showToast(getLanguage() === "en" ? "Today is selected. You can fill it in now." : "已帮你选中今天，可以直接填写。");
+  showToast(getLanguage() !== "zh-CN" ? "Today is selected. You can fill it in now." : "已帮你选中今天，可以直接填写。");
 }
 
 function toggleSimpleMode() {
@@ -2089,8 +2373,8 @@ function toggleSimpleMode() {
   saveState();
   render();
   showToast(state.settings.simpleMode
-    ? (getLanguage() === "en" ? "Simple Mode is on." : "已打开超简模式。")
-    : (getLanguage() === "en" ? "Simple Mode is off." : "已关闭超简模式。"));
+    ? (getLanguage() !== "zh-CN" ? "Simple Mode is on." : "已打开超简模式。")
+    : (getLanguage() !== "zh-CN" ? "Simple Mode is off." : "已关闭超简模式。"));
 }
 
 function onLanguageChange(event) {
@@ -2098,7 +2382,13 @@ function onLanguageChange(event) {
   state.settings.language = nextLanguage;
   saveState();
   render();
-  showToast(getLanguage() === "en" ? "Language switched to English." : "语言已切换为中文。");
+  const messages = {
+    "zh-CN": "语言已切换为中文。",
+    en: "Language switched to English.",
+    tr: "Dil Turkce olarak degistirildi.",
+    ru: "Yazyk pereklyuchen na russkii.",
+  };
+  showToast(messages[getLanguage()] || messages[DEFAULT_LANGUAGE]);
 }
 
 function installApp() {
@@ -2122,33 +2412,33 @@ function getNotificationPermissionState() {
 function getNotificationStatusText() {
   const permission = getNotificationPermissionState();
   if (permission === "granted") {
-    return getLanguage() === "en"
+    return getLanguage() !== "zh-CN"
       ? "Notification permission: allowed. Local reminders can appear in the browser or installed app."
       : "当前通知权限：已允许。本地提醒可以显示在浏览器或已安装应用中。";
   }
   if (permission === "denied") {
-    return getLanguage() === "en"
+    return getLanguage() !== "zh-CN"
       ? "Notification permission: blocked. Change it in the browser site settings if needed."
       : "当前通知权限：已拒绝。如需开启，请到浏览器站点权限里修改。";
   }
   if (permission === "unsupported") {
-    return getLanguage() === "en"
+    return getLanguage() !== "zh-CN"
       ? "Notifications are not supported in this browser."
       : "当前浏览器不支持通知提醒。";
   }
-  return getLanguage() === "en"
+  return getLanguage() !== "zh-CN"
     ? "Notification permission: not chosen yet."
     : "当前通知权限：还没有选择。";
 }
 
 async function requestNotificationPermission() {
   if (!supportsNotifications()) {
-    showToast(getLanguage() === "en" ? "This browser does not support notifications." : "当前浏览器不支持通知提醒。");
+    showToast(getLanguage() !== "zh-CN" ? "This browser does not support notifications." : "当前浏览器不支持通知提醒。");
     renderNotificationSettings();
     return;
   }
   if (Notification.permission === "denied") {
-    showToast(getLanguage() === "en" ? "Notifications are blocked. Change browser site settings to allow them." : "通知已被拒绝，请到浏览器站点权限里手动开启。");
+    showToast(getLanguage() !== "zh-CN" ? "Notifications are blocked. Change browser site settings to allow them." : "通知已被拒绝，请到浏览器站点权限里手动开启。");
     renderNotificationSettings();
     return;
   }
@@ -2158,25 +2448,25 @@ async function requestNotificationPermission() {
     state.settings.notificationsEnabled = true;
     saveState();
     renderNotificationSettings();
-    showToast(getLanguage() === "en" ? "Notifications are enabled." : "通知提醒已开启。");
+    showToast(getLanguage() !== "zh-CN" ? "Notifications are enabled." : "通知提醒已开启。");
     return;
   }
 
   renderNotificationSettings();
-  showToast(getLanguage() === "en" ? "Notification permission was not granted." : "还没有获得通知权限。");
+  showToast(getLanguage() !== "zh-CN" ? "Notification permission was not granted." : "还没有获得通知权限。");
 }
 
 async function sendTestNotification() {
   const sent = await sendLocalNotification({
-    title: getLanguage() === "en" ? "Eva's Moon Test" : "Eva的月亮测试提醒",
-    body: getLanguage() === "en" ? "Notifications are working on this device." : "这台设备已经可以收到应用提醒了。",
+    title: getLanguage() !== "zh-CN" ? "Eva's Moon Test" : "Eva的月亮测试提醒",
+    body: getLanguage() !== "zh-CN" ? "Notifications are working on this device." : "这台设备已经可以收到应用提醒了。",
     tag: "eva-moon-test",
   });
   if (sent) {
-    showToast(getLanguage() === "en" ? "Test reminder sent." : "测试提醒已发送。");
+    showToast(getLanguage() !== "zh-CN" ? "Test reminder sent." : "测试提醒已发送。");
     return;
   }
-  showToast(getLanguage() === "en" ? "Notifications are not ready yet." : "通知暂时还不能使用。");
+  showToast(getLanguage() !== "zh-CN" ? "Notifications are not ready yet." : "通知暂时还不能使用。");
 }
 
 async function evaluateNotificationTriggers(insights) {
@@ -2189,8 +2479,8 @@ async function evaluateNotificationTriggers(insights) {
       const lastNotifiedAttentionId = localStorage.getItem(NOTIFICATION_ATTENTION_KEY);
       if (lastNotifiedAttentionId !== latestAttention.id) {
         const sent = await sendLocalNotification({
-          title: getLanguage() === "en" ? "Tell A Parent Today" : "今天需要告诉家长",
-          body: getLanguage() === "en"
+          title: getLanguage() !== "zh-CN" ? "Tell A Parent Today" : "今天需要告诉家长",
+          body: getLanguage() !== "zh-CN"
             ? `${formatDate(latestAttention.date)}: pain ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "needs attention"}.`
             : `${formatDate(latestAttention.date)}：疼痛 ${latestAttention.painLevel}/10，${formatAlertFlags(latestAttention) || "需要留意"}。`,
           tag: `attention-${latestAttention.id}`,
@@ -2207,8 +2497,8 @@ async function evaluateNotificationTriggers(insights) {
   if (localStorage.getItem(NOTIFICATION_DAILY_KEY) === insights.today) return;
 
   const sent = await sendLocalNotification({
-    title: getLanguage() === "en" ? "Remember Today's Check-in" : "记得补今天的记录",
-    body: getLanguage() === "en"
+    title: getLanguage() !== "zh-CN" ? "Remember Today's Check-in" : "记得补今天的记录",
+    body: getLanguage() !== "zh-CN"
       ? "There is no daily log for today yet. A quick check-in only takes a few taps."
       : "今天还没有日报。点几下就能记完今天的状态。",
     tag: `daily-check-${insights.today}`,
@@ -2305,7 +2595,7 @@ function toDateInputValue(date) {
 }
 
 function formatDate(dateString) {
-  return new Intl.DateTimeFormat(getLanguage() === "en" ? "en-US" : "zh-CN", {
+  return new Intl.DateTimeFormat(getDateLocale(), {
     year: "numeric",
     month: "long",
     day: "numeric",
