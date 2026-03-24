@@ -1,6 +1,7 @@
 const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
+const PARENT_UNLOCK_EXPIRES_KEY = "moon-log-parent-unlock-expires-v1";
 const MAX_PIN_ATTEMPTS = 3;
 const SYMPTOMS = [
   "腹痛",
@@ -91,6 +92,7 @@ const state = {
     manualPeriodLength: "",
     parentMode: false,
     parentPin: "",
+    parentLockMinutes: "10",
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -130,9 +132,11 @@ const elements = {
   clearBtn: document.querySelector("#clear-btn"),
   seedBtn: document.querySelector("#seed-btn"),
   jumpButtons: document.querySelectorAll("[data-jump]"),
+  quickLogBtn: document.querySelector("#quick-log-btn"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
+  parentLockMinutes: document.querySelector("#parent-lock-minutes"),
   resetSettingsBtn: document.querySelector("#reset-settings-btn"),
   dailyForm: document.querySelector("#daily-form"),
   dailyLogId: document.querySelector("#daily-log-id"),
@@ -230,6 +234,7 @@ function attachEvents() {
   elements.resetSettingsBtn.addEventListener("click", resetSettings);
   elements.installBtn.addEventListener("click", installApp);
   elements.parentModeBtn.addEventListener("click", toggleParentMode);
+  elements.quickLogBtn?.addEventListener("click", quickLogToday);
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
@@ -872,38 +877,76 @@ function exportData() {
 
 function exportSummary() {
   const insights = buildInsights();
-  const lines = [
-    "Eva的月亮 - 家长摘要",
-    `导出日期：${formatDate(toDateInputValue(new Date()))}`,
-    "",
-    `经期记录次数：${state.records.length}`,
-    `日报记录次数：${state.dailyLogs.length}`,
-    `平均周期：${insights.averageCycleLength} 天`,
-    `平均经期：${insights.averagePeriodLength} 天`,
-    `最近一次月经开始：${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : "暂无"}`,
-    `最近一条日报：${insights.lastDailyLog ? formatDate(insights.lastDailyLog.date) : "暂无"}`,
-    `需要告诉家长的日报次数：${insights.needsParentAttentionCount}`,
-    "",
-    "高频身体感觉：",
-    insights.frequentSymptoms.length
-      ? insights.frequentSymptoms.map(([name, count]) => `- ${name}：${count} 次`).join("\n")
-      : "- 暂无",
-    "",
-    "最近 5 条日报：",
-    ...[...state.dailyLogs]
-      .sort((a, b) => b.date.localeCompare(a.date))
-      .slice(0, 5)
-      .map(
-        (log) =>
-          `- ${formatDate(log.date)} | 出血:${log.bleeding} | 疼痛:${log.painLevel}/10 | 精力:${log.energyLevel}/5 | 心情:${log.mood}${shouldTellParent(log) ? " | 建议告诉家长" : ""}`,
-      ),
-  ];
+  const recentLogs = [...state.dailyLogs]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 5)
+    .map(
+      (log) => `
+        <tr>
+          <td>${formatDate(log.date)}</td>
+          <td>${log.bleeding}</td>
+          <td>${log.painLevel}/10</td>
+          <td>${log.energyLevel}/5</td>
+          <td>${log.mood}</td>
+          <td>${shouldTellParent(log) ? "建议告诉家长" : "正常观察"}</td>
+        </tr>
+      `,
+    )
+    .join("");
 
-  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+  const symptomMarkup = insights.frequentSymptoms.length
+    ? insights.frequentSymptoms.map(([name, count]) => `<li>${name}：${count} 次</li>`).join("")
+    : "<li>暂无</li>";
+
+  const html = `<!DOCTYPE html>
+  <html lang="zh-CN">
+    <head>
+      <meta charset="UTF-8">
+      <title>Eva的月亮 - 家长摘要</title>
+      <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 24px; color: #3f2430; }
+        h1, h2 { margin: 0 0 12px; }
+        .card { border: 1px solid #e6d2d8; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #eadde1; padding: 8px; text-align: left; }
+        th { background: #fff3f6; }
+        ul { margin: 8px 0 0 20px; }
+      </style>
+    </head>
+    <body>
+      <h1>Eva的月亮 - 家长摘要</h1>
+      <p>导出日期：${formatDate(toDateInputValue(new Date()))}</p>
+      <section class="card">
+        <h2>概况</h2>
+        <p>经期记录次数：${state.records.length}</p>
+        <p>日报记录次数：${state.dailyLogs.length}</p>
+        <p>平均周期：${insights.averageCycleLength} 天</p>
+        <p>平均经期：${insights.averagePeriodLength} 天</p>
+        <p>最近一次月经开始：${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : "暂无"}</p>
+        <p>需要告诉家长的日报次数：${insights.needsParentAttentionCount}</p>
+      </section>
+      <section class="card">
+        <h2>高频身体感觉</h2>
+        <ul>${symptomMarkup}</ul>
+      </section>
+      <section class="card">
+        <h2>最近 5 条日报</h2>
+        <table>
+          <thead>
+            <tr><th>日期</th><th>出血</th><th>疼痛</th><th>精力</th><th>心情</th><th>提醒</th></tr>
+          </thead>
+          <tbody>${recentLogs}</tbody>
+        </table>
+      </section>
+      <script>window.print();</script>
+    </body>
+  </html>`;
+
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement("a");
   anchor.href = url;
-  anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.txt`;
+  anchor.download = `eva-moon-summary-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
 }
@@ -965,6 +1008,9 @@ function saveSettings(event) {
   state.settings = normalizeSettings({
     manualCycleLength: elements.manualCycleLength.value,
     manualPeriodLength: elements.manualPeriodLength.value,
+    parentLockMinutes: elements.parentLockMinutes.value,
+    parentMode: state.settings.parentMode,
+    parentPin: state.settings.parentPin,
   });
   saveState();
   render();
@@ -980,10 +1026,11 @@ function resetSettings() {
 function renderSettings() {
   elements.manualCycleLength.value = state.settings.manualCycleLength;
   elements.manualPeriodLength.value = state.settings.manualPeriodLength;
+  elements.parentLockMinutes.value = state.settings.parentLockMinutes;
 }
 
 function renderParentMode() {
-  const isUnlockedInSession = sessionStorage.getItem(PARENT_UNLOCK_KEY) === "1";
+  const isUnlockedInSession = isParentSessionUnlocked();
   if (state.settings.parentMode && !isUnlockedInSession) {
     state.settings.parentMode = false;
   }
@@ -1037,13 +1084,14 @@ function normalizeSettings(settings = {}) {
     manualPeriodLength: normalizeNumberWithinRange(settings.manualPeriodLength, 2, 14),
     parentMode: Boolean(settings.parentMode),
     parentPin: normalizePin(settings.parentPin),
+    parentLockMinutes: normalizeLockMinutes(settings.parentLockMinutes),
   };
 }
 
 function toggleParentMode() {
   if (state.settings.parentMode) {
     state.settings.parentMode = false;
-    sessionStorage.removeItem(PARENT_UNLOCK_KEY);
+    clearParentSessionUnlock();
     saveState();
     render();
     return;
@@ -1099,7 +1147,7 @@ function savePin(event) {
 function clearPin() {
   state.settings.parentPin = "";
   state.settings.parentMode = false;
-  sessionStorage.removeItem(PARENT_UNLOCK_KEY);
+  clearParentSessionUnlock();
   saveState();
   render();
   elements.pinStatus.textContent = "家长 PIN 已清除。";
@@ -1128,7 +1176,7 @@ function handlePinDialogSubmit(event) {
 
     state.settings.parentPin = inputPin;
     state.settings.parentMode = true;
-    sessionStorage.setItem(PARENT_UNLOCK_KEY, "1");
+    setParentSessionUnlock();
     saveState();
     render();
     elements.pinDialog.close();
@@ -1149,7 +1197,7 @@ function handlePinDialogSubmit(event) {
 
   state.pinAttempts = 0;
   state.settings.parentMode = true;
-  sessionStorage.setItem(PARENT_UNLOCK_KEY, "1");
+  setParentSessionUnlock();
   saveState();
   render();
   elements.pinDialog.close();
@@ -1200,6 +1248,37 @@ function normalizeNumberWithinRange(value, min, max) {
   if (!numeric) return "";
   if (numeric < min || numeric > max) return "";
   return String(Math.round(numeric));
+}
+
+function normalizeLockMinutes(value) {
+  const allowed = ["5", "10", "30", "60"];
+  return allowed.includes(String(value)) ? String(value) : "10";
+}
+
+function setParentSessionUnlock() {
+  sessionStorage.setItem(PARENT_UNLOCK_KEY, "1");
+  const expiresAt = Date.now() + Number(state.settings.parentLockMinutes || "10") * 60 * 1000;
+  sessionStorage.setItem(PARENT_UNLOCK_EXPIRES_KEY, String(expiresAt));
+}
+
+function clearParentSessionUnlock() {
+  sessionStorage.removeItem(PARENT_UNLOCK_KEY);
+  sessionStorage.removeItem(PARENT_UNLOCK_EXPIRES_KEY);
+}
+
+function isParentSessionUnlocked() {
+  const unlocked = sessionStorage.getItem(PARENT_UNLOCK_KEY) === "1";
+  const expiresAt = Number(sessionStorage.getItem(PARENT_UNLOCK_EXPIRES_KEY) || 0);
+  if (!unlocked) return false;
+  if (!expiresAt || Date.now() > expiresAt) {
+    clearParentSessionUnlock();
+    return false;
+  }
+  return true;
+}
+
+function quickLogToday() {
+  fillDailyDate(toDateInputValue(new Date()));
 }
 
 function installApp() {

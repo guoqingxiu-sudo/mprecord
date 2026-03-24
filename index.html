@@ -24,6 +24,7 @@
             轻轻松松记下今天的身体感觉，也让家长更安心。
           </p>
           <div class="hero__actions">
+            <button class="primary-btn" id="quick-log-btn" type="button">今天一键记录</button>
             <button class="primary-btn" data-jump="#record-form">立即记录</button>
             <button class="ghost-btn" data-jump="#calendar-panel">查看日历</button>
             <button class="ghost-btn" id="parent-mode-btn" type="button">打开家长模式</button>
@@ -381,6 +382,15 @@
                   <input id="manual-period-length" type="number" min="2" max="14" placeholder="留空则自动计算" />
                 </label>
               </div>
+              <label>
+                自动锁定时间
+                <select id="parent-lock-minutes">
+                  <option value="5">5 分钟</option>
+                  <option value="10" selected>10 分钟</option>
+                  <option value="30">30 分钟</option>
+                  <option value="60">60 分钟</option>
+                </select>
+              </label>
               <div class="form-actions">
                 <button id="save-settings-btn" class="ghost-btn" type="submit">保存参数</button>
                 <button id="reset-settings-btn" class="text-btn" type="button">恢复自动计算</button>
