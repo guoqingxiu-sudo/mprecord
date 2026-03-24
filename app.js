@@ -1,5 +1,7 @@
 const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
+const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
+const MAX_PIN_ATTEMPTS = 3;
 const SYMPTOMS = [
   "腹痛",
   "腰酸",
@@ -93,6 +95,7 @@ const state = {
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
   pinDialogMode: "unlock",
+  pinAttempts: 0,
 };
 
 const elements = {
@@ -161,6 +164,7 @@ const elements = {
   pinDialogConfirmWrap: document.querySelector("#pin-dialog-confirm-wrap"),
   pinDialogConfirmInput: document.querySelector("#pin-dialog-confirm-input"),
   pinDialogStatus: document.querySelector("#pin-dialog-status"),
+  pinDialogToggleVisibility: document.querySelector("#pin-dialog-toggle-visibility"),
   printChecklistBtn: document.querySelector("#print-checklist-btn"),
   welcomeDialog: document.querySelector("#welcome-dialog"),
   welcomeDialogForm: document.querySelector("#welcome-dialog-form"),
@@ -229,6 +233,7 @@ function attachEvents() {
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
+  elements.pinDialogToggleVisibility?.addEventListener("click", togglePinVisibility);
   elements.printChecklistBtn?.addEventListener("click", () => window.print());
   elements.welcomeDialogForm?.addEventListener("submit", closeOnboarding);
 
@@ -978,6 +983,10 @@ function renderSettings() {
 }
 
 function renderParentMode() {
+  const isUnlockedInSession = sessionStorage.getItem(PARENT_UNLOCK_KEY) === "1";
+  if (state.settings.parentMode && !isUnlockedInSession) {
+    state.settings.parentMode = false;
+  }
   elements.parentModeBtn.textContent = state.settings.parentMode ? "关闭家长模式" : "打开家长模式";
   elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
   elements.parentOnlySections.forEach((node) => {
@@ -1034,6 +1043,7 @@ function normalizeSettings(settings = {}) {
 function toggleParentMode() {
   if (state.settings.parentMode) {
     state.settings.parentMode = false;
+    sessionStorage.removeItem(PARENT_UNLOCK_KEY);
     saveState();
     render();
     return;
@@ -1089,6 +1099,7 @@ function savePin(event) {
 function clearPin() {
   state.settings.parentPin = "";
   state.settings.parentMode = false;
+  sessionStorage.removeItem(PARENT_UNLOCK_KEY);
   saveState();
   render();
   elements.pinStatus.textContent = "家长 PIN 已清除。";
@@ -1117,6 +1128,7 @@ function handlePinDialogSubmit(event) {
 
     state.settings.parentPin = inputPin;
     state.settings.parentMode = true;
+    sessionStorage.setItem(PARENT_UNLOCK_KEY, "1");
     saveState();
     render();
     elements.pinDialog.close();
@@ -1124,11 +1136,20 @@ function handlePinDialogSubmit(event) {
   }
 
   if (inputPin !== state.settings.parentPin) {
-    elements.pinDialogStatus.textContent = "PIN 不正确，请重试。";
+    state.pinAttempts += 1;
+    const remaining = Math.max(MAX_PIN_ATTEMPTS - state.pinAttempts, 0);
+    elements.pinDialogStatus.textContent =
+      remaining > 0 ? `PIN 不正确，请重试。还可以再试 ${remaining} 次。` : "PIN 连续输错太多次，请关闭后再试。";
+    if (remaining === 0) {
+      elements.pinDialog.close();
+      state.pinAttempts = 0;
+    }
     return;
   }
 
+  state.pinAttempts = 0;
   state.settings.parentMode = true;
+  sessionStorage.setItem(PARENT_UNLOCK_KEY, "1");
   saveState();
   render();
   elements.pinDialog.close();
@@ -1151,13 +1172,27 @@ function closeOnboarding() {
 
 function openPinDialog(mode) {
   state.pinDialogMode = mode;
+  state.pinAttempts = 0;
   elements.pinDialogInput.value = "";
   elements.pinDialogConfirmInput.value = "";
+  setPinInputsVisibility(false);
   elements.pinDialogConfirmWrap.classList.toggle("is-hidden", mode !== "setup");
   elements.pinDialogTitle.textContent = mode === "setup" ? "设置家长 PIN" : "输入家长 PIN";
   elements.pinDialogStatus.textContent =
     mode === "setup" ? "第一次使用家长模式，请先设置一个 4 位数字 PIN。" : "只有家长知道这个 PIN。";
   elements.pinDialog.showModal();
+}
+
+function togglePinVisibility() {
+  const shouldShow = elements.pinDialogInput.type === "password";
+  setPinInputsVisibility(shouldShow);
+}
+
+function setPinInputsVisibility(visible) {
+  const type = visible ? "text" : "password";
+  elements.pinDialogInput.type = type;
+  elements.pinDialogConfirmInput.type = type;
+  elements.pinDialogToggleVisibility.textContent = visible ? "隐藏 PIN" : "显示 PIN";
 }
 
 function normalizeNumberWithinRange(value, min, max) {

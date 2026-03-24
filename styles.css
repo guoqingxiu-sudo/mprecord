@@ -484,6 +484,10 @@ textarea {
   margin: auto;
 }
 
+.pin-dialog .form-actions {
+  align-items: center;
+}
+
 .print-sheet {
   border-style: dashed;
 }
