@@ -20,6 +20,7 @@
           <div class="hero__actions">
             <button class="primary-btn" data-jump="#record-form">立即记录</button>
             <button class="ghost-btn" data-jump="#calendar-panel">查看日历</button>
+            <button class="ghost-btn" id="parent-mode-btn" type="button">打开家长模式</button>
             <button class="ghost-btn is-hidden" id="install-btn" type="button">安装应用</button>
           </div>
         </div>
@@ -72,7 +73,7 @@
                 <span class="range-hint"><strong id="pain-output">3</strong>/10</span>
               </label>
               <label>
-                情绪状态
+                今天心情
                 <select id="mood" name="mood">
                   <option value="平稳" selected>平稳</option>
                   <option value="轻松">轻松</option>
@@ -84,7 +85,7 @@
             </div>
 
             <fieldset class="symptoms">
-              <legend>伴随症状</legend>
+              <legend>身体感觉</legend>
               <div class="tag-grid" id="symptom-options"></div>
             </fieldset>
 
@@ -145,7 +146,7 @@
                 <span class="range-hint"><strong id="energy-output">3</strong>/5</span>
               </label>
               <label>
-                情绪状态
+                今天心情
                 <select id="daily-mood">
                   <option value="平稳" selected>平稳</option>
                   <option value="轻松">轻松</option>
@@ -157,9 +158,19 @@
             </div>
 
             <fieldset>
-              <legend>当日症状</legend>
+              <legend>身体感觉</legend>
               <div class="tag-grid" id="daily-symptom-options"></div>
             </fieldset>
+
+            <fieldset>
+              <legend>今天有没有这些情况</legend>
+              <div class="tag-grid" id="alert-flag-options"></div>
+            </fieldset>
+
+            <div class="card mini-card" id="alert-advice">
+              <p class="card__label">告诉家长</p>
+              <p id="alert-advice-text" class="record-notes"></p>
+            </div>
 
             <label>
               当日备注
@@ -195,11 +206,11 @@
 
           <div class="stats-grid" id="stats-grid"></div>
 
-          <section class="card prediction-card">
+          <section class="card prediction-card parent-only">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Forecast</p>
-                <h2>周期预测</h2>
+                <p class="eyebrow">Parent View</p>
+                <h2>家长查看</h2>
               </div>
             </div>
             <div id="prediction-content" class="prediction-copy"></div>
@@ -229,8 +240,8 @@
             </div>
             <div class="calendar-legend">
               <span><i class="swatch swatch--period"></i>已记录经期</span>
-              <span><i class="swatch swatch--predicted"></i>预测经期</span>
-              <span><i class="swatch swatch--fertile"></i>易孕窗口</span>
+              <span class="parent-only"><i class="swatch swatch--predicted"></i>预测经期</span>
+              <span class="parent-only"><i class="swatch swatch--fertile"></i>易孕窗口</span>
               <span><i class="swatch swatch--log"></i>当日日报</span>
               <span><i class="swatch swatch--today"></i>今天</span>
             </div>
@@ -239,7 +250,7 @@
         </section>
 
         <aside class="panel panel--history">
-          <section class="card">
+          <section class="card parent-only">
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Settings</p>

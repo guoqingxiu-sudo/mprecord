@@ -322,6 +322,21 @@ textarea {
   margin: 0;
 }
 
+.mini-card {
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 250, 247, 0.92);
+}
+
+.mode-active {
+  background: linear-gradient(135deg, var(--primary), #ef7b8d);
+  color: #fff;
+}
+
+.parent-only.is-hidden-by-mode {
+  display: none;
+}
+
 .calendar-nav {
   display: flex;
   align-items: center;

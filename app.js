@@ -11,6 +11,7 @@ const SYMPTOMS = [
   "情绪波动",
   "腹胀",
 ];
+const ALERT_FLAGS = ["痛得没法上课", "一小时湿透一片", "头晕想吐", "发烧不舒服"];
 
 const SAMPLE_DATA = {
   records: [
@@ -85,6 +86,7 @@ const state = {
   settings: {
     manualCycleLength: "",
     manualPeriodLength: "",
+    parentMode: false,
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -139,6 +141,10 @@ const elements = {
   dailyFormStatus: document.querySelector("#daily-form-status"),
   resetDailyFormBtn: document.querySelector("#reset-daily-form-btn"),
   installBtn: document.querySelector("#install-btn"),
+  alertFlagOptions: document.querySelector("#alert-flag-options"),
+  alertAdviceText: document.querySelector("#alert-advice-text"),
+  parentModeBtn: document.querySelector("#parent-mode-btn"),
+  parentOnlySections: document.querySelectorAll(".parent-only"),
 };
 
 bootstrap();
@@ -146,6 +152,7 @@ bootstrap();
 function bootstrap() {
   renderSymptomOptions(elements.symptomOptions, "period-symptoms");
   renderSymptomOptions(elements.dailySymptomOptions, "daily-symptoms");
+  renderSymptomOptions(elements.alertFlagOptions, "alert-flags", ALERT_FLAGS);
   attachEvents();
   loadState();
   resetDailyForm();
@@ -163,6 +170,7 @@ function attachEvents() {
   elements.energyLevel.addEventListener("input", () => {
     elements.energyOutput.textContent = elements.energyLevel.value;
   });
+  elements.dailyForm.addEventListener("input", updateAlertAdvice);
 
   elements.periodForm.addEventListener("submit", onSubmitPeriod);
   elements.dailyForm.addEventListener("submit", onSubmitDailyLog);
@@ -191,6 +199,7 @@ function attachEvents() {
   elements.settingsForm.addEventListener("submit", saveSettings);
   elements.resetSettingsBtn.addEventListener("click", resetSettings);
   elements.installBtn.addEventListener("click", installApp);
+  elements.parentModeBtn.addEventListener("click", toggleParentMode);
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -211,8 +220,8 @@ function attachEvents() {
   });
 }
 
-function renderSymptomOptions(container, groupName) {
-  container.innerHTML = SYMPTOMS.map(
+function renderSymptomOptions(container, groupName, items = SYMPTOMS) {
+  container.innerHTML = items.map(
     (symptom) => `
       <label class="tag-check">
         <input type="checkbox" name="${groupName}" value="${symptom}">
@@ -272,6 +281,7 @@ function onSubmitDailyLog(event) {
     energyLevel: Number(elements.energyLevel.value),
     mood: elements.dailyMood.value,
     symptoms: getSelectedSymptoms("daily-symptoms"),
+    alertFlags: getSelectedSymptoms("alert-flags"),
     notes: elements.dailyNotes.value.trim(),
   };
 
@@ -305,6 +315,8 @@ function render() {
   renderRecords();
   renderDailyLogs();
   renderSettings();
+  renderParentMode();
+  updateAlertAdvice();
 }
 
 function buildInsights() {
@@ -354,6 +366,7 @@ function buildInsights() {
   const averageRecentPain = average(recentLogs.map((log) => log.painLevel));
   const averageRecentEnergy = average(recentLogs.map((log) => log.energyLevel));
   const highPainCount = sortedDailyLogs.filter((log) => log.painLevel >= 7).length;
+  const needsParentAttentionCount = sortedDailyLogs.filter((log) => shouldTellParent(log)).length;
 
   return {
     today,
@@ -377,6 +390,7 @@ function buildInsights() {
     averageRecentPain,
     averageRecentEnergy,
     highPainCount,
+    needsParentAttentionCount,
   };
 }
 
@@ -394,13 +408,15 @@ function renderHero(insights) {
 
   if (insights.currentPeriodRecord) {
     elements.cycleSummary.textContent = `本次经期开始于 ${formatDate(insights.currentPeriodRecord.startDate)}，结束日期记录为 ${formatDate(insights.currentPeriodRecord.endDate)}。`;
-  } else if (insights.nextStartDate) {
+  } else if (state.settings.parentMode && insights.nextStartDate) {
     elements.cycleSummary.textContent = `预计下次来潮时间为 ${formatDate(insights.nextStartDate)}，可根据实际情况调整与修正。`;
+  } else {
+    elements.cycleSummary.textContent = "继续记录就好，看到不舒服的时候记得告诉家长。";
   }
 
   const pillTexts = [
-    `平均周期 ${insights.averageCycleLength} 天`,
-    `平均经期 ${insights.averagePeriodLength} 天`,
+    `已记录 ${insights.sorted.length} 次`,
+    `最近状态 ${insights.todayLog ? `${insights.todayLog.mood}` : "还没填"}`,
     insights.todayLog ? `今日日报 ${insights.todayLog.bleeding} / 疼痛 ${insights.todayLog.painLevel}` : "今天还没有日报",
   ];
 
@@ -420,14 +436,9 @@ function renderStats(insights) {
       note: insights.sorted.length ? `最近一次：${formatDate(insights.lastRecord.startDate)}` : "建议至少记录 3 个周期。",
     },
     {
-      label: "平均周期",
-      value: `${insights.averageCycleLength} 天`,
-      note:
-        Number(state.settings.manualCycleLength) > 0
-          ? `已手动覆盖，自动均值为 ${insights.autoCycleLength} 天。`
-          : insights.sorted.length >= 2
-            ? "按相邻开始日期计算。"
-            : "当前使用默认 28 天。",
+      label: "需要告诉家长",
+      value: `${insights.needsParentAttentionCount} 次`,
+      note: insights.needsParentAttentionCount ? "出现过比较需要留意的日报。" : "目前没有明显异常提醒。",
     },
     {
       label: "最近 7 天状态",
@@ -447,6 +458,14 @@ function renderStats(insights) {
 }
 
 function renderPrediction(insights) {
+  if (!state.settings.parentMode) {
+    elements.predictionContent.innerHTML = `
+      <p>这里是家长查看区。</p>
+      <p class="muted">默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。</p>
+    `;
+    return;
+  }
+
   if (!insights.lastRecord) {
     elements.predictionContent.innerHTML = `
       <p>暂无足够数据生成预测。</p>
@@ -494,8 +513,9 @@ function renderTrend(insights) {
     : "暂无高频症状数据。";
 
   elements.trendContent.innerHTML = `
-    <p><strong>周期波动：</strong>${irregularityText}</p>
-    <p><strong>波动范围：</strong>${insights.cycleLengths.length ? `${insights.cycleVariation} 天` : "暂无"}</p>
+    <p><strong>孩子近况：</strong>${insights.lastDailyLog ? "最近有持续记录，可以继续保持。" : "先从不舒服的那几天开始记就可以。"}</p>
+    <p><strong>周期波动：</strong>${state.settings.parentMode ? irregularityText : "这部分放在家长模式里查看。"} </p>
+    <p><strong>波动范围：</strong>${state.settings.parentMode && insights.cycleLengths.length ? `${insights.cycleVariation} 天` : "家长模式可见"}</p>
     <p><strong>高频症状：</strong>${symptomText}</p>
     <p><strong>高疼痛日报：</strong>${insights.highPainCount} 次${insights.highPainCount ? "，可以单独留意诱因和缓解方式。" : ""}</p>
     <p><strong>最近日报：</strong>${insights.lastDailyLog ? `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。` : "还没有日报记录。"}</p>
@@ -525,8 +545,10 @@ function buildDayCell(date, monthStart, insights) {
   const tags = [];
   const states = [];
   const hasPeriod = isDateInRecord(date, insights.sorted);
-  const hasPredicted = insights.predictedPeriodRange && date >= insights.predictedPeriodRange.start && date <= insights.predictedPeriodRange.end;
-  const hasFertile = insights.fertileWindow && date >= insights.fertileWindow.start && date <= insights.fertileWindow.end;
+  const hasPredicted =
+    state.settings.parentMode && insights.predictedPeriodRange && date >= insights.predictedPeriodRange.start && date <= insights.predictedPeriodRange.end;
+  const hasFertile =
+    state.settings.parentMode && insights.fertileWindow && date >= insights.fertileWindow.start && date <= insights.fertileWindow.end;
   const dayLog = insights.sortedDailyLogs.find((log) => log.date === date) || null;
 
   if (hasPeriod) {
@@ -609,7 +631,7 @@ function renderDailyLogs() {
         <div class="record-item__top">
           <div>
             <strong>${formatDate(log.date)}</strong>
-            <div class="muted">出血 ${log.bleeding}，精力 ${log.energyLevel}/5</div>
+            <div class="muted">出血 ${log.bleeding}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}</div>
           </div>
           <div class="record-item__actions">
             <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">编辑</button>
@@ -673,6 +695,7 @@ function editDailyLog(logId) {
   elements.dailyMood.value = log.mood;
   elements.dailyNotes.value = log.notes;
   setCheckedSymptoms("daily-symptoms", log.symptoms);
+  setCheckedSymptoms("alert-flags", log.alertFlags || []);
   setDailyFormStatus("已载入日报，可直接修改后保存。");
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -715,6 +738,7 @@ function resetDailyForm() {
   elements.energyLevel.value = "3";
   elements.energyOutput.textContent = "3";
   setCheckedSymptoms("daily-symptoms", []);
+  setCheckedSymptoms("alert-flags", []);
   setDailyFormStatus("");
 }
 
@@ -757,7 +781,7 @@ function loadState() {
     const parsed = JSON.parse(raw);
     state.records = Array.isArray(parsed.records) ? parsed.records.map(normalizeRecord).filter(Boolean) : [];
     state.dailyLogs = Array.isArray(parsed.dailyLogs) ? parsed.dailyLogs.map(normalizeDailyLog).filter(Boolean) : [];
-    state.settings = normalizeSettings(parsed.settings);
+  state.settings = normalizeSettings(parsed.settings);
     sortRecords();
     sortDailyLogs();
   } catch (error) {
@@ -873,6 +897,14 @@ function renderSettings() {
   elements.manualPeriodLength.value = state.settings.manualPeriodLength;
 }
 
+function renderParentMode() {
+  elements.parentModeBtn.textContent = state.settings.parentMode ? "关闭家长模式" : "打开家长模式";
+  elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
+  elements.parentOnlySections.forEach((node) => {
+    node.classList.toggle("is-hidden-by-mode", !state.settings.parentMode);
+  });
+}
+
 function normalizeRecord(record) {
   if (!record || !record.startDate || !record.endDate) return null;
   return {
@@ -897,6 +929,7 @@ function normalizeDailyLog(log) {
     energyLevel: Number(log.energyLevel ?? 3),
     mood: log.mood || "平稳",
     symptoms: Array.isArray(log.symptoms) ? log.symptoms : [],
+    alertFlags: Array.isArray(log.alertFlags) ? log.alertFlags : [],
     notes: log.notes || "",
   };
 }
@@ -905,7 +938,33 @@ function normalizeSettings(settings = {}) {
   return {
     manualCycleLength: normalizeNumberWithinRange(settings.manualCycleLength, 15, 60),
     manualPeriodLength: normalizeNumberWithinRange(settings.manualPeriodLength, 2, 14),
+    parentMode: Boolean(settings.parentMode),
   };
+}
+
+function toggleParentMode() {
+  state.settings.parentMode = !state.settings.parentMode;
+  saveState();
+  render();
+}
+
+function updateAlertAdvice() {
+  const draft = {
+    bleeding: elements.dailyBleeding.value,
+    painLevel: Number(elements.dailyPainLevel.value),
+    alertFlags: getSelectedSymptoms("alert-flags"),
+  };
+  elements.alertAdviceText.textContent = shouldTellParent(draft)
+    ? "今天建议马上告诉家长，或者让老师帮你联系家长。"
+    : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。";
+}
+
+function shouldTellParent(log) {
+  return (
+    Number(log.painLevel) >= 7 ||
+    log.bleeding === "重" ||
+    (Array.isArray(log.alertFlags) && log.alertFlags.length > 0)
+  );
 }
 
 function normalizeNumberWithinRange(value, min, max) {
