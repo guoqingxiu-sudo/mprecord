@@ -1117,6 +1117,180 @@ const RUNTIME_TEXT = {
     tr: "Son 5 Gunluk Kayit",
     ru: "Poslednie 5 Ezhednevnyh Zapisei",
   },
+  placeholderPin: {
+    "zh-CN": "4 位数字",
+    en: "4 digits",
+    tr: "4 rakam",
+    ru: "4 cifry",
+  },
+  placeholderAgain: {
+    "zh-CN": "再次输入",
+    en: "Enter again",
+    tr: "Tekrar gir",
+    ru: "Vvedite eshche raz",
+  },
+  placeholderAuto: {
+    "zh-CN": "留空则自动计算",
+    en: "Empty = auto",
+    tr: "Bos birak = otomatik",
+    ru: "Pustym = avtomaticheski",
+  },
+  placeholderEnterPin: {
+    "zh-CN": "请输入 PIN",
+    en: "Enter PIN",
+    tr: "PIN girin",
+    ru: "Vvedite PIN",
+  },
+  placeholderEnterPinAgain: {
+    "zh-CN": "再次输入 PIN",
+    en: "Enter PIN again",
+    tr: "PIN'i tekrar girin",
+    ru: "Vvedite PIN eshche raz",
+  },
+  deletePeriodConfirm: {
+    "zh-CN": "确认删除 {date} 的经期记录吗？",
+    en: "Delete the period record for {date}?",
+    tr: "{date} tarihli adet kaydi silinsin mi?",
+    ru: "Udalit zapis o menstruatsii za {date}?",
+  },
+  deleteDailyConfirm: {
+    "zh-CN": "确认删除 {date} 的日报吗？",
+    en: "Delete the daily log for {date}?",
+    tr: "{date} tarihli gunluk kayit silinsin mi?",
+    ru: "Udalit ezhednevnuyu zapis za {date}?",
+  },
+  listEdit: {
+    "zh-CN": "编辑",
+    en: "Edit",
+    tr: "Duzenle",
+    ru: "Izmenit",
+  },
+  listDelete: {
+    "zh-CN": "删除",
+    en: "Delete",
+    tr: "Sil",
+    ru: "Udalit",
+  },
+  listNoNotes: {
+    "zh-CN": "无备注",
+    en: "No notes",
+    tr: "Not yok",
+    ru: "Net zametok",
+  },
+  listNoPeriodRecords: {
+    "zh-CN": "还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。",
+    en: "No period records yet. Start with the most recent one first. There is no need to add everything at once.",
+    tr: "Henuz adet kaydi yok. En son kayitla baslamak yeterli, hepsini bir anda girmek gerekmez.",
+    ru: "Zapisey o menstruatsii poka net. Nachnite s samoy posledney, ne nuzhno dobavlyat vse srazu.",
+  },
+  listNoDailyLogs: {
+    "zh-CN": "还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。",
+    en: "No daily logs yet. Starting with today is fine, and tapping any date on the calendar fills it in quickly.",
+    tr: "Henuz gunluk kayit yok. Bugunden baslamak yeterli; takvimde bir tarihe dokunarak hizlica doldurabilirsiniz.",
+    ru: "Ezhednevnyh zapisey poka net. Mozhno nachat s segodnya; lyubuyu datu v kalendare mozhno bystro podставit.",
+  },
+  labelFlow: {
+    "zh-CN": "流量",
+    en: "Flow",
+    tr: "Kanama",
+    ru: "Vydeleniya",
+  },
+  labelPain: {
+    "zh-CN": "疼痛",
+    en: "Pain",
+    tr: "Agri",
+    ru: "Bol",
+  },
+  labelMood: {
+    "zh-CN": "情绪",
+    en: "Mood",
+    tr: "Ruh hali",
+    ru: "Nastroenie",
+  },
+  labelEnergy: {
+    "zh-CN": "精力",
+    en: "Energy",
+    tr: "Enerji",
+    ru: "Energiya",
+  },
+  detailBleeding: {
+    "zh-CN": "出血：",
+    en: "Bleeding:",
+    tr: "Kanama:",
+    ru: "Vydeleniya:",
+  },
+  detailPain: {
+    "zh-CN": "疼痛：",
+    en: "Pain:",
+    tr: "Agri:",
+    ru: "Bol:",
+  },
+  detailEnergy: {
+    "zh-CN": "精力：",
+    en: "Energy:",
+    tr: "Enerji:",
+    ru: "Energiya:",
+  },
+  detailMood: {
+    "zh-CN": "心情：",
+    en: "Mood:",
+    tr: "Ruh hali:",
+    ru: "Nastroenie:",
+  },
+  detailBodyFeelings: {
+    "zh-CN": "身体感觉：",
+    en: "Body feelings:",
+    tr: "Beden hisleri:",
+    ru: "Oshchushcheniya v tele:",
+  },
+  detailAlertFlags: {
+    "zh-CN": "提醒原因：",
+    en: "Alert flags:",
+    tr: "Uyari nedenleri:",
+    ru: "Prichiny preduprezhdeniya:",
+  },
+  detailNotes: {
+    "zh-CN": "备注：",
+    en: "Notes:",
+    tr: "Notlar:",
+    ru: "Zametki:",
+  },
+  calendarTagPeriod: {
+    "zh-CN": "经期",
+    en: "Period",
+    tr: "Adet",
+    ru: "Menstruatsiya",
+  },
+  calendarTagPredicted: {
+    "zh-CN": "预测",
+    en: "Predicted",
+    tr: "Tahmin",
+    ru: "Prognoz",
+  },
+  calendarTagOvulation: {
+    "zh-CN": "排卵",
+    en: "Ovulation",
+    tr: "Ovulasyon",
+    ru: "Ovulyatsiya",
+  },
+  calendarTagFertile: {
+    "zh-CN": "易孕",
+    en: "Fertile",
+    tr: "Dogurgan",
+    ru: "Fertilnoe",
+  },
+  calendarTagLog: {
+    "zh-CN": "日志",
+    en: "Log",
+    tr: "Kayit",
+    ru: "Zapis",
+  },
+  calendarTapToLog: {
+    "zh-CN": "点击快速记录 {date}",
+    en: "Tap to log {date}",
+    tr: "{date} icin kayit ekle",
+    ru: "Nazhmi, chtoby zapisat {date}",
+  },
 };
 const VALUE_LABELS = {
   symptoms: {
@@ -1697,12 +1871,12 @@ function syncStaticOptions() {
   document.querySelectorAll("#parent-lock-minutes option").forEach((option) => {
     option.textContent = labelFromCatalog("lockMinutes", option.value);
   });
-  document.querySelector("#parent-pin")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "4 digits" : "4 位数字");
-  document.querySelector("#confirm-parent-pin")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter again" : "再次输入");
-  document.querySelector("#manual-cycle-length")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Empty = auto" : "留空则自动计算");
-  document.querySelector("#manual-period-length")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Empty = auto" : "留空则自动计算");
-  document.querySelector("#pin-dialog-input")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter PIN" : "请输入 PIN");
-  document.querySelector("#pin-dialog-confirm-input")?.setAttribute("placeholder", getLanguage() !== "zh-CN" ? "Enter PIN again" : "再次输入 PIN");
+  document.querySelector("#parent-pin")?.setAttribute("placeholder", rt("placeholderPin"));
+  document.querySelector("#confirm-parent-pin")?.setAttribute("placeholder", rt("placeholderAgain"));
+  document.querySelector("#manual-cycle-length")?.setAttribute("placeholder", rt("placeholderAuto"));
+  document.querySelector("#manual-period-length")?.setAttribute("placeholder", rt("placeholderAuto"));
+  document.querySelector("#pin-dialog-input")?.setAttribute("placeholder", rt("placeholderEnterPin"));
+  document.querySelector("#pin-dialog-confirm-input")?.setAttribute("placeholder", rt("placeholderEnterPinAgain"));
 }
 
 function buildInsights() {
@@ -2087,19 +2261,19 @@ function buildDayCell(date, monthStart, insights) {
   const dayLog = insights.sortedDailyLogs.find((log) => log.date === date) || null;
 
   if (hasPeriod) {
-    tags.push(`<span>${getLanguage() !== "zh-CN" ? "Period" : "经期"}</span>`);
+    tags.push(`<span>${rt("calendarTagPeriod")}</span>`);
     states.push("period");
   }
   if (hasPredicted) {
-    tags.push(`<span>${getLanguage() !== "zh-CN" ? "Predicted" : "预测"}</span>`);
+    tags.push(`<span>${rt("calendarTagPredicted")}</span>`);
     states.push("predicted");
   }
   if (hasFertile) {
-    tags.push(`<span>${date === insights.fertileWindow.ovulation ? (getLanguage() !== "zh-CN" ? "Ovulation" : "排卵") : (getLanguage() !== "zh-CN" ? "Fertile" : "易孕")}</span>`);
+    tags.push(`<span>${date === insights.fertileWindow.ovulation ? rt("calendarTagOvulation") : rt("calendarTagFertile")}</span>`);
     states.push("fertile");
   }
   if (dayLog) {
-    tags.push(`<span class="day-tag--log">${getLanguage() !== "zh-CN" ? "Log" : "日志"}</span>`);
+    tags.push(`<span class="day-tag--log">${rt("calendarTagLog")}</span>`);
   }
 
   const classes = ["calendar__day"];
@@ -2107,7 +2281,7 @@ function buildDayCell(date, monthStart, insights) {
   if (date === insights.today) classes.push("is-today");
 
   return `
-    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="${getLanguage() !== "zh-CN" ? `Tap to log ${formatDate(date)}` : `点击快速记录 ${formatDate(date)}`}">
+    <article class="${classes.join(" ")}" data-state="${states.join(" ")}" data-date="${date}" title="${rt("calendarTapToLog", { date: formatDate(date) })}">
       <div class="day-number">${new Date(date).getDate()}</div>
       <div class="day-tags">${tags.join("")}</div>
     </article>
@@ -2116,7 +2290,7 @@ function buildDayCell(date, monthStart, insights) {
 
 function renderRecords() {
   if (!state.records.length) {
-    elements.recordList.innerHTML = `<div class="empty-state">${getLanguage() !== "zh-CN" ? "No period records yet. Start with the most recent one first. There is no need to add everything at once." : "还没有任何经期记录。先从最近一次月经开始记就可以，不用一次补很多。"}</div>`;
+    elements.recordList.innerHTML = `<div class="empty-state">${rt("listNoPeriodRecords")}</div>`;
     return;
   }
 
@@ -2132,17 +2306,17 @@ function renderRecords() {
               <div class="muted">${getLanguage() !== "zh-CN" ? `${duration} days` : `${duration} 天`}</div>
             </div>
             <div class="record-item__actions">
-              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${getLanguage() !== "zh-CN" ? "Edit" : "编辑"}</button>
-              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">${getLanguage() !== "zh-CN" ? "Delete" : "删除"}</button>
+              <button class="ghost-btn" type="button" data-action="edit-period" data-id="${record.id}">${rt("listEdit")}</button>
+              <button class="danger-btn" type="button" data-action="delete-period" data-id="${record.id}">${rt("listDelete")}</button>
             </div>
           </div>
           <div class="record-meta">
-            <span>${getLanguage() !== "zh-CN" ? "Flow" : "流量"}：${labelFromCatalog("flow", record.flowLevel)}</span>
-            <span>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}：${record.painLevel}/10</span>
-            <span>${getLanguage() !== "zh-CN" ? "Mood" : "情绪"}：${labelFromCatalog("mood", record.mood)}</span>
+            <span>${rt("labelFlow")}：${labelFromCatalog("flow", record.flowLevel)}</span>
+            <span>${rt("labelPain")}：${record.painLevel}/10</span>
+            <span>${rt("labelMood")}：${labelFromCatalog("mood", record.mood)}</span>
             ${record.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
           </div>
-          <p class="record-notes">${record.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
+          <p class="record-notes">${record.notes || rt("listNoNotes")}</p>
         </article>
       `;
     })
@@ -2154,7 +2328,7 @@ function renderRecords() {
 
 function renderDailyLogs() {
   if (!state.dailyLogs.length) {
-    elements.dailyLogList.innerHTML = `<div class="empty-state">${getLanguage() !== "zh-CN" ? "No daily logs yet. Starting with today is fine, and tapping any date on the calendar fills it in quickly." : "还没有日报。先记今天也可以；点日历上的任意一天，能快速带入日期。"}</div>`;
+    elements.dailyLogList.innerHTML = `<div class="empty-state">${rt("listNoDailyLogs")}</div>`;
     return;
   }
 
@@ -2169,16 +2343,16 @@ function renderDailyLogs() {
             <div class="muted">${getLanguage() !== "zh-CN" ? `Bleeding ${labelFromCatalog("bleeding", log.bleeding)}, energy ${log.energyLevel}/5${shouldTellParent(log) ? ", tell a parent" : ""}` : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，精力 ${log.energyLevel}/5${shouldTellParent(log) ? "，建议告诉家长" : ""}`}</div>
           </div>
           <div class="record-item__actions">
-            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${getLanguage() !== "zh-CN" ? "Edit" : "编辑"}</button>
-            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">${getLanguage() !== "zh-CN" ? "Delete" : "删除"}</button>
+            <button class="ghost-btn" type="button" data-action="edit-daily" data-id="${log.id}">${rt("listEdit")}</button>
+            <button class="danger-btn" type="button" data-action="delete-daily" data-id="${log.id}">${rt("listDelete")}</button>
           </div>
         </div>
         <div class="record-meta">
-          <span>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}：${log.painLevel}/10</span>
-          <span>${getLanguage() !== "zh-CN" ? "Mood" : "情绪"}：${labelFromCatalog("mood", log.mood)}</span>
+          <span>${rt("labelPain")}：${log.painLevel}/10</span>
+          <span>${rt("labelMood")}：${labelFromCatalog("mood", log.mood)}</span>
           ${log.symptoms.map((symptom) => `<span>${labelFromCatalog("symptoms", symptom)}</span>`).join("")}
         </div>
-        <p class="record-notes">${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
+        <p class="record-notes">${log.notes || rt("listNoNotes")}</p>
       </article>
     `)
     .join("");
@@ -2239,13 +2413,13 @@ function openDailyLogDetail(logId) {
 
   elements.dailyDetailTitle.textContent = rt("dailyDetailTitle", { date: formatDate(log.date) });
   elements.dailyDetailContent.innerHTML = `
-    <p><strong>${getLanguage() !== "zh-CN" ? "Bleeding:" : "出血："}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Pain:" : "疼痛："}</strong>${log.painLevel}/10</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Energy:" : "精力："}</strong>${log.energyLevel}/5</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Mood:" : "心情："}</strong>${labelFromCatalog("mood", log.mood)}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Body feelings:" : "身体感觉："}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() !== "zh-CN" ? ", " : "、") : (getLanguage() !== "zh-CN" ? "None" : "无")}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || rt("detailNormalObservation")}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
+    <p><strong>${rt("detailBleeding")}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
+    <p><strong>${rt("detailPain")}</strong>${log.painLevel}/10</p>
+    <p><strong>${rt("detailEnergy")}</strong>${log.energyLevel}/5</p>
+    <p><strong>${rt("detailMood")}</strong>${labelFromCatalog("mood", log.mood)}</p>
+    <p><strong>${rt("detailBodyFeelings")}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() !== "zh-CN" ? ", " : "、") : rt("detailNormalObservation")}</p>
+    <p><strong>${rt("detailAlertFlags")}</strong>${formatAlertFlags(log) || rt("detailNormalObservation")}</p>
+    <p><strong>${rt("detailNotes")}</strong>${log.notes || rt("listNoNotes")}</p>
   `;
   elements.dailyDetailEditBtn.dataset.logId = log.id;
   elements.dailyDetailEditBtn.textContent = rt("editThisLog");
@@ -2262,7 +2436,7 @@ function openDetailLogEditor() {
 function deletePeriodRecord(recordId) {
   const record = state.records.find((item) => item.id === recordId);
   if (!record) return;
-  if (!window.confirm(`确认删除 ${formatDate(record.startDate)} 的经期记录吗？`)) return;
+  if (!window.confirm(rt("deletePeriodConfirm", { date: formatDate(record.startDate) }))) return;
 
   state.records = state.records.filter((item) => item.id !== recordId);
   saveState();
@@ -2272,7 +2446,7 @@ function deletePeriodRecord(recordId) {
 function deleteDailyLog(logId) {
   const log = state.dailyLogs.find((item) => item.id === logId);
   if (!log) return;
-  if (!window.confirm(`确认删除 ${formatDate(log.date)} 的日报吗？`)) return;
+  if (!window.confirm(rt("deleteDailyConfirm", { date: formatDate(log.date) }))) return;
 
   state.dailyLogs = state.dailyLogs.filter((item) => item.id !== logId);
   saveState();
