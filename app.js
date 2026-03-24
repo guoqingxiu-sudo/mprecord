@@ -78,6 +78,7 @@ const I18N = {
     "checklist.head2": "<strong>照护物品检查：</strong>",
     "checklist.item7": "□ 卫生巾/护垫 □ 替换内裤 □ 深色裤子 □ 热敷用品 □ 温水杯",
     "trend.title": "周期观察",
+    "reminders.title": "提醒中心",
     "calendar.title": "月视图",
     "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>已记录经期",
     "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>预测经期",
@@ -196,6 +197,7 @@ const I18N = {
     "checklist.head2": "<strong>Care items to check:</strong>",
     "checklist.item7": "□ Pads/liners □ Spare underwear □ Dark pants □ Heat pack □ Warm water cup",
     "trend.title": "Cycle Notes",
+    "reminders.title": "Reminder Center",
     "calendar.title": "Month View",
     "calendar.legendPeriod": "<i class=\"swatch swatch--period\"></i>Recorded period",
     "calendar.legendPredicted": "<i class=\"swatch swatch--predicted\"></i>Predicted period",
@@ -421,6 +423,7 @@ const elements = {
   statTemplate: document.querySelector("#stat-card-template"),
   predictionContent: document.querySelector("#prediction-content"),
   trendContent: document.querySelector("#trend-content"),
+  reminderCenterContent: document.querySelector("#reminder-center-content"),
   recordList: document.querySelector("#record-list"),
   dailyLogList: document.querySelector("#daily-log-list"),
   cycleDay: document.querySelector("#cycle-day"),
@@ -704,6 +707,7 @@ function render() {
   applyTranslations();
   renderHero(insights);
   renderStats(insights);
+  renderReminderCenter(insights);
   renderPrediction(insights);
   renderTrend(insights);
   renderCalendar(insights);
@@ -828,6 +832,10 @@ function buildInsights() {
   const averageRecentEnergy = average(recentLogs.map((log) => log.energyLevel));
   const highPainCount = sortedDailyLogs.filter((log) => log.painLevel >= 7).length;
   const needsParentAttentionCount = sortedDailyLogs.filter((log) => shouldTellParent(log)).length;
+  const attentionLogs = [...sortedDailyLogs]
+    .filter((log) => shouldTellParent(log))
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
 
   return {
     today,
@@ -852,6 +860,7 @@ function buildInsights() {
     averageRecentEnergy,
     highPainCount,
     needsParentAttentionCount,
+    attentionLogs,
   };
 }
 
@@ -940,6 +949,45 @@ function renderStats(insights) {
     node.querySelector(".muted").textContent = stat.note;
     elements.statsGrid.appendChild(node);
   });
+}
+
+function renderReminderCenter(insights) {
+  const latestAttention = insights.attentionLogs[0] || null;
+  const hasAttention = insights.needsParentAttentionCount > 0;
+  const hasHighPain = insights.highPainCount > 0;
+  const noLogs = !insights.sorted.length && !insights.sortedDailyLogs.length;
+
+  if (noLogs) {
+    elements.reminderCenterContent.innerHTML = `
+      <p>${getLanguage() === "en" ? "No reminders yet. Start with one period record or one daily log." : "现在还没有提醒。先记一条经期或日报就可以。"}</p>
+      <p>${getLanguage() === "en" ? "When there is pain, heavy bleeding, or anything unusual, this card will summarize it here." : "如果出现疼痛、出血多或其他需要留意的情况，这里会自动帮你汇总。"}</p>
+    `;
+    return;
+  }
+
+  const topMessage = hasAttention
+    ? (getLanguage() === "en" ? "Some recent records should be shared with a parent." : "最近有一些记录建议告诉家长。")
+    : (getLanguage() === "en" ? "No urgent alerts right now. Keep logging." : "现在没有明显的紧急提醒，继续记录就好。");
+  const painMessage = hasHighPain
+    ? (getLanguage() === "en" ? `${insights.highPainCount} high-pain log(s) were recorded recently.` : `最近记录到 ${insights.highPainCount} 次高疼痛日报。`)
+    : (getLanguage() === "en" ? "No very high pain logs recently." : "最近没有很高疼痛的日报。");
+  const latestMessage = latestAttention
+    ? (getLanguage() === "en"
+      ? `Latest alert: ${formatDate(latestAttention.date)}, ${labelFromCatalog("bleeding", latestAttention.bleeding)}, pain ${latestAttention.painLevel}/10.`
+      : `最近一次提醒：${formatDate(latestAttention.date)}，出血 ${labelFromCatalog("bleeding", latestAttention.bleeding)}，疼痛 ${latestAttention.painLevel}/10。`)
+    : (getLanguage() === "en" ? "No recent records need parent attention." : "最近没有需要告诉家长的记录。");
+  const parentOnlyDetail = latestAttention && state.settings.parentMode
+    ? (getLanguage() === "en"
+      ? `Parent view: flags ${formatAlertFlags(latestAttention)}.`
+      : `家长查看：提醒原因包括 ${formatAlertFlags(latestAttention)}。`)
+    : "";
+
+  elements.reminderCenterContent.innerHTML = `
+    <p><strong>${getLanguage() === "en" ? "Now:" : "现在："}</strong>${topMessage}</p>
+    <p><strong>${getLanguage() === "en" ? "Pain:" : "疼痛："}</strong>${painMessage}</p>
+    <p><strong>${getLanguage() === "en" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
+    ${parentOnlyDetail ? `<p><strong>${getLanguage() === "en" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
+  `;
 }
 
 function renderPrediction(insights) {
@@ -1625,6 +1673,20 @@ function shouldTellParent(log) {
     log.bleeding === "重" ||
     (Array.isArray(log.alertFlags) && log.alertFlags.length > 0)
   );
+}
+
+function formatAlertFlags(log) {
+  const parts = [];
+  if (Number(log.painLevel) >= 7) {
+    parts.push(getLanguage() === "en" ? "high pain" : "疼痛较高");
+  }
+  if (log.bleeding === "重") {
+    parts.push(getLanguage() === "en" ? "heavy bleeding" : "出血偏多");
+  }
+  if (Array.isArray(log.alertFlags) && log.alertFlags.length) {
+    parts.push(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag)).join(getLanguage() === "en" ? ", " : "、"));
+  }
+  return parts.join(getLanguage() === "en" ? ", " : "、");
 }
 
 function savePin(event) {
