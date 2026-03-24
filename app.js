@@ -109,6 +109,12 @@ const I18N = {
     "data.clear": "清空全部数据",
     "data.localOnly": "数据默认只保存在当前浏览器，不会自动上传。",
     "footer.changelog": "查看更新",
+    "preferences.title": "偏好设置",
+    "preferences.language": "界面语言",
+    "preferences.simpleMode": "超简模式",
+    "preferences.simpleModeHelp": "隐藏更多内容，只保留更简单的记录流程。",
+    "preferences.save": "保存偏好",
+    "preferences.replay": "重新查看引导",
     "dialog.pinLabel": "4 位数字 PIN",
     "dialog.pinConfirm": "再输入一次 PIN",
     "welcome.title": "第一次使用看看这里",
@@ -221,6 +227,12 @@ const I18N = {
     "data.clear": "Clear All Data",
     "data.localOnly": "Data stays in this browser by default and is not uploaded automatically.",
     "footer.changelog": "View Updates",
+    "preferences.title": "Preferences",
+    "preferences.language": "Interface Language",
+    "preferences.simpleMode": "Simple Mode",
+    "preferences.simpleModeHelp": "Hide more content and keep a simpler logging flow.",
+    "preferences.save": "Save Preferences",
+    "preferences.replay": "Replay Guide",
     "dialog.pinLabel": "4-digit PIN",
     "dialog.pinConfirm": "Enter PIN Again",
     "welcome.title": "First Time? Start Here",
@@ -427,6 +439,10 @@ const elements = {
   quickLogBtn: document.querySelector("#quick-log-btn"),
   simpleModeBtn: document.querySelector("#simple-mode-btn"),
   languageSelect: document.querySelector("#language-select"),
+  preferencesForm: document.querySelector("#preferences-form"),
+  preferencesLanguageSelect: document.querySelector("#preferences-language-select"),
+  preferencesSimpleMode: document.querySelector("#preferences-simple-mode"),
+  replayOnboardingBtn: document.querySelector("#replay-onboarding-btn"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
@@ -554,6 +570,8 @@ function attachEvents() {
   elements.importInput.addEventListener("change", importData);
   elements.clearBtn.addEventListener("click", clearAllData);
   elements.seedBtn.addEventListener("click", seedData);
+  elements.preferencesForm?.addEventListener("submit", savePreferences);
+  elements.replayOnboardingBtn?.addEventListener("click", replayOnboarding);
   elements.settingsForm.addEventListener("submit", saveSettings);
   elements.resetSettingsBtn.addEventListener("click", resetSettings);
   elements.installBtn.addEventListener("click", installApp);
@@ -715,6 +733,9 @@ function applyTranslations() {
   });
   if (elements.languageSelect) {
     elements.languageSelect.value = lang;
+  }
+  if (elements.preferencesLanguageSelect) {
+    elements.preferencesLanguageSelect.value = lang;
   }
   if (elements.footerVersion) {
     elements.footerVersion.textContent = `${t("app.name")} v${VERSION}`;
@@ -1479,6 +1500,27 @@ function renderSettings() {
   elements.manualCycleLength.value = state.settings.manualCycleLength;
   elements.manualPeriodLength.value = state.settings.manualPeriodLength;
   elements.parentLockMinutes.value = state.settings.parentLockMinutes;
+  if (elements.preferencesLanguageSelect) {
+    elements.preferencesLanguageSelect.value = state.settings.language;
+  }
+  if (elements.preferencesSimpleMode) {
+    elements.preferencesSimpleMode.checked = state.settings.simpleMode;
+  }
+}
+
+function savePreferences(event) {
+  event.preventDefault();
+  const nextLanguage = SUPPORTED_LANGUAGES.includes(elements.preferencesLanguageSelect?.value)
+    ? elements.preferencesLanguageSelect.value
+    : state.settings.language;
+  state.settings = normalizeSettings({
+    ...state.settings,
+    language: nextLanguage,
+    simpleMode: Boolean(elements.preferencesSimpleMode?.checked),
+  });
+  saveState();
+  render();
+  showToast(getLanguage() === "en" ? "Preferences saved." : "偏好设置已保存。");
 }
 
 function renderParentMode() {
@@ -1683,6 +1725,12 @@ function maybeShowOnboarding() {
 function closeOnboarding() {
   localStorage.setItem(ONBOARDING_KEY, "1");
   elements.welcomeDialog?.close();
+}
+
+function replayOnboarding() {
+  localStorage.removeItem(ONBOARDING_KEY);
+  elements.welcomeDialog?.showModal();
+  showToast(getLanguage() === "en" ? "Guide opened again." : "已重新打开首次引导。");
 }
 
 function openPinDialog(mode) {

@@ -395,6 +395,27 @@ textarea {
   gap: 10px;
 }
 
+.toggle-row {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(214, 91, 125, 0.05);
+}
+
+.toggle-row input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+}
+
+.toggle-row strong,
+.toggle-row .muted {
+  display: block;
+}
+
 .choice-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
