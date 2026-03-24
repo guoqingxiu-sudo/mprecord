@@ -545,6 +545,321 @@ const I18N = {
     "updates.v100": "<strong>v1.0.0</strong> Uje est detskii rezhim, roditelskii rezhim, PIN-zamok, avtoblokirovka i pechatnye svodki.",
   },
 };
+
+const RUNTIME_TEXT = {
+  periodDatesRequired: {
+    "zh-CN": "请填写开始和结束日期。",
+    en: "Please fill in both start and end dates.",
+    tr: "Lutfen baslangic ve bitis tarihlerini doldurun.",
+    ru: "Pozhaluista, ukazhite datu nachala i okonchaniya.",
+  },
+  periodEndBeforeStart: {
+    "zh-CN": "结束日期不能早于开始日期。",
+    en: "End date cannot be earlier than start date.",
+    tr: "Bitis tarihi baslangic tarihinden once olamaz.",
+    ru: "Data okonchaniya ne mozhet byt ranshe daty nachala.",
+  },
+  recordUpdated: {
+    "zh-CN": "记录已更新。",
+    en: "Record updated.",
+    tr: "Kayit guncellendi.",
+    ru: "Zapis obnovlena.",
+  },
+  recordSaved: {
+    "zh-CN": "记录已保存。",
+    en: "Record saved.",
+    tr: "Kayit kaydedildi.",
+    ru: "Zapis sohranena.",
+  },
+  dailyDateRequired: {
+    "zh-CN": "请选择日期。",
+    en: "Please choose a date.",
+    tr: "Lutfen bir tarih secin.",
+    ru: "Pozhaluista, vyberite datu.",
+  },
+  dailyUpdated: {
+    "zh-CN": "日报已更新。",
+    en: "Daily log updated.",
+    tr: "Gunluk kayit guncellendi.",
+    ru: "Ezhednevnaya zapis obnovlena.",
+  },
+  dailySaved: {
+    "zh-CN": "日报已保存。",
+    en: "Daily log saved.",
+    tr: "Gunluk kayit kaydedildi.",
+    ru: "Ezhednevnaya zapis sohranena.",
+  },
+  periodLoaded: {
+    "zh-CN": "已载入经期记录，可直接修改后保存。",
+    en: "Period record loaded. Edit and save when ready.",
+    tr: "Adet kaydi yuklendi. Duzenleyip kaydedebilirsiniz.",
+    ru: "Zapis o menstruatsii zagruzena. Mozhno izmenit i sohranit.",
+  },
+  dailyLoaded: {
+    "zh-CN": "已载入日报，可直接修改后保存。",
+    en: "Daily log loaded. Edit and save when ready.",
+    tr: "Gunluk kayit yuklendi. Duzenleyip kaydedebilirsiniz.",
+    ru: "Ezhednevnaya zapis zagruzhena. Mozhno izmenit i sohranit.",
+  },
+  dailySelected: {
+    "zh-CN": "已选中 {date}，可直接填写日报。",
+    en: "{date} selected. You can fill the daily log now.",
+    tr: "{date} secildi. Gunluk kaydi simdi doldurabilirsiniz.",
+    ru: "Vybrana data {date}. Teper mozhno zapolnit ezhednevnuyu zapis.",
+  },
+  rawExported: {
+    "zh-CN": "原始数据已导出。",
+    en: "Raw data exported.",
+    tr: "Ham veri disa aktarıldi.",
+    ru: "Ishodnye dannye eksportirovany.",
+  },
+  summaryExported: {
+    "zh-CN": "家长摘要已导出。",
+    en: "Parent summary exported.",
+    tr: "Ebeveyn ozeti disa aktarildi.",
+    ru: "Svodka dlya roditelei eksportirovana.",
+  },
+  dataImported: {
+    "zh-CN": "数据已导入。",
+    en: "Data imported.",
+    tr: "Veriler ice aktarıldi.",
+    ru: "Dannye importirovany.",
+  },
+  backupRestored: {
+    "zh-CN": "备份已恢复。",
+    en: "Backup restored.",
+    tr: "Yedek geri yuklendi.",
+    ru: "Rezervnaya kopiya vosstanovlena.",
+  },
+  importFailed: {
+    "zh-CN": "导入失败：JSON 文件格式不正确。",
+    en: "Import failed: invalid JSON file format.",
+    tr: "Ice aktarma basarisiz: JSON dosya bicimi gecersiz.",
+    ru: "Import ne udalsya: nevernyi format JSON-faila.",
+  },
+  clearAllConfirm: {
+    "zh-CN": "确认清空当前浏览器中的全部记录吗？此操作无法撤销。",
+    en: "Clear all records in this browser? This cannot be undone.",
+    tr: "Bu tarayicidaki tum kayitlar temizlensin mi? Bu islem geri alinamaz.",
+    ru: "Ochistit vse zapisi v etom brauzere? Eto deistvie nelzya otmenit.",
+  },
+  allCleared: {
+    "zh-CN": "已清空当前浏览器里的记录。",
+    en: "All records in this browser were cleared.",
+    tr: "Bu tarayicidaki tum kayitlar temizlendi.",
+    ru: "Vse zapisi v etom brauzere ochishcheny.",
+  },
+  seedConfirm: {
+    "zh-CN": "当前已有数据，填充示例数据会覆盖现有内容，是否继续？",
+    en: "Sample data will overwrite current data. Continue?",
+    tr: "Ornek veri mevcut verilerin ustune yazacak. Devam edilsin mi?",
+    ru: "Testovye dannye zamenyat tekushchie. Prodolzhit?",
+  },
+  sampleLoaded: {
+    "zh-CN": "示例数据已填充。",
+    en: "Sample data loaded.",
+    tr: "Ornek veriler yuklendi.",
+    ru: "Primer dannykh zagruzhen.",
+  },
+  settingsUpdated: {
+    "zh-CN": "预测参数已更新。",
+    en: "Prediction settings updated.",
+    tr: "Tahmin ayarlari guncellendi.",
+    ru: "Nastroiki prognoza obnovleny.",
+  },
+  parentSettingsUpdated: {
+    "zh-CN": "家长参数已更新。",
+    en: "Parent settings updated.",
+    tr: "Ebeveyn ayarlari guncellendi.",
+    ru: "Roditelskie nastroiki obnovleny.",
+  },
+  settingsReset: {
+    "zh-CN": "预测参数已恢复自动计算。",
+    en: "Prediction settings reset to automatic values.",
+    tr: "Tahmin ayarlari otomatik degerlere donduruldu.",
+    ru: "Nastroiki prognoza sbrosheny na avtomaticheskie znacheniya.",
+  },
+  preferencesSaved: {
+    "zh-CN": "偏好设置已保存。",
+    en: "Preferences saved.",
+    tr: "Tercihler kaydedildi.",
+    ru: "Predpochteniya sohraneny.",
+  },
+  reminderSettingsSaved: {
+    "zh-CN": "提醒设置已保存。",
+    en: "Reminder settings saved.",
+    tr: "Hatirlatici ayarlari kaydedildi.",
+    ru: "Nastroiki napominanii sohraneny.",
+  },
+  parentModeOpen: {
+    "zh-CN": "打开家长模式",
+    en: "Open Parent Mode",
+    tr: "Ebeveyn Modunu Ac",
+    ru: "Otkryt Rezhim Dlya Roditelei",
+  },
+  parentModeClose: {
+    "zh-CN": "关闭家长模式",
+    en: "Close Parent Mode",
+    tr: "Ebeveyn Modunu Kapat",
+    ru: "Zakryt Rezhim Dlya Roditelei",
+  },
+  simpleModeOpen: {
+    "zh-CN": "打开超简模式",
+    en: "Open Simple Mode",
+    tr: "Basit Modu Ac",
+    ru: "Vklyuchit Prostoi Rezhim",
+  },
+  simpleModeClose: {
+    "zh-CN": "关闭超简模式",
+    en: "Close Simple Mode",
+    tr: "Basit Modu Kapat",
+    ru: "Vyklyuchit Prostoi Rezhim",
+  },
+  pinSetStatus: {
+    "zh-CN": "已设置家长 PIN。PIN 只保存在当前浏览器。",
+    en: "Parent PIN is set. It is only stored in this browser.",
+    tr: "Ebeveyn PIN'i ayarlandi. Yalnizca bu tarayicida saklanir.",
+    ru: "Roditelskii PIN ustanovlen. On hranitsya tolko v etom brauzere.",
+  },
+  pinUnsetStatus: {
+    "zh-CN": "还没有设置 PIN。建议家长先设置 4 位数字。",
+    en: "No PIN yet. Parents should set a 4-digit PIN first.",
+    tr: "Henuz PIN yok. Once ebeveynler 4 haneli bir PIN ayarlamali.",
+    ru: "PIN poka net. Roditelyam stoit snachala zadat 4-znachnyi PIN.",
+  },
+  parentModeClosed: {
+    "zh-CN": "家长模式已关闭。",
+    en: "Parent Mode closed.",
+    tr: "Ebeveyn Modu kapatildi.",
+    ru: "Rezhim dlya roditelei zakryt.",
+  },
+  tellParentNow: {
+    "zh-CN": "今天建议马上告诉家长，或者让老师帮你联系家长。",
+    en: "Tell a parent now, or ask a teacher to help contact one.",
+    tr: "Bugun hemen anne babana soyle ya da ogretmenden yardim iste.",
+    ru: "Segodnya nuzhno srazu skazat roditelyu ili poprosit uchitelya pomoch svyazatsya.",
+  },
+  observeForNow: {
+    "zh-CN": "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。",
+    en: "A normal record is enough for now. If it gets worse, tell a parent soon.",
+    tr: "Simdilik normal bir kayit yeterli. Kotuye giderse anne babana haber ver.",
+    ru: "Poka dostatochno obychnoy zapisi. Esli stanet huzhe, skoro skazhi roditelyu.",
+  },
+  pinMustBe4: {
+    "zh-CN": "PIN 需要是 4 位数字。",
+    en: "PIN must be 4 digits.",
+    tr: "PIN 4 rakam olmali.",
+    ru: "PIN dolzhen soderzhat 4 cifry.",
+  },
+  pinMismatch: {
+    "zh-CN": "两次输入的 PIN 不一致。",
+    en: "The two PIN entries do not match.",
+    tr: "Iki PIN girisi eslesmiyor.",
+    ru: "Dva vvedennyh PIN ne sovpadayut.",
+  },
+  pinSaved: {
+    "zh-CN": "家长 PIN 已保存。",
+    en: "Parent PIN saved.",
+    tr: "Ebeveyn PIN'i kaydedildi.",
+    ru: "Roditelskii PIN sohranen.",
+  },
+  pinCleared: {
+    "zh-CN": "家长 PIN 已清除。",
+    en: "Parent PIN cleared.",
+    tr: "Ebeveyn PIN'i temizlendi.",
+    ru: "Roditelskii PIN ochishchen.",
+  },
+  parentModeOpened: {
+    "zh-CN": "家长模式已开启。",
+    en: "Parent Mode opened.",
+    tr: "Ebeveyn Modu acildi.",
+    ru: "Rezhim dlya roditelei otkryt.",
+  },
+  wrongPinAttempts: {
+    "zh-CN": "PIN 不正确，请重试。还可以再试 {remaining} 次。",
+    en: "Wrong PIN. Try again. {remaining} attempt(s) left.",
+    tr: "PIN yanlis. Tekrar deneyin. {remaining} deneme hakki kaldi.",
+    ru: "Nevernyi PIN. Poprobuyte snova. Ostalos {remaining} popytok.",
+  },
+  tooManyPinAttempts: {
+    "zh-CN": "PIN 连续输错太多次，请关闭后再试。",
+    en: "Too many wrong PIN attempts. Close and try again.",
+    tr: "Cok fazla hatali PIN denemesi oldu. Kapatip tekrar deneyin.",
+    ru: "Slishkom mnogo nevernyh popytok PIN. Zakroite i poprobuyte snova.",
+  },
+  guideOpened: {
+    "zh-CN": "已重新打开首次引导。",
+    en: "Guide opened again.",
+    tr: "Rehber yeniden acildi.",
+    ru: "Instruktsiya snova otkryta.",
+  },
+  setParentPinTitle: {
+    "zh-CN": "设置家长 PIN",
+    en: "Set Parent PIN",
+    tr: "Ebeveyn PIN'i Ayarla",
+    ru: "Ustanovit Roditelskii PIN",
+  },
+  enterParentPinTitle: {
+    "zh-CN": "输入家长 PIN",
+    en: "Enter Parent PIN",
+    tr: "Ebeveyn PIN'ini Gir",
+    ru: "Vvedite Roditelskii PIN",
+  },
+  setupPinHint: {
+    "zh-CN": "第一次使用家长模式，请先设置一个 4 位数字 PIN。",
+    en: "First time in Parent Mode. Please set a 4-digit PIN.",
+    tr: "Ebeveyn Modunda ilk kez bulunuyorsunuz. Lutfen 4 haneli bir PIN ayarlayin.",
+    ru: "Vy v rezhime dlya roditelei vpervye. Pozhaluista, ustanovite 4-znachnyi PIN.",
+  },
+  unlockPinHint: {
+    "zh-CN": "只有家长知道这个 PIN。",
+    en: "Only a parent should know this PIN.",
+    tr: "Bu PIN'i sadece ebeveyn bilmelidir.",
+    ru: "Etot PIN dolzhen znat tolko roditel.",
+  },
+  showPin: {
+    "zh-CN": "显示 PIN",
+    en: "Show PIN",
+    tr: "PIN'i Goster",
+    ru: "Pokazat PIN",
+  },
+  hidePin: {
+    "zh-CN": "隐藏 PIN",
+    en: "Hide PIN",
+    tr: "PIN'i Gizle",
+    ru: "Skryt PIN",
+  },
+  todaySelected: {
+    "zh-CN": "已帮你选中今天，可以直接填写。",
+    en: "Today is selected. You can fill it in now.",
+    tr: "Bugun secildi. Simdi kaydi doldurabilirsiniz.",
+    ru: "Segodnya uzhe vybrano. Mozhno srazu zapolnit.",
+  },
+  simpleOn: {
+    "zh-CN": "已打开超简模式。",
+    en: "Simple Mode is on.",
+    tr: "Basit Mod acildi.",
+    ru: "Prostoi rezhim vklyuchen.",
+  },
+  simpleOff: {
+    "zh-CN": "已关闭超简模式。",
+    en: "Simple Mode is off.",
+    tr: "Basit Mod kapatildi.",
+    ru: "Prostoi rezhim vyklyuchen.",
+  },
+  dailyDetailTitle: {
+    "zh-CN": "日报详情：{date}",
+    en: "Daily Log: {date}",
+    tr: "Gunluk Kayit: {date}",
+    ru: "Ezhednevnaya zapis: {date}",
+  },
+  editThisLog: {
+    "zh-CN": "编辑这条日报",
+    en: "Edit This Log",
+    tr: "Bu Kaydi Duzenle",
+    ru: "Izmenit Etu Zapis",
+  },
+};
 const VALUE_LABELS = {
   symptoms: {
     "腹痛": { "zh-CN": "腹痛", en: "Cramps", tr: "Kramplar", ru: "Spazmy" },
@@ -825,6 +1140,15 @@ function t(key, variables = {}) {
   );
 }
 
+function rt(key, variables = {}) {
+  const lang = getLanguage();
+  const template = RUNTIME_TEXT[key]?.[lang] ?? RUNTIME_TEXT[key]?.[DEFAULT_LANGUAGE] ?? key;
+  return Object.entries(variables).reduce(
+    (text, [name, value]) => text.replaceAll(`{${name}}`, String(value)),
+    template,
+  );
+}
+
 function labelFromCatalog(catalog, value) {
   return VALUE_LABELS[catalog]?.[String(value)]?.[getLanguage()] ?? String(value);
 }
@@ -974,19 +1298,19 @@ function onSubmitPeriod(event) {
   };
 
   if (!payload.startDate || !payload.endDate) {
-    setFormStatus(getLanguage() !== "zh-CN" ? "Please fill in both start and end dates." : "请填写开始和结束日期。");
+    setFormStatus(rt("periodDatesRequired"));
     return;
   }
 
   if (payload.endDate < payload.startDate) {
-    setFormStatus(getLanguage() !== "zh-CN" ? "End date cannot be earlier than start date." : "结束日期不能早于开始日期。");
+    setFormStatus(rt("periodEndBeforeStart"));
     return;
   }
 
   const existsIndex = state.records.findIndex((record) => record.id === payload.id);
   const statusMessage = existsIndex >= 0
-    ? (getLanguage() !== "zh-CN" ? "Record updated." : "记录已更新。")
-    : (getLanguage() !== "zh-CN" ? "Record saved." : "记录已保存。");
+    ? rt("recordUpdated")
+    : rt("recordSaved");
   if (existsIndex >= 0) {
     state.records[existsIndex] = payload;
   } else {
@@ -1017,14 +1341,14 @@ function onSubmitDailyLog(event) {
   };
 
   if (!payload.date) {
-    setDailyFormStatus(getLanguage() !== "zh-CN" ? "Please choose a date." : "请选择日期。");
+    setDailyFormStatus(rt("dailyDateRequired"));
     return;
   }
 
   const existsIndex = state.dailyLogs.findIndex((log) => log.id === payload.id);
   const statusMessage = existsIndex >= 0
-    ? (getLanguage() !== "zh-CN" ? "Daily log updated." : "日报已更新。")
-    : (getLanguage() !== "zh-CN" ? "Daily log saved." : "日报已保存。");
+    ? rt("dailyUpdated")
+    : rt("dailySaved");
   if (existsIndex >= 0) {
     state.dailyLogs[existsIndex] = payload;
   } else {
@@ -1632,7 +1956,7 @@ function editPeriodRecord(recordId) {
   elements.mood.value = record.mood;
   elements.notes.value = record.notes;
   setCheckedSymptoms("period-symptoms", record.symptoms);
-  setFormStatus(getLanguage() !== "zh-CN" ? "Period record loaded. Edit and save when ready." : "已载入经期记录，可直接修改后保存。");
+  setFormStatus(rt("periodLoaded"));
   document.querySelector("#record-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1649,7 +1973,7 @@ function editDailyLog(logId) {
   elements.dailyNotes.value = log.notes;
   setCheckedSymptoms("daily-symptoms", log.symptoms);
   setCheckedSymptoms("alert-flags", log.alertFlags || []);
-  setDailyFormStatus(getLanguage() !== "zh-CN" ? "Daily log loaded. Edit and save when ready." : "已载入日报，可直接修改后保存。");
+  setDailyFormStatus(rt("dailyLoaded"));
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1657,9 +1981,7 @@ function openDailyLogDetail(logId) {
   const log = state.dailyLogs.find((item) => item.id === logId);
   if (!log || !elements.dailyDetailDialog) return;
 
-  elements.dailyDetailTitle.textContent = getLanguage() !== "zh-CN"
-    ? `Daily Log: ${formatDate(log.date)}`
-    : `日报详情：${formatDate(log.date)}`;
+  elements.dailyDetailTitle.textContent = rt("dailyDetailTitle", { date: formatDate(log.date) });
   elements.dailyDetailContent.innerHTML = `
     <p><strong>${getLanguage() !== "zh-CN" ? "Bleeding:" : "出血："}</strong>${labelFromCatalog("bleeding", log.bleeding)}</p>
     <p><strong>${getLanguage() !== "zh-CN" ? "Pain:" : "疼痛："}</strong>${log.painLevel}/10</p>
@@ -1670,7 +1992,7 @@ function openDailyLogDetail(logId) {
     <p><strong>${getLanguage() !== "zh-CN" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
   `;
   elements.dailyDetailEditBtn.dataset.logId = log.id;
-  elements.dailyDetailEditBtn.textContent = getLanguage() !== "zh-CN" ? "Edit This Log" : "编辑这条日报";
+  elements.dailyDetailEditBtn.textContent = rt("editThisLog");
   elements.dailyDetailDialog.showModal();
 }
 
@@ -1725,7 +2047,7 @@ function resetDailyForm() {
 
 function fillDailyDate(date) {
   elements.dailyDate.value = date;
-  setDailyFormStatus(getLanguage() !== "zh-CN" ? `${formatDate(date)} selected. You can fill the daily log now.` : `已选中 ${formatDate(date)}，可直接填写日报。`);
+  setDailyFormStatus(rt("dailySelected", { date: formatDate(date) }));
   elements.dailyForm.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
@@ -1821,7 +2143,7 @@ function exportData() {
   anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-data" : "period-tracker"}-${toDateInputValue(new Date())}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast(getLanguage() !== "zh-CN" ? "Raw data exported." : "原始数据已导出。");
+  showToast(rt("rawExported"));
 }
 
 function exportSummary() {
@@ -1898,7 +2220,7 @@ function exportSummary() {
   anchor.download = `${getLanguage() !== "zh-CN" ? "eva-moon-summary" : "eva-moon-summary"}-${toDateInputValue(new Date())}.html`;
   anchor.click();
   URL.revokeObjectURL(url);
-  showToast(getLanguage() !== "zh-CN" ? "Parent summary exported." : "家长摘要已导出。");
+  showToast(rt("summaryExported"));
 }
 
 function importData(event) {
@@ -1916,11 +2238,11 @@ function importData(event) {
       sortDailyLogs();
       saveState();
       render();
-      setFormStatus(getLanguage() !== "zh-CN" ? "Data imported." : "数据已导入。");
-      setDailyFormStatus(getLanguage() !== "zh-CN" ? "Data imported." : "数据已导入。");
-      showToast(getLanguage() !== "zh-CN" ? "Backup restored." : "备份已恢复。");
+      setFormStatus(rt("dataImported"));
+      setDailyFormStatus(rt("dataImported"));
+      showToast(rt("backupRestored"));
     } catch (error) {
-      window.alert(getLanguage() !== "zh-CN" ? "Import failed: invalid JSON file format." : "导入失败：JSON 文件格式不正确。");
+      window.alert(rt("importFailed"));
     } finally {
       elements.importInput.value = "";
     }
@@ -1929,7 +2251,7 @@ function importData(event) {
 }
 
 function clearAllData() {
-  if (!window.confirm(getLanguage() !== "zh-CN" ? "Clear all records in this browser? This cannot be undone." : "确认清空当前浏览器中的全部记录吗？此操作无法撤销。")) return;
+  if (!window.confirm(rt("clearAllConfirm"))) return;
 
   state.records = [];
   state.dailyLogs = [];
@@ -1938,12 +2260,12 @@ function clearAllData() {
   resetPeriodForm();
   resetDailyForm();
   render();
-  showToast(getLanguage() !== "zh-CN" ? "All records in this browser were cleared." : "已清空当前浏览器里的记录。");
+  showToast(rt("allCleared"));
 }
 
 function seedData() {
   if (state.records.length || state.dailyLogs.length) {
-    const confirmed = window.confirm(getLanguage() !== "zh-CN" ? "Sample data will overwrite current data. Continue?" : "当前已有数据，填充示例数据会覆盖现有内容，是否继续？");
+    const confirmed = window.confirm(rt("seedConfirm"));
     if (!confirmed) return;
   }
 
@@ -1952,7 +2274,7 @@ function seedData() {
   state.settings = normalizeSettings({ language: state.settings.language });
   saveState();
   render();
-  showToast(getLanguage() !== "zh-CN" ? "Sample data loaded." : "示例数据已填充。");
+  showToast(rt("sampleLoaded"));
 }
 
 function saveSettings(event) {
@@ -1969,8 +2291,8 @@ function saveSettings(event) {
   });
   saveState();
   render();
-  setFormStatus(getLanguage() !== "zh-CN" ? "Prediction settings updated." : "预测参数已更新。");
-  showToast(getLanguage() !== "zh-CN" ? "Parent settings updated." : "家长参数已更新。");
+  setFormStatus(rt("settingsUpdated"));
+  showToast(rt("parentSettingsUpdated"));
 }
 
 function resetSettings() {
@@ -1982,7 +2304,7 @@ function resetSettings() {
   });
   saveState();
   render();
-  showToast(getLanguage() !== "zh-CN" ? "Prediction settings reset to automatic values." : "预测参数已恢复自动计算。");
+  showToast(rt("settingsReset"));
 }
 
 function renderSettings() {
@@ -2010,7 +2332,7 @@ function savePreferences(event) {
   });
   saveState();
   render();
-  showToast(getLanguage() !== "zh-CN" ? "Preferences saved." : "偏好设置已保存。");
+  showToast(rt("preferencesSaved"));
 }
 
 function renderNotificationSettings() {
@@ -2046,7 +2368,7 @@ function saveNotificationSettings(event) {
   });
   saveState();
   renderNotificationSettings();
-  showToast(getLanguage() !== "zh-CN" ? "Reminder settings saved." : "提醒设置已保存。");
+  showToast(rt("reminderSettingsSaved"));
   void evaluateNotificationTriggers(buildInsights());
 }
 
@@ -2055,12 +2377,8 @@ function renderParentMode() {
   if (state.settings.parentMode && !isUnlockedInSession) {
     state.settings.parentMode = false;
   }
-  elements.parentModeBtn.textContent = state.settings.parentMode
-    ? (getLanguage() !== "zh-CN" ? "Close Parent Mode" : "关闭家长模式")
-    : (getLanguage() !== "zh-CN" ? "Open Parent Mode" : "打开家长模式");
-  elements.simpleModeBtn.textContent = state.settings.simpleMode
-    ? (getLanguage() !== "zh-CN" ? "Close Simple Mode" : "关闭超简模式")
-    : (getLanguage() !== "zh-CN" ? "Open Simple Mode" : "打开超简模式");
+  elements.parentModeBtn.textContent = state.settings.parentMode ? rt("parentModeClose") : rt("parentModeOpen");
+  elements.simpleModeBtn.textContent = state.settings.simpleMode ? rt("simpleModeClose") : rt("simpleModeOpen");
   elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
   elements.simpleModeBtn.classList.toggle("mode-active", state.settings.simpleMode);
   elements.parentOnlySections.forEach((node) => {
@@ -2077,9 +2395,7 @@ function renderParentMode() {
 function renderPinSettings() {
   elements.parentPin.value = "";
   elements.confirmParentPin.value = "";
-  elements.pinStatus.textContent = state.settings.parentPin
-    ? (getLanguage() !== "zh-CN" ? "Parent PIN is set. It is only stored in this browser." : "已设置家长 PIN。PIN 只保存在当前浏览器。")
-    : (getLanguage() !== "zh-CN" ? "No PIN yet. Parents should set a 4-digit PIN first." : "还没有设置 PIN。建议家长先设置 4 位数字。");
+  elements.pinStatus.textContent = state.settings.parentPin ? rt("pinSetStatus") : rt("pinUnsetStatus");
 }
 
 function setActiveSettingsTab(panelId) {
@@ -2147,7 +2463,7 @@ function toggleParentMode() {
     clearParentSessionUnlock();
     saveState();
     render();
-    showToast(getLanguage() !== "zh-CN" ? "Parent Mode closed." : "家长模式已关闭。");
+    showToast(rt("parentModeClosed"));
     return;
   }
 
@@ -2165,9 +2481,7 @@ function updateAlertAdvice() {
     painLevel: Number(elements.dailyPainLevel.value),
     alertFlags: getSelectedSymptoms("alert-flags"),
   };
-  elements.alertAdviceText.textContent = shouldTellParent(draft)
-    ? (getLanguage() !== "zh-CN" ? "Tell a parent now, or ask a teacher to help contact one." : "今天建议马上告诉家长，或者让老师帮你联系家长。")
-    : (getLanguage() !== "zh-CN" ? "A normal record is enough for now. If it gets worse, tell a parent soon." : "今天先正常记录就可以，如果越来越不舒服，再及时告诉家长。");
+  elements.alertAdviceText.textContent = shouldTellParent(draft) ? rt("tellParentNow") : rt("observeForNow");
 }
 
 function shouldTellParent(log) {
@@ -2198,19 +2512,19 @@ function savePin(event) {
   const confirmPin = normalizePin(elements.confirmParentPin.value);
 
   if (!pin || pin.length !== 4) {
-    elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
+    elements.pinStatus.textContent = rt("pinMustBe4");
     return;
   }
   if (pin !== confirmPin) {
-    elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
+    elements.pinStatus.textContent = rt("pinMismatch");
     return;
   }
 
   state.settings.parentPin = pin;
   saveState();
   renderPinSettings();
-  elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "Parent PIN saved." : "家长 PIN 已保存。";
-  showToast(getLanguage() !== "zh-CN" ? "Parent PIN saved." : "家长 PIN 已保存。");
+  elements.pinStatus.textContent = rt("pinSaved");
+  showToast(rt("pinSaved"));
 }
 
 function clearPin() {
@@ -2219,8 +2533,8 @@ function clearPin() {
   clearParentSessionUnlock();
   saveState();
   render();
-  elements.pinStatus.textContent = getLanguage() !== "zh-CN" ? "Parent PIN cleared." : "家长 PIN 已清除。";
-  showToast(getLanguage() !== "zh-CN" ? "Parent PIN cleared." : "家长 PIN 已清除。");
+  elements.pinStatus.textContent = rt("pinCleared");
+  showToast(rt("pinCleared"));
 }
 
 function handlePinDialogSubmit(event) {
@@ -2236,11 +2550,11 @@ function handlePinDialogSubmit(event) {
   if (state.pinDialogMode === "setup") {
     const confirmPin = normalizePin(elements.pinDialogConfirmInput.value);
     if (!inputPin || inputPin.length !== 4) {
-      elements.pinDialogStatus.textContent = getLanguage() !== "zh-CN" ? "PIN must be 4 digits." : "PIN 需要是 4 位数字。";
+      elements.pinDialogStatus.textContent = rt("pinMustBe4");
       return;
     }
     if (inputPin !== confirmPin) {
-      elements.pinDialogStatus.textContent = getLanguage() !== "zh-CN" ? "The two PIN entries do not match." : "两次输入的 PIN 不一致。";
+      elements.pinDialogStatus.textContent = rt("pinMismatch");
       return;
     }
 
@@ -2250,7 +2564,7 @@ function handlePinDialogSubmit(event) {
     saveState();
     render();
     elements.pinDialog.close();
-    showToast(getLanguage() !== "zh-CN" ? "Parent Mode opened." : "家长模式已开启。");
+    showToast(rt("parentModeOpened"));
     return;
   }
 
@@ -2259,8 +2573,8 @@ function handlePinDialogSubmit(event) {
     const remaining = Math.max(MAX_PIN_ATTEMPTS - state.pinAttempts, 0);
     elements.pinDialogStatus.textContent =
       remaining > 0
-        ? (getLanguage() !== "zh-CN" ? `Wrong PIN. Try again. ${remaining} attempt(s) left.` : `PIN 不正确，请重试。还可以再试 ${remaining} 次。`)
-        : (getLanguage() !== "zh-CN" ? "Too many wrong PIN attempts. Close and try again." : "PIN 连续输错太多次，请关闭后再试。");
+        ? rt("wrongPinAttempts", { remaining })
+        : rt("tooManyPinAttempts");
     if (remaining === 0) {
       elements.pinDialog.close();
       state.pinAttempts = 0;
@@ -2274,7 +2588,7 @@ function handlePinDialogSubmit(event) {
   saveState();
   render();
   elements.pinDialog.close();
-  showToast(getLanguage() !== "zh-CN" ? "Parent Mode opened." : "家长模式已开启。");
+  showToast(rt("parentModeOpened"));
 }
 
 function normalizePin(value) {
@@ -2295,7 +2609,7 @@ function closeOnboarding() {
 function replayOnboarding() {
   localStorage.removeItem(ONBOARDING_KEY);
   elements.welcomeDialog?.showModal();
-  showToast(getLanguage() !== "zh-CN" ? "Guide opened again." : "已重新打开首次引导。");
+  showToast(rt("guideOpened"));
 }
 
 function openPinDialog(mode) {
@@ -2305,13 +2619,11 @@ function openPinDialog(mode) {
   elements.pinDialogConfirmInput.value = "";
   setPinInputsVisibility(false);
   elements.pinDialogConfirmWrap.classList.toggle("is-hidden", mode !== "setup");
-  elements.pinDialogTitle.textContent = mode === "setup"
-    ? (getLanguage() !== "zh-CN" ? "Set Parent PIN" : "设置家长 PIN")
-    : (getLanguage() !== "zh-CN" ? "Enter Parent PIN" : "输入家长 PIN");
+  elements.pinDialogTitle.textContent = mode === "setup" ? rt("setParentPinTitle") : rt("enterParentPinTitle");
   elements.pinDialogStatus.textContent =
     mode === "setup"
-      ? (getLanguage() !== "zh-CN" ? "First time in Parent Mode. Please set a 4-digit PIN." : "第一次使用家长模式，请先设置一个 4 位数字 PIN。")
-      : (getLanguage() !== "zh-CN" ? "Only a parent should know this PIN." : "只有家长知道这个 PIN。");
+      ? rt("setupPinHint")
+      : rt("unlockPinHint");
   elements.pinDialog.showModal();
 }
 
@@ -2324,9 +2636,7 @@ function setPinInputsVisibility(visible) {
   const type = visible ? "text" : "password";
   elements.pinDialogInput.type = type;
   elements.pinDialogConfirmInput.type = type;
-  elements.pinDialogToggleVisibility.textContent = visible
-    ? (getLanguage() !== "zh-CN" ? "Hide PIN" : "隐藏 PIN")
-    : (getLanguage() !== "zh-CN" ? "Show PIN" : "显示 PIN");
+  elements.pinDialogToggleVisibility.textContent = visible ? rt("hidePin") : rt("showPin");
 }
 
 function normalizeNumberWithinRange(value, min, max) {
@@ -2365,16 +2675,14 @@ function isParentSessionUnlocked() {
 
 function quickLogToday() {
   fillDailyDate(toDateInputValue(new Date()));
-  showToast(getLanguage() !== "zh-CN" ? "Today is selected. You can fill it in now." : "已帮你选中今天，可以直接填写。");
+  showToast(rt("todaySelected"));
 }
 
 function toggleSimpleMode() {
   state.settings.simpleMode = !state.settings.simpleMode;
   saveState();
   render();
-  showToast(state.settings.simpleMode
-    ? (getLanguage() !== "zh-CN" ? "Simple Mode is on." : "已打开超简模式。")
-    : (getLanguage() !== "zh-CN" ? "Simple Mode is off." : "已关闭超简模式。"));
+  showToast(state.settings.simpleMode ? rt("simpleOn") : rt("simpleOff"));
 }
 
 function onLanguageChange(event) {
@@ -2412,33 +2720,45 @@ function getNotificationPermissionState() {
 function getNotificationStatusText() {
   const permission = getNotificationPermissionState();
   if (permission === "granted") {
-    return getLanguage() !== "zh-CN"
-      ? "Notification permission: allowed. Local reminders can appear in the browser or installed app."
-      : "当前通知权限：已允许。本地提醒可以显示在浏览器或已安装应用中。";
+    return {
+      "zh-CN": "当前通知权限：已允许。本地提醒可以显示在浏览器或已安装应用中。",
+      en: "Notification permission: allowed. Local reminders can appear in the browser or installed app.",
+      tr: "Bildirim izni verildi. Yerel hatirlaticilar tarayicida veya yuklu uygulamada gorunebilir.",
+      ru: "Razreshenie na uvedomleniya vklyucheno. Lokalnye napominaniya mogut poyavlyatsya v brauzere ili ustanovlennom prilozhenii.",
+    }[getLanguage()] || "";
   }
   if (permission === "denied") {
-    return getLanguage() !== "zh-CN"
-      ? "Notification permission: blocked. Change it in the browser site settings if needed."
-      : "当前通知权限：已拒绝。如需开启，请到浏览器站点权限里修改。";
+    return {
+      "zh-CN": "当前通知权限：已拒绝。如需开启，请到浏览器站点权限里修改。",
+      en: "Notification permission: blocked. Change it in the browser site settings if needed.",
+      tr: "Bildirim izni engellendi. Gerekirse tarayici site ayarlarindan degistirin.",
+      ru: "Razreshenie na uvedomleniya zablokirovano. Pri neobhodimosti izmenite eto v nastroikah saita v brauzere.",
+    }[getLanguage()] || "";
   }
   if (permission === "unsupported") {
-    return getLanguage() !== "zh-CN"
-      ? "Notifications are not supported in this browser."
-      : "当前浏览器不支持通知提醒。";
+    return {
+      "zh-CN": "当前浏览器不支持通知提醒。",
+      en: "Notifications are not supported in this browser.",
+      tr: "Bu tarayici bildirimleri desteklemiyor.",
+      ru: "Etot brauzer ne podderzhivaet uvedomleniya.",
+    }[getLanguage()] || "";
   }
-  return getLanguage() !== "zh-CN"
-    ? "Notification permission: not chosen yet."
-    : "当前通知权限：还没有选择。";
+  return {
+    "zh-CN": "当前通知权限：还没有选择。",
+    en: "Notification permission: not chosen yet.",
+    tr: "Bildirim izni henuz secilmedi.",
+    ru: "Razreshenie na uvedomleniya eshche ne vybrano.",
+  }[getLanguage()] || "";
 }
 
 async function requestNotificationPermission() {
   if (!supportsNotifications()) {
-    showToast(getLanguage() !== "zh-CN" ? "This browser does not support notifications." : "当前浏览器不支持通知提醒。");
+    showToast(getNotificationStatusText());
     renderNotificationSettings();
     return;
   }
   if (Notification.permission === "denied") {
-    showToast(getLanguage() !== "zh-CN" ? "Notifications are blocked. Change browser site settings to allow them." : "通知已被拒绝，请到浏览器站点权限里手动开启。");
+    showToast(getNotificationStatusText());
     renderNotificationSettings();
     return;
   }
@@ -2448,25 +2768,55 @@ async function requestNotificationPermission() {
     state.settings.notificationsEnabled = true;
     saveState();
     renderNotificationSettings();
-    showToast(getLanguage() !== "zh-CN" ? "Notifications are enabled." : "通知提醒已开启。");
+    showToast({
+      "zh-CN": "通知提醒已开启。",
+      en: "Notifications are enabled.",
+      tr: "Bildirimler acildi.",
+      ru: "Uvedomleniya vklyucheny.",
+    }[getLanguage()]);
     return;
   }
 
   renderNotificationSettings();
-  showToast(getLanguage() !== "zh-CN" ? "Notification permission was not granted." : "还没有获得通知权限。");
+  showToast({
+    "zh-CN": "还没有获得通知权限。",
+    en: "Notification permission was not granted.",
+    tr: "Bildirim izni verilmedi.",
+    ru: "Razreshenie na uvedomleniya ne bylo vydano.",
+  }[getLanguage()]);
 }
 
 async function sendTestNotification() {
   const sent = await sendLocalNotification({
-    title: getLanguage() !== "zh-CN" ? "Eva's Moon Test" : "Eva的月亮测试提醒",
-    body: getLanguage() !== "zh-CN" ? "Notifications are working on this device." : "这台设备已经可以收到应用提醒了。",
+    title: {
+      "zh-CN": "Eva的月亮测试提醒",
+      en: "Eva's Moon Test",
+      tr: "Eva'nin Ayi Test Bildirimi",
+      ru: "Test Uvedomleniya Luna Evy",
+    }[getLanguage()],
+    body: {
+      "zh-CN": "这台设备已经可以收到应用提醒了。",
+      en: "Notifications are working on this device.",
+      tr: "Bu cihaz bildirimleri alabiliyor.",
+      ru: "Na etom ustroistve uvedomleniya rabotayut.",
+    }[getLanguage()],
     tag: "eva-moon-test",
   });
   if (sent) {
-    showToast(getLanguage() !== "zh-CN" ? "Test reminder sent." : "测试提醒已发送。");
+    showToast({
+      "zh-CN": "测试提醒已发送。",
+      en: "Test reminder sent.",
+      tr: "Test bildirimi gonderildi.",
+      ru: "Testovoe uvedomlenie otpravleno.",
+    }[getLanguage()]);
     return;
   }
-  showToast(getLanguage() !== "zh-CN" ? "Notifications are not ready yet." : "通知暂时还不能使用。");
+  showToast({
+    "zh-CN": "通知暂时还不能使用。",
+    en: "Notifications are not ready yet.",
+    tr: "Bildirimler henuz hazir degil.",
+    ru: "Uvedomleniya poka nedostupny.",
+  }[getLanguage()]);
 }
 
 async function evaluateNotificationTriggers(insights) {
@@ -2479,10 +2829,18 @@ async function evaluateNotificationTriggers(insights) {
       const lastNotifiedAttentionId = localStorage.getItem(NOTIFICATION_ATTENTION_KEY);
       if (lastNotifiedAttentionId !== latestAttention.id) {
         const sent = await sendLocalNotification({
-          title: getLanguage() !== "zh-CN" ? "Tell A Parent Today" : "今天需要告诉家长",
-          body: getLanguage() !== "zh-CN"
-            ? `${formatDate(latestAttention.date)}: pain ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "needs attention"}.`
-            : `${formatDate(latestAttention.date)}：疼痛 ${latestAttention.painLevel}/10，${formatAlertFlags(latestAttention) || "需要留意"}。`,
+          title: {
+            "zh-CN": "今天需要告诉家长",
+            en: "Tell A Parent Today",
+            tr: "Bugun Anne Babaya Soyle",
+            ru: "Segodnya Nuzhno Skazat Roditelyu",
+          }[getLanguage()],
+          body: {
+            "zh-CN": `${formatDate(latestAttention.date)}：疼痛 ${latestAttention.painLevel}/10，${formatAlertFlags(latestAttention) || "需要留意"}。`,
+            en: `${formatDate(latestAttention.date)}: pain ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "needs attention"}.`,
+            tr: `${formatDate(latestAttention.date)}: agri ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "dikkat gerekiyor"}.`,
+            ru: `${formatDate(latestAttention.date)}: bol ${latestAttention.painLevel}/10, ${formatAlertFlags(latestAttention) || "nuzhno vnimanie"}.`,
+          }[getLanguage()],
           tag: `attention-${latestAttention.id}`,
         });
         if (sent) {
@@ -2497,10 +2855,18 @@ async function evaluateNotificationTriggers(insights) {
   if (localStorage.getItem(NOTIFICATION_DAILY_KEY) === insights.today) return;
 
   const sent = await sendLocalNotification({
-    title: getLanguage() !== "zh-CN" ? "Remember Today's Check-in" : "记得补今天的记录",
-    body: getLanguage() !== "zh-CN"
-      ? "There is no daily log for today yet. A quick check-in only takes a few taps."
-      : "今天还没有日报。点几下就能记完今天的状态。",
+    title: {
+      "zh-CN": "记得补今天的记录",
+      en: "Remember Today's Check-in",
+      tr: "Bugunun Kaydini Unutma",
+      ru: "Ne Zabud Zapisat Segodnya",
+    }[getLanguage()],
+    body: {
+      "zh-CN": "今天还没有日报。点几下就能记完今天的状态。",
+      en: "There is no daily log for today yet. A quick check-in only takes a few taps.",
+      tr: "Bugun icin henuz gunluk kayit yok. Birkac dokunusla hizlica tamamlayabilirsiniz.",
+      ru: "Za segodnya eshche net zapisi. Bystruyu otmetku mozhno sdelat za paru nazhatii.",
+    }[getLanguage()],
     tag: `daily-check-${insights.today}`,
   });
   if (sent) {
