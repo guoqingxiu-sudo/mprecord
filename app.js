@@ -1291,6 +1291,282 @@ const RUNTIME_TEXT = {
     tr: "{date} icin kayit ekle",
     ru: "Nazhmi, chtoby zapisat {date}",
   },
+  heroNoData: {
+    "zh-CN": "尚无数据",
+    en: "No data yet",
+    tr: "Henuz veri yok",
+    ru: "Dannyh poka net",
+  },
+  heroNoDataSummary: {
+    "zh-CN": "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。",
+    en: "Add a few period records first. This area will then show cycle patterns for the child and parent to review together.",
+    tr: "Once birkac adet kaydi ekleyin. Sonra bu alan dongu duzenini gosterir ve cocukla ebeveyn birlikte takip edebilir.",
+    ru: "Snachala dobavte neskolko zapisey o menstruatsii. Potom zdes budut pokazyvatsya osobennosti tsikla dlya sovmestnogo nablyudeniya rebenka i roditelya.",
+  },
+  heroOnPeriod: {
+    "zh-CN": "经期中",
+    en: "On period",
+    tr: "Adet Doneminde",
+    ru: "Idet Menstruatsiya",
+  },
+  heroCycleDay: {
+    "zh-CN": "周期第 {day} 天",
+    en: "Cycle day {day}",
+    tr: "Dongunun {day}. Gunu",
+    ru: "{day}-i den tsikla",
+  },
+  heroCurrentPeriodSummary: {
+    "zh-CN": "本次经期开始于 {start}，结束日期记录为 {end}。",
+    en: "This period started on {start} and is recorded to end on {end}.",
+    tr: "Bu adet donemi {start} tarihinde basladi ve {end} tarihinde bitecek sekilde kayitli.",
+    ru: "Eta menstruatsiya nachalas {start}, zapisano okonchanie na {end}.",
+  },
+  heroNextEstimateSummary: {
+    "zh-CN": "预计下次来潮时间为 {date}，可根据实际情况调整与修正。",
+    en: "Estimated next period: around {date}. Adjust based on real records when needed.",
+    tr: "Tahmini sonraki adet {date} civarinda. Gerektiginde gercek kayitlara gore duzeltin.",
+    ru: "Predpolagaemaya sleduyushchaya menstruatsiya primerno {date}. Pri neobhodimosti utochnyajte po fakticheskim zapisyam.",
+  },
+  heroKeepLogging: {
+    "zh-CN": "继续记录就好，看到不舒服的时候记得告诉家长。",
+    en: "Keep logging. If anything feels wrong, remember to tell a parent.",
+    tr: "Kayit tutmaya devam edin. Rahatsizlik olursa ebeveyne soylemeyi unutmayin.",
+    ru: "Prodolzhayte vesti zapisi. Esli chto-to bespokoit, ne zabyvaite skazat roditelyu.",
+  },
+  heroRecordsPill: {
+    "zh-CN": "已记录 {count} 次",
+    en: "{count} records",
+    tr: "{count} kayit",
+    ru: "{count} zapisey",
+  },
+  heroLatestMood: {
+    "zh-CN": "最近状态 {mood}",
+    en: "Latest mood {mood}",
+    tr: "Son durum {mood}",
+    ru: "Poslednee sostoyanie: {mood}",
+  },
+  heroNotFilled: {
+    "zh-CN": "还没填",
+    en: "Not filled",
+    tr: "Henuz girilmedi",
+    ru: "Eshche ne zapolneno",
+  },
+  heroTodayLog: {
+    "zh-CN": "今日日报 {bleeding} / 疼痛 {pain}",
+    en: "Today: {bleeding} / pain {pain}",
+    tr: "Bugun: {bleeding} / agri {pain}",
+    ru: "Segodnya: {bleeding} / bol {pain}",
+  },
+  heroNoTodayLog: {
+    "zh-CN": "今天还没有日报",
+    en: "No daily log today",
+    tr: "Bugun gunluk kayit yok",
+    ru: "Segodnya net ezhednevnoy zapisi",
+  },
+  statPeriodRecords: {
+    "zh-CN": "经期记录",
+    en: "Period Records",
+    tr: "Adet Kayitlari",
+    ru: "Zapisi o Menstruatsii",
+  },
+  statTellParent: {
+    "zh-CN": "需要告诉家长",
+    en: "Tell Parent",
+    tr: "Ebeveyne Soylenmeli",
+    ru: "Nuzhno Skazat Roditelyu",
+  },
+  statLast7Days: {
+    "zh-CN": "最近 7 天状态",
+    en: "Last 7 Days",
+    tr: "Son 7 Gun",
+    ru: "Poslednie 7 Dnei",
+  },
+  statLatest: {
+    "zh-CN": "最近一次：{date}",
+    en: "Latest: {date}",
+    tr: "Son kayit: {date}",
+    ru: "Poslednyaya: {date}",
+  },
+  statTry3Cycles: {
+    "zh-CN": "建议至少记录 3 个周期。",
+    en: "Try to log at least 3 cycles.",
+    tr: "En az 3 dongu kaydetmek iyi olur.",
+    ru: "Stoit zapisat kak minimum 3 tsikla.",
+  },
+  statNeedAttention: {
+    "zh-CN": "出现过比较需要留意的日报。",
+    en: "Some daily logs need extra attention.",
+    tr: "Bazi gunluk kayitlar daha fazla dikkat gerektiriyor.",
+    ru: "Nekotorye ezhednevnye zapisi trebuyut bolshego vnimaniya.",
+  },
+  statNoAlerts: {
+    "zh-CN": "目前没有明显异常提醒。",
+    en: "No strong alerts right now.",
+    tr: "Su an belirgin bir uyari yok.",
+    ru: "Seychas net vyrazhennyh preduprezhdenii.",
+  },
+  statPainValue: {
+    "zh-CN": "{value} 疼痛",
+    en: "Pain {value}",
+    tr: "Agri {value}",
+    ru: "Bol {value}",
+  },
+  statAvgEnergy: {
+    "zh-CN": "平均精力 {value}/5",
+    en: "Avg energy {value}/5",
+    tr: "Ortalama enerji {value}/5",
+    ru: "Srednyaya energiya {value}/5",
+  },
+  predictionAround: {
+    "zh-CN": "{date} 左右",
+    en: "around {date}",
+    tr: "{date} civari",
+    ru: "primerno {date}",
+  },
+  predictionWaiting: {
+    "zh-CN": "等待更多记录",
+    en: "waiting for more records",
+    tr: "daha fazla kayit bekleniyor",
+    ru: "ozhidayutsya dopolnitelnye zapisi",
+  },
+  predictionNoneYet: {
+    "zh-CN": "暂无",
+    en: "none yet",
+    tr: "henuz yok",
+    ru: "poka net",
+  },
+  predictionManualSource: {
+    "zh-CN": "当前部分使用手动输入参数。",
+    en: "Partly based on manual settings.",
+    tr: "Kismen manuel ayarlara dayaniyor.",
+    ru: "Chastichno osnovano na vvedennyh vruchnuyu nastroikah.",
+  },
+  predictionAutoSource: {
+    "zh-CN": "当前完全基于历史平均值。",
+    en: "Fully based on historical averages.",
+    tr: "Tamamen gecmis ortalamalara dayaniyor.",
+    ru: "Polnostyu osnovano na istoricheskih srednih znacheniyah.",
+  },
+  predictionNote: {
+    "zh-CN": "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。",
+    en: "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice.",
+    tr: "Bunlar gecmis kayitlara dayali tahminlerdir ve sadece takip icindir. Uzun sureli agri, anormal kanama ya da uzun sure adet olmama varsa ebeveyne haber verip doktora danisilmali.",
+    ru: "Eto lish ocenki na osnove proshlyh zapisey i oni nuzhny tolko dlya nablyudeniya. Esli bol dolgo ne prohodit, est neobychnye vydeleniya ili menstruatsii dolgo net, stoit skazat roditelyu i rassmotret obrashchenie k vrachu.",
+  },
+  trendStable: {
+    "zh-CN": "周期波动较小，整体比较稳定。",
+    en: "Cycle variation is small and looks fairly stable.",
+    tr: "Dongu degiskenligi kucuk, genel olarak oldukca duzenli gorunuyor.",
+    ru: "Izmeneniya tsikla nebolshie i v tselom on vyglyadit dovolno stabilnym.",
+  },
+  trendMild: {
+    "zh-CN": "周期有轻微波动，建议继续观察。",
+    en: "Cycle variation is mild. Keep watching.",
+    tr: "Dongude hafif degiskenlik var. Izlemeye devam edin.",
+    ru: "Est nebolshaya izmenchivost tsikla. Stoit prodolzhat nablyudenie.",
+  },
+  trendNoticeable: {
+    "zh-CN": "周期波动较明显，如果长期持续可考虑就医咨询。",
+    en: "Cycle variation is more noticeable. Consider medical advice if it continues.",
+    tr: "Dongu degiskenligi daha belirgin. Uzun sure devam ederse doktora danisilabilir.",
+    ru: "Izmenchivost tsikla bolee zametna. Esli eto prodolzhaetsya dlitelno, stoit rassmotret konsultatsiyu vracha.",
+  },
+  trendNeedTwoRecords: {
+    "zh-CN": "需要至少两次经期记录才能判断周期波动。",
+    en: "At least two period records are needed to judge cycle variation.",
+    tr: "Dongu degiskenligini anlamak icin en az iki adet kaydi gerekir.",
+    ru: "Chtoby otsenit izmenchivost tsikla, nuzhny kak minimum dve zapisi o menstruatsii.",
+  },
+  summaryExportedOn: {
+    "zh-CN": "导出日期：",
+    en: "Exported on:",
+    tr: "Disa aktarma tarihi:",
+    ru: "Data eksporta:",
+  },
+  summaryPeriodRecords: {
+    "zh-CN": "经期记录次数：",
+    en: "Period records:",
+    tr: "Adet kayitlari:",
+    ru: "Zapisi o menstruatsii:",
+  },
+  summaryDailyLogs: {
+    "zh-CN": "日报记录次数：",
+    en: "Daily logs:",
+    tr: "Gunluk kayitlar:",
+    ru: "Ezhednevnye zapisi:",
+  },
+  summaryAverageCycle: {
+    "zh-CN": "平均周期：",
+    en: "Average cycle:",
+    tr: "Ortalama dongu:",
+    ru: "Srednyaya dlina tsikla:",
+  },
+  summaryAveragePeriod: {
+    "zh-CN": "平均经期：",
+    en: "Average period length:",
+    tr: "Ortalama adet suresi:",
+    ru: "Srednyaya dlina menstruatsii:",
+  },
+  summaryLatestPeriod: {
+    "zh-CN": "最近一次月经开始：",
+    en: "Latest period start:",
+    tr: "Son adetin baslangici:",
+    ru: "Poslednee nachalo menstruatsii:",
+  },
+  summaryNeedParent: {
+    "zh-CN": "需要告诉家长的日报次数：",
+    en: "Logs needing parent attention:",
+    tr: "Ebeveyne soylenmesi gereken kayitlar:",
+    ru: "Zapisi, trebuyushchie vnimaniya roditelya:",
+  },
+  summaryNone: {
+    "zh-CN": "暂无",
+    en: "None",
+    tr: "Yok",
+    ru: "Net",
+  },
+  summaryTableDate: {
+    "zh-CN": "日期",
+    en: "Date",
+    tr: "Tarih",
+    ru: "Data",
+  },
+  summaryTableBleeding: {
+    "zh-CN": "出血",
+    en: "Bleeding",
+    tr: "Kanama",
+    ru: "Vydeleniya",
+  },
+  summaryTablePain: {
+    "zh-CN": "疼痛",
+    en: "Pain",
+    tr: "Agri",
+    ru: "Bol",
+  },
+  summaryTableEnergy: {
+    "zh-CN": "精力",
+    en: "Energy",
+    tr: "Enerji",
+    ru: "Energiya",
+  },
+  summaryTableMood: {
+    "zh-CN": "心情",
+    en: "Mood",
+    tr: "Ruh hali",
+    ru: "Nastroenie",
+  },
+  summaryTableAlert: {
+    "zh-CN": "提醒",
+    en: "Alert",
+    tr: "Uyari",
+    ru: "Preduprezhdenie",
+  },
+  summaryObserve: {
+    "zh-CN": "正常观察",
+    en: "Observe",
+    tr: "Gozlemle",
+    ru: "Nablyudat",
+  },
 };
 const VALUE_LABELS = {
   symptoms: {
@@ -1963,42 +2239,40 @@ function renderHero(insights) {
   elements.heroPills.innerHTML = "";
 
   if (!insights.lastRecord) {
-    elements.cycleDay.textContent = getLanguage() !== "zh-CN" ? "No data yet" : "尚无数据";
-    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
-      ? "Add a few period records first. This area will then show cycle patterns for the child and parent to review together."
-      : "先记录几次月经后，这里会显示周期变化，也方便孩子和家长一起观察。";
+    elements.cycleDay.textContent = rt("heroNoData");
+    elements.cycleSummary.textContent = rt("heroNoDataSummary");
     return;
   }
 
   const statusText = insights.currentPeriodRecord
-    ? (getLanguage() !== "zh-CN" ? "On period" : "经期中")
-    : (getLanguage() !== "zh-CN" ? `Cycle day ${Math.max(insights.cycleDay, 1)}` : `周期第 ${Math.max(insights.cycleDay, 1)} 天`);
+    ? rt("heroOnPeriod")
+    : rt("heroCycleDay", { day: Math.max(insights.cycleDay, 1) });
   elements.cycleDay.textContent = statusText;
 
   if (insights.currentPeriodRecord) {
-    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
-      ? `This period started on ${formatDate(insights.currentPeriodRecord.startDate)} and is recorded to end on ${formatDate(insights.currentPeriodRecord.endDate)}.`
-      : `本次经期开始于 ${formatDate(insights.currentPeriodRecord.startDate)}，结束日期记录为 ${formatDate(insights.currentPeriodRecord.endDate)}。`;
+    elements.cycleSummary.textContent = rt("heroCurrentPeriodSummary", {
+      start: formatDate(insights.currentPeriodRecord.startDate),
+      end: formatDate(insights.currentPeriodRecord.endDate),
+    });
   } else if (state.settings.parentMode && insights.nextStartDate) {
-    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
-      ? `Estimated next period: around ${formatDate(insights.nextStartDate)}. Adjust based on real records when needed.`
-      : `预计下次来潮时间为 ${formatDate(insights.nextStartDate)}，可根据实际情况调整与修正。`;
+    elements.cycleSummary.textContent = rt("heroNextEstimateSummary", {
+      date: formatDate(insights.nextStartDate),
+    });
   } else {
-    elements.cycleSummary.textContent = getLanguage() !== "zh-CN"
-      ? "Keep logging. If anything feels wrong, remember to tell a parent."
-      : "继续记录就好，看到不舒服的时候记得告诉家长。";
+    elements.cycleSummary.textContent = rt("heroKeepLogging");
   }
 
   const pillTexts = [
-    getLanguage() !== "zh-CN" ? `${insights.sorted.length} records` : `已记录 ${insights.sorted.length} 次`,
-    getLanguage() !== "zh-CN"
-      ? `Latest mood ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "Not filled"}`
-      : `最近状态 ${insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : "还没填"}`,
+    rt("heroRecordsPill", { count: insights.sorted.length }),
+    rt("heroLatestMood", {
+      mood: insights.todayLog ? labelFromCatalog("mood", insights.todayLog.mood) : rt("heroNotFilled"),
+    }),
     insights.todayLog
-      ? (getLanguage() !== "zh-CN"
-        ? `Today: ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / pain ${insights.todayLog.painLevel}`
-        : `今日日报 ${labelFromCatalog("bleeding", insights.todayLog.bleeding)} / 疼痛 ${insights.todayLog.painLevel}`)
-      : (getLanguage() !== "zh-CN" ? "No daily log today" : "今天还没有日报"),
+      ? rt("heroTodayLog", {
+        bleeding: labelFromCatalog("bleeding", insights.todayLog.bleeding),
+        pain: insights.todayLog.painLevel,
+      })
+      : rt("heroNoTodayLog"),
   ];
 
   pillTexts.forEach((text) => {
@@ -2012,27 +2286,23 @@ function renderHero(insights) {
 function renderStats(insights) {
   const stats = [
     {
-      label: getLanguage() !== "zh-CN" ? "Period Records" : "经期记录",
+      label: rt("statPeriodRecords"),
       value: getLanguage() !== "zh-CN" ? `${insights.sorted.length}` : `${insights.sorted.length} 次`,
       note: insights.sorted.length
-        ? (getLanguage() !== "zh-CN" ? `Latest: ${formatDate(insights.lastRecord.startDate)}` : `最近一次：${formatDate(insights.lastRecord.startDate)}`)
-        : (getLanguage() !== "zh-CN" ? "Try to log at least 3 cycles." : "建议至少记录 3 个周期。"),
+        ? rt("statLatest", { date: formatDate(insights.lastRecord.startDate) })
+        : rt("statTry3Cycles"),
     },
     {
-      label: getLanguage() !== "zh-CN" ? "Tell Parent" : "需要告诉家长",
+      label: rt("statTellParent"),
       value: getLanguage() !== "zh-CN" ? `${insights.needsParentAttentionCount}` : `${insights.needsParentAttentionCount} 次`,
       note: insights.needsParentAttentionCount
-        ? (getLanguage() !== "zh-CN" ? "Some daily logs need extra attention." : "出现过比较需要留意的日报。")
-        : (getLanguage() !== "zh-CN" ? "No strong alerts right now." : "目前没有明显异常提醒。"),
+        ? rt("statNeedAttention")
+        : rt("statNoAlerts"),
     },
     {
-      label: getLanguage() !== "zh-CN" ? "Last 7 Days" : "最近 7 天状态",
-      value: getLanguage() !== "zh-CN"
-        ? `Pain ${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"}`
-        : `${insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0"} 疼痛`,
-      note: getLanguage() !== "zh-CN"
-        ? `Avg energy ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`
-        : `平均精力 ${insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0"}/5`,
+      label: rt("statLast7Days"),
+      value: rt("statPainValue", { value: insights.averageRecentPain ? insights.averageRecentPain.toFixed(1) : "0.0" }),
+      note: rt("statAvgEnergy", { value: insights.averageRecentEnergy ? insights.averageRecentEnergy.toFixed(1) : "0.0" }),
     },
   ];
 
@@ -2167,23 +2437,23 @@ function renderPrediction(insights) {
   }
 
   const nextText = insights.nextStartDate
-    ? (getLanguage() !== "zh-CN" ? `around ${formatDate(insights.nextStartDate)}` : `${formatDate(insights.nextStartDate)} 左右`)
-    : (getLanguage() !== "zh-CN" ? "waiting for more records" : "等待更多记录");
+    ? rt("predictionAround", { date: formatDate(insights.nextStartDate) })
+    : rt("predictionWaiting");
   const fertileText = insights.fertileWindow
     ? (getLanguage() !== "zh-CN"
       ? `${formatDate(insights.fertileWindow.start)} to ${formatDate(insights.fertileWindow.end)}, estimated ovulation ${formatDate(insights.fertileWindow.ovulation)}`
       : `${formatDate(insights.fertileWindow.start)} 至 ${formatDate(insights.fertileWindow.end)}，排卵日估计为 ${formatDate(insights.fertileWindow.ovulation)}`)
-    : (getLanguage() !== "zh-CN" ? "none yet" : "暂无");
+    : rt("predictionNoneYet");
 
   elements.predictionContent.innerHTML = `
     <p><strong>${rt("predictionNextLabel")}</strong>${nextText}</p>
     <p><strong>${rt("predictionFertileLabel")}</strong>${fertileText}</p>
     <p><strong>${rt("predictionSourceLabel")}</strong>${
       Number(state.settings.manualCycleLength) || Number(state.settings.manualPeriodLength)
-        ? (getLanguage() !== "zh-CN" ? "Partly based on manual settings." : "当前部分使用手动输入参数。")
-        : (getLanguage() !== "zh-CN" ? "Fully based on historical averages." : "当前完全基于历史平均值。")
+        ? rt("predictionManualSource")
+        : rt("predictionAutoSource")
     }</p>
-    <p><strong>${rt("predictionNoteLabel")}</strong>${getLanguage() !== "zh-CN" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
+    <p><strong>${rt("predictionNoteLabel")}</strong>${rt("predictionNote")}</p>
   `;
 }
 
@@ -2198,11 +2468,11 @@ function renderTrend(insights) {
 
   const irregularityText = insights.cycleLengths.length
     ? insights.cycleVariation <= 3
-      ? (getLanguage() !== "zh-CN" ? "Cycle variation is small and looks fairly stable." : "周期波动较小，整体比较稳定。")
+      ? rt("trendStable")
       : insights.cycleVariation <= 7
-        ? (getLanguage() !== "zh-CN" ? "Cycle variation is mild. Keep watching." : "周期有轻微波动，建议继续观察。")
-        : (getLanguage() !== "zh-CN" ? "Cycle variation is more noticeable. Consider medical advice if it continues." : "周期波动较明显，如果长期持续可考虑就医咨询。")
-    : (getLanguage() !== "zh-CN" ? "At least two period records are needed to judge cycle variation." : "需要至少两次经期记录才能判断周期波动。");
+        ? rt("trendMild")
+        : rt("trendNoticeable")
+    : rt("trendNeedTwoRecords");
 
   const symptomText = insights.frequentSymptoms.length
     ? insights.frequentSymptoms.map(([name, count]) => (
@@ -2589,7 +2859,7 @@ function exportSummary() {
           <td>${log.painLevel}/10</td>
           <td>${log.energyLevel}/5</td>
           <td>${labelFromCatalog("mood", log.mood)}</td>
-          <td>${shouldTellParent(log) ? (getLanguage() !== "zh-CN" ? "Tell a parent" : "建议告诉家长") : (getLanguage() !== "zh-CN" ? "Observe" : "正常观察")}</td>
+          <td>${shouldTellParent(log) ? rt("statTellParent") : rt("summaryObserve")}</td>
         </tr>
       `,
     )
@@ -2597,7 +2867,7 @@ function exportSummary() {
 
   const symptomMarkup = insights.frequentSymptoms.length
     ? insights.frequentSymptoms.map(([name, count]) => `<li>${labelFromCatalog("symptoms", name)}${getLanguage() !== "zh-CN" ? `: ${count}` : `：${count} 次`}</li>`).join("")
-    : `<li>${getLanguage() !== "zh-CN" ? "None yet" : "暂无"}</li>`;
+    : `<li>${rt("summaryNone")}</li>`;
 
   const html = `<!DOCTYPE html>
   <html lang="${getLanguage()}">
@@ -2616,15 +2886,15 @@ function exportSummary() {
     </head>
     <body>
       <h1>${t("app.name")} - ${rt("summaryTitle")}</h1>
-      <p>${getLanguage() !== "zh-CN" ? "Exported on:" : "导出日期："}${formatDate(toDateInputValue(new Date()))}</p>
+      <p>${rt("summaryExportedOn")}${formatDate(toDateInputValue(new Date()))}</p>
       <section class="card">
         <h2>${rt("summaryOverview")}</h2>
-        <p>${getLanguage() !== "zh-CN" ? "Period records:" : "经期记录次数："}${state.records.length}</p>
-        <p>${getLanguage() !== "zh-CN" ? "Daily logs:" : "日报记录次数："}${state.dailyLogs.length}</p>
-        <p>${getLanguage() !== "zh-CN" ? "Average cycle:" : "平均周期："}${insights.averageCycleLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
-        <p>${getLanguage() !== "zh-CN" ? "Average period length:" : "平均经期："}${insights.averagePeriodLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
-        <p>${getLanguage() !== "zh-CN" ? "Latest period start:" : "最近一次月经开始："}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : (getLanguage() !== "zh-CN" ? "None" : "暂无")}</p>
-        <p>${getLanguage() !== "zh-CN" ? "Logs needing parent attention:" : "需要告诉家长的日报次数："}${insights.needsParentAttentionCount}</p>
+        <p>${rt("summaryPeriodRecords")}${state.records.length}</p>
+        <p>${rt("summaryDailyLogs")}${state.dailyLogs.length}</p>
+        <p>${rt("summaryAverageCycle")}${insights.averageCycleLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
+        <p>${rt("summaryAveragePeriod")}${insights.averagePeriodLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
+        <p>${rt("summaryLatestPeriod")}${insights.lastRecord ? formatDate(insights.lastRecord.startDate) : rt("summaryNone")}</p>
+        <p>${rt("summaryNeedParent")}${insights.needsParentAttentionCount}</p>
       </section>
       <section class="card">
         <h2>${rt("summaryFeelings")}</h2>
@@ -2634,7 +2904,7 @@ function exportSummary() {
         <h2>${rt("summaryLatest5")}</h2>
         <table>
           <thead>
-            <tr><th>${getLanguage() !== "zh-CN" ? "Date" : "日期"}</th><th>${getLanguage() !== "zh-CN" ? "Bleeding" : "出血"}</th><th>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}</th><th>${getLanguage() !== "zh-CN" ? "Energy" : "精力"}</th><th>${getLanguage() !== "zh-CN" ? "Mood" : "心情"}</th><th>${getLanguage() !== "zh-CN" ? "Alert" : "提醒"}</th></tr>
+            <tr><th>${rt("summaryTableDate")}</th><th>${rt("summaryTableBleeding")}</th><th>${rt("summaryTablePain")}</th><th>${rt("summaryTableEnergy")}</th><th>${rt("summaryTableMood")}</th><th>${rt("summaryTableAlert")}</th></tr>
           </thead>
           <tbody>${recentLogs}</tbody>
         </table>
@@ -2925,10 +3195,20 @@ function shouldTellParent(log) {
 function formatAlertFlags(log) {
   const parts = [];
   if (Number(log.painLevel) >= 7) {
-    parts.push(getLanguage() !== "zh-CN" ? "high pain" : "疼痛较高");
+    parts.push({
+      "zh-CN": "疼痛较高",
+      en: "high pain",
+      tr: "yuksek agri",
+      ru: "silnaya bol",
+    }[getLanguage()]);
   }
   if (log.bleeding === "重") {
-    parts.push(getLanguage() !== "zh-CN" ? "heavy bleeding" : "出血偏多");
+    parts.push({
+      "zh-CN": "出血偏多",
+      en: "heavy bleeding",
+      tr: "yogun kanama",
+      ru: "obilnye vydeleniya",
+    }[getLanguage()]);
   }
   if (Array.isArray(log.alertFlags) && log.alertFlags.length) {
     parts.push(log.alertFlags.map((flag) => labelFromCatalog("alertFlags", flag)).join(getLanguage() !== "zh-CN" ? ", " : "、"));
