@@ -21,7 +21,7 @@
             <span class="star star--two">✦</span>
           </div>
           <p class="hero__text">
-            帮助孩子温和记录月经、身体感受和情绪变化，也方便家长一起观察周期和照顾需要。
+            轻轻松松记下今天的身体感觉，也让家长更安心。
           </p>
           <div class="hero__actions">
             <button class="primary-btn" data-jump="#record-form">立即记录</button>
@@ -219,10 +219,10 @@
               </div>
             </div>
             <div class="prediction-copy">
-              <p><strong>记得更换卫生用品：</strong>卫生巾或护垫通常 3 到 4 小时检查一次，湿了就及时更换。</p>
-              <p><strong>肚子疼时先告诉大人：</strong>可以休息、喝温水、热敷，不要自己随便吃药。</p>
-              <p><strong>这些情况要尽快告诉家长：</strong>连续痛得厉害、量特别大、头晕、发烧，或两次月经之间又出血。</p>
-              <p><strong>月经不丢脸：</strong>它是身体长大的正常变化，记录下来是为了更了解自己。</p>
+              <p><strong>卫生巾要常看看：</strong>湿了就换，不用等很久。</p>
+              <p><strong>肚子疼先说出来：</strong>休息、喝温水、热敷都可以。</p>
+              <p><strong>很不舒服就找大人：</strong>家长、老师、校医都可以帮忙。</p>
+              <p><strong>这不是丢脸的事：</strong>记录身体变化是在照顾自己。</p>
             </div>
           </section>
 
@@ -249,9 +249,9 @@
               </div>
             </div>
             <div class="prediction-copy">
-              <p>1. 看看今天有没有来月经，或者有没有不舒服。</p>
-              <p>2. 选一选心情、疼痛和身体感觉。</p>
-              <p>3. 如果很难受，就点记录并告诉家长。</p>
+              <p>1. 看看今天有没有来月经。</p>
+              <p>2. 点一点心情和身体感觉。</p>
+              <p>3. 如果难受，就记录并告诉家长。</p>
             </div>
           </section>
 
@@ -415,22 +415,25 @@
             <div class="section-heading">
               <div>
                 <p class="eyebrow">Data</p>
-                <h2>数据管理</h2>
+                <h2>备份与恢复</h2>
               </div>
             </div>
+            <div class="prediction-copy">
+              <p><strong>备份：</strong>可以导出原始数据，也可以导出给家长看的摘要。</p>
+              <p><strong>恢复：</strong>如果之前保存过 JSON 文件，可以再导回来。</p>
+              <p><strong>注意：</strong>清空全部数据后不能恢复，操作前先备份更安全。</p>
+            </div>
             <div class="data-actions">
-              <button id="export-btn" class="ghost-btn" type="button">导出 JSON</button>
+              <button id="export-btn" class="ghost-btn" type="button">备份原始数据</button>
               <button id="export-summary-btn" class="ghost-btn" type="button">导出家长摘要</button>
               <label class="upload-btn">
-                导入 JSON
+                恢复备份
                 <input id="import-input" type="file" accept="application/json" hidden />
               </label>
               <button id="seed-btn" class="ghost-btn" type="button">填充示例数据</button>
               <button id="clear-btn" class="danger-btn" type="button">清空全部数据</button>
             </div>
-            <p class="muted">
-              数据默认保存在当前浏览器的本地存储中，不会自动上传。
-            </p>
+            <p class="muted">数据默认只保存在当前浏览器，不会自动上传。</p>
           </section>
         </aside>
       </main>
