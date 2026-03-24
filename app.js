@@ -859,6 +859,264 @@ const RUNTIME_TEXT = {
     tr: "Bu Kaydi Duzenle",
     ru: "Izmenit Etu Zapis",
   },
+  reminderEmpty1: {
+    "zh-CN": "现在还没有提醒。先记一条经期或日报就可以。",
+    en: "No reminders yet. Start with one period record or one daily log.",
+    tr: "Henuz hatirlatma yok. Bir adet kaydi ya da bir gunluk kayit ile baslayabilirsiniz.",
+    ru: "Napominanii poka net. Nachnite s odnoy zapisi o menstruatsii ili odnoy ezhednevnoy zapisi.",
+  },
+  reminderEmpty2: {
+    "zh-CN": "如果出现疼痛、出血多或其他需要留意的情况，这里会自动帮你汇总。",
+    en: "When there is pain, heavy bleeding, or anything unusual, this card will summarize it here.",
+    tr: "Agri, yogun kanama ya da dikkat gerektiren bir durum oldugunda bu kart burada ozetler.",
+    ru: "Esli poyavitsya bol, obilnoe krovotechenie ili drugaya vazhnaya situatsiya, eta kartochka pokazhet svodku zdes.",
+  },
+  reminderTopAlert: {
+    "zh-CN": "最近有一些记录建议告诉家长。",
+    en: "Some recent records should be shared with a parent.",
+    tr: "Bazi son kayitlarin ebeveynle paylasilmasi gerekiyor.",
+    ru: "Nekotorye poslednie zapisi stoit pokazat roditelyu.",
+  },
+  reminderTopCalm: {
+    "zh-CN": "现在没有明显的紧急提醒，继续记录就好。",
+    en: "No urgent alerts right now. Keep logging.",
+    tr: "Su an acil bir uyari yok. Kayit tutmaya devam edin.",
+    ru: "Seychas net srochnyh preduprezhdenii. Prodolzhayte vesti zapisi.",
+  },
+  reminderPainSome: {
+    "zh-CN": "最近记录到 {count} 次高疼痛日报。",
+    en: "{count} high-pain log(s) were recorded recently.",
+    tr: "Son donemde {count} yuksek agrili gunluk kayit var.",
+    ru: "Nedavno bylo zapisano {count} dnevnyh zapisey s silnoy bolyu.",
+  },
+  reminderPainNone: {
+    "zh-CN": "最近没有很高疼痛的日报。",
+    en: "No very high pain logs recently.",
+    tr: "Son donemde cok yuksek agrili kayit yok.",
+    ru: "V poslednee vremya ne bylo zapisey s ochen silnoy bolyu.",
+  },
+  reminderLatestNone: {
+    "zh-CN": "最近没有需要告诉家长的记录。",
+    en: "No recent records need parent attention.",
+    tr: "Son kayitlarda ebeveyn dikkatine ihtiyac yok.",
+    ru: "Sredi poslednih zapisey net takih, kotorye trebuyut vnimaniya roditelya.",
+  },
+  reminderParentView: {
+    "zh-CN": "家长查看：提醒原因包括 {flags}。",
+    en: "Parent view: flags {flags}.",
+    tr: "Ebeveyn gorunumu: nedenler {flags}.",
+    ru: "Rezhim dlya roditelei: prichiny {flags}.",
+  },
+  reminderOpenLog: {
+    "zh-CN": "打开这条日报",
+    en: "Open this daily log",
+    tr: "Bu gunluk kaydi ac",
+    ru: "Otkryt etu ezhednevnuyu zapis",
+  },
+  reminderWatchSymptoms: {
+    "zh-CN": "继续观察身体感觉",
+    en: "watch symptoms",
+    tr: "belirtileri izlemeye devam et",
+    ru: "nablyudat za simptomami",
+  },
+  reminderNowLabel: {
+    "zh-CN": "现在：",
+    en: "Now:",
+    tr: "Simdi:",
+    ru: "Seichas:",
+  },
+  reminderPainLabel: {
+    "zh-CN": "疼痛：",
+    en: "Pain:",
+    tr: "Agri:",
+    ru: "Bol:",
+  },
+  reminderLatestLabel: {
+    "zh-CN": "最近提醒：",
+    en: "Latest alert:",
+    tr: "Son uyari:",
+    ru: "Poslednee upozhdenie:",
+  },
+  reminderWhyLabel: {
+    "zh-CN": "原因：",
+    en: "Why:",
+    tr: "Neden:",
+    ru: "Prichina:",
+  },
+  severityAlert: {
+    "zh-CN": "尽快告诉家长",
+    en: "Tell Parent Now",
+    tr: "Hemen Ebeveyne Soyle",
+    ru: "Skazat Roditelyu Srochno",
+  },
+  severityWatch: {
+    "zh-CN": "需要留意",
+    en: "Watch Closely",
+    tr: "Dikkatle Izle",
+    ru: "Nuzhno Nablyudat",
+  },
+  severityOk: {
+    "zh-CN": "正常观察",
+    en: "Normal Check",
+    tr: "Normal Gozlem",
+    ru: "Obychnoe Nablyudenie",
+  },
+  predictionForParents: {
+    "zh-CN": "这里是家长查看区。",
+    en: "This section is for parents.",
+    tr: "Bu bolum ebeveynler icindir.",
+    ru: "Etot razdel prednaznachen dlya roditelei.",
+  },
+  predictionParentsHelp: {
+    "zh-CN": "默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。",
+    en: "Predictions and fertility details stay hidden by default so kids do not see unnecessary information.",
+    tr: "Tahminler ve dogurganlik bilgileri varsayilan olarak gizlidir; boylece cocuklar gereksiz bilgiler gormez.",
+    ru: "Prognozy i dannye o fertilnosti po umolchaniyu skryty, chtoby rebenok ne videl lishnyuyu informatsiyu.",
+  },
+  predictionNoData: {
+    "zh-CN": "暂无足够数据生成预测。",
+    en: "Not enough data for predictions yet.",
+    tr: "Tahmin icin henuz yeterli veri yok.",
+    ru: "Poka nedostatochno dannyh dlya prognoza.",
+  },
+  predictionNoDataHelp: {
+    "zh-CN": "建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。",
+    en: "Start with the latest period first. Predictions get better as more records are added.",
+    tr: "Once son adeti girin, sonra eski kayitlari ekleyin. Daha fazla kayitla tahminler daha iyi olur.",
+    ru: "Snachala dobavte poslednyuyu menstruatsiyu, a potom postepenno dopolnite starie zapisi. S bolshim chislom zapisey prognoz stanet luchshe.",
+  },
+  predictionNextLabel: {
+    "zh-CN": "下次来潮预测：",
+    en: "Next period estimate:",
+    tr: "Sonraki Adet Tahmini:",
+    ru: "Predpolagaemoe Nachalo Sleduyushchey Menstruatsii:",
+  },
+  predictionFertileLabel: {
+    "zh-CN": "易孕窗口：",
+    en: "Fertile window:",
+    tr: "Dogurgan Donem:",
+    ru: "Fertilnoe Okno:",
+  },
+  predictionSourceLabel: {
+    "zh-CN": "参数来源：",
+    en: "Source:",
+    tr: "Kaynak:",
+    ru: "Istochnik:",
+  },
+  predictionNoteLabel: {
+    "zh-CN": "说明：",
+    en: "Note:",
+    tr: "Not:",
+    ru: "Primechanie:",
+  },
+  trendNoSymptoms: {
+    "zh-CN": "暂无高频症状数据。",
+    en: "No frequent symptom data yet.",
+    tr: "Henuz sik gorulen belirti verisi yok.",
+    ru: "Poka net dannyh o chasto povtoryayushchihsya simptomah.",
+  },
+  trendRecentLabel: {
+    "zh-CN": "孩子近况：",
+    en: "Recent status:",
+    tr: "Son Durum:",
+    ru: "Poslednee Sostoyanie:",
+  },
+  trendRecentHasLogs: {
+    "zh-CN": "最近有持续记录，可以继续保持。",
+    en: "Recent logs are being kept consistently.",
+    tr: "Son kayitlar duzenli tutuluyor.",
+    ru: "Poslednie zapisi vedutsya regulyarno.",
+  },
+  trendRecentNoLogs: {
+    "zh-CN": "先从不舒服的那几天开始记就可以。",
+    en: "Start by logging the uncomfortable days first.",
+    tr: "Once rahatsiz hissedilen gunleri kaydetmekle baslayin.",
+    ru: "Dlya nachala dostatochno zapisivat dni, kogda est diskomfort.",
+  },
+  trendVariationLabel: {
+    "zh-CN": "周期波动：",
+    en: "Cycle variation:",
+    tr: "Dongu Degiskenligi:",
+    ru: "Izmenchivost Tsikla:",
+  },
+  trendParentOnlyVisible: {
+    "zh-CN": "这部分放在家长模式里查看。",
+    en: "Visible in Parent Mode.",
+    tr: "Bu bolum Ebeveyn Modunda gorulur.",
+    ru: "Etot razdel viden v rezhime dlya roditelei.",
+  },
+  trendRangeLabel: {
+    "zh-CN": "波动范围：",
+    en: "Variation range:",
+    tr: "Degisim Araligi:",
+    ru: "Diapazon Izmenenii:",
+  },
+  trendParentOnly: {
+    "zh-CN": "家长模式可见",
+    en: "Parent Mode only",
+    tr: "Yalnizca Ebeveyn Modunda",
+    ru: "Tolko v Rezhime Dlya Roditelei",
+  },
+  trendFrequentLabel: {
+    "zh-CN": "高频症状：",
+    en: "Frequent symptoms:",
+    tr: "Sik Belirtiler:",
+    ru: "Chastye Simptomy:",
+  },
+  trendHighPainLabel: {
+    "zh-CN": "高疼痛日报：",
+    en: "High-pain logs:",
+    tr: "Yuksek Agrili Kayitlar:",
+    ru: "Zapisi o Silnoy Boli:",
+  },
+  trendHighPainNote: {
+    "zh-CN": "，可以单独留意诱因和缓解方式。",
+    en: ", watch for triggers and what helps.",
+    tr: ", tetikleyicilere ve neyin rahatlattigina dikkat edin.",
+    ru: ", stoit sledit za vozmozhnymi triggerami i tem, chto pomogaet.",
+  },
+  trendLatestLabel: {
+    "zh-CN": "最近日报：",
+    en: "Latest daily log:",
+    tr: "Son Gunluk Kayit:",
+    ru: "Poslednyaya Ezhednevnaya Zapis:",
+  },
+  trendNoDaily: {
+    "zh-CN": "还没有日报记录。",
+    en: "No daily log yet.",
+    tr: "Henuz gunluk kayit yok.",
+    ru: "Ezhednevnyh zapisey poka net.",
+  },
+  detailNormalObservation: {
+    "zh-CN": "正常观察",
+    en: "Normal observation",
+    tr: "Normal gozlem",
+    ru: "Obychnoe nablyudenie",
+  },
+  summaryTitle: {
+    "zh-CN": "家长摘要",
+    en: "Parent Summary",
+    tr: "Ebeveyn Ozeti",
+    ru: "Svodka Dlya Roditelei",
+  },
+  summaryOverview: {
+    "zh-CN": "概况",
+    en: "Overview",
+    tr: "Genel Bakis",
+    ru: "Obshchii Obzor",
+  },
+  summaryFeelings: {
+    "zh-CN": "高频身体感觉",
+    en: "Frequent Body Feelings",
+    tr: "Sik Beden Hisleri",
+    ru: "Chastye Oshchushcheniya v Tele",
+  },
+  summaryLatest5: {
+    "zh-CN": "最近 5 条日报",
+    en: "Latest 5 Daily Logs",
+    tr: "Son 5 Gunluk Kayit",
+    ru: "Poslednie 5 Ezhednevnyh Zapisei",
+  },
 };
 const VALUE_LABELS = {
   symptoms: {
@@ -1630,40 +1888,38 @@ function renderReminderCenter(insights) {
 
   if (noLogs) {
     elements.reminderCenterContent.innerHTML = `
-      <p>${getLanguage() !== "zh-CN" ? "No reminders yet. Start with one period record or one daily log." : "现在还没有提醒。先记一条经期或日报就可以。"}</p>
-      <p>${getLanguage() !== "zh-CN" ? "When there is pain, heavy bleeding, or anything unusual, this card will summarize it here." : "如果出现疼痛、出血多或其他需要留意的情况，这里会自动帮你汇总。"}</p>
+      <p>${rt("reminderEmpty1")}</p>
+      <p>${rt("reminderEmpty2")}</p>
     `;
     return;
   }
 
   const topMessage = hasAttention
-    ? (getLanguage() !== "zh-CN" ? "Some recent records should be shared with a parent." : "最近有一些记录建议告诉家长。")
-    : (getLanguage() !== "zh-CN" ? "No urgent alerts right now. Keep logging." : "现在没有明显的紧急提醒，继续记录就好。");
+    ? rt("reminderTopAlert")
+    : rt("reminderTopCalm");
   const painMessage = hasHighPain
-    ? (getLanguage() !== "zh-CN" ? `${insights.highPainCount} high-pain log(s) were recorded recently.` : `最近记录到 ${insights.highPainCount} 次高疼痛日报。`)
-    : (getLanguage() !== "zh-CN" ? "No very high pain logs recently." : "最近没有很高疼痛的日报。");
+    ? rt("reminderPainSome", { count: insights.highPainCount })
+    : rt("reminderPainNone");
   const latestMessage = latestAttention
     ? (getLanguage() !== "zh-CN"
       ? `Latest alert: ${formatDate(latestAttention.date)}, ${labelFromCatalog("bleeding", latestAttention.bleeding)}, pain ${latestAttention.painLevel}/10.`
       : `最近一次提醒：${formatDate(latestAttention.date)}，出血 ${labelFromCatalog("bleeding", latestAttention.bleeding)}，疼痛 ${latestAttention.painLevel}/10。`)
-    : (getLanguage() !== "zh-CN" ? "No recent records need parent attention." : "最近没有需要告诉家长的记录。");
+    : rt("reminderLatestNone");
   const parentOnlyDetail = latestAttention && state.settings.parentMode
-    ? (getLanguage() !== "zh-CN"
-      ? `Parent view: flags ${formatAlertFlags(latestAttention)}.`
-      : `家长查看：提醒原因包括 ${formatAlertFlags(latestAttention)}。`)
+    ? rt("reminderParentView", { flags: formatAlertFlags(latestAttention) })
     : "";
   const recentAlertList = insights.attentionLogs.length
     ? `
       <div class="reminder-list">
         ${insights.attentionLogs.map((log) => `
-          <article class="reminder-item" data-level="${getLogSeverity(log)}" data-log-id="${log.id}" title="${getLanguage() !== "zh-CN" ? "Open this daily log" : "打开这条日报"}">
+          <article class="reminder-item" data-level="${getLogSeverity(log)}" data-log-id="${log.id}" title="${rt("reminderOpenLog")}">
             <div class="reminder-item__top">
               <strong>${formatDate(log.date)}</strong>
               <span class="status-pill">${getReminderSeverityLabel(getLogSeverity(log))}</span>
             </div>
             <p>${getLanguage() !== "zh-CN"
-              ? `${labelFromCatalog("bleeding", log.bleeding)}, pain ${log.painLevel}/10, ${formatAlertFlags(log) || "watch symptoms"}`
-              : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，疼痛 ${log.painLevel}/10，${formatAlertFlags(log) || "继续观察身体感觉"}`}</p>
+              ? `${labelFromCatalog("bleeding", log.bleeding)}, pain ${log.painLevel}/10, ${formatAlertFlags(log) || rt("reminderWatchSymptoms")}`
+              : `出血 ${labelFromCatalog("bleeding", log.bleeding)}，疼痛 ${log.painLevel}/10，${formatAlertFlags(log) || rt("reminderWatchSymptoms")}`}</p>
           </article>
         `).join("")}
       </div>
@@ -1671,10 +1927,10 @@ function renderReminderCenter(insights) {
     : "";
 
   elements.reminderCenterContent.innerHTML = `
-    <p><strong>${getLanguage() !== "zh-CN" ? "Now:" : "现在："}</strong>${topMessage}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Pain:" : "疼痛："}</strong>${painMessage}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Latest alert:" : "最近提醒："}</strong>${latestMessage}</p>
-    ${parentOnlyDetail ? `<p><strong>${getLanguage() !== "zh-CN" ? "Why:" : "原因："}</strong>${parentOnlyDetail}</p>` : ""}
+    <p><strong>${rt("reminderNowLabel")}</strong>${topMessage}</p>
+    <p><strong>${rt("reminderPainLabel")}</strong>${painMessage}</p>
+    <p><strong>${rt("reminderLatestLabel")}</strong>${latestMessage}</p>
+    ${parentOnlyDetail ? `<p><strong>${rt("reminderWhyLabel")}</strong>${parentOnlyDetail}</p>` : ""}
     ${recentAlertList}
   `;
 
@@ -1711,27 +1967,27 @@ function getLogSeverity(log) {
 
 function getReminderSeverityLabel(level) {
   if (level === "alert") {
-    return getLanguage() !== "zh-CN" ? "Tell Parent Now" : "尽快告诉家长";
+    return rt("severityAlert");
   }
   if (level === "watch") {
-    return getLanguage() !== "zh-CN" ? "Watch Closely" : "需要留意";
+    return rt("severityWatch");
   }
-  return getLanguage() !== "zh-CN" ? "Normal Check" : "正常观察";
+  return rt("severityOk");
 }
 
 function renderPrediction(insights) {
   if (!state.settings.parentMode) {
     elements.predictionContent.innerHTML = `
-      <p>${getLanguage() !== "zh-CN" ? "This section is for parents." : "这里是家长查看区。"}</p>
-      <p class="muted">${getLanguage() !== "zh-CN" ? "Predictions and fertility details stay hidden by default so kids do not see unnecessary information." : "默认不会显示预测和易孕信息，避免给孩子增加不必要的困扰。"}</p>
+      <p>${rt("predictionForParents")}</p>
+      <p class="muted">${rt("predictionParentsHelp")}</p>
     `;
     return;
   }
 
   if (!insights.lastRecord) {
     elements.predictionContent.innerHTML = `
-      <p>${getLanguage() !== "zh-CN" ? "Not enough data for predictions yet." : "暂无足够数据生成预测。"}</p>
-      <p class="muted">${getLanguage() !== "zh-CN" ? "Start with the latest period first. Predictions get better as more records are added." : "建议先录入最近一次月经，再慢慢补充前面的记录，后面的估算会更稳定。"}</p>
+      <p>${rt("predictionNoData")}</p>
+      <p class="muted">${rt("predictionNoDataHelp")}</p>
     `;
     return;
   }
@@ -1746,14 +2002,14 @@ function renderPrediction(insights) {
     : (getLanguage() !== "zh-CN" ? "none yet" : "暂无");
 
   elements.predictionContent.innerHTML = `
-    <p><strong>${getLanguage() !== "zh-CN" ? "Next period estimate:" : "下次来潮预测："}</strong>${nextText}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Fertile window:" : "易孕窗口："}</strong>${fertileText}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Source:" : "参数来源："}</strong>${
+    <p><strong>${rt("predictionNextLabel")}</strong>${nextText}</p>
+    <p><strong>${rt("predictionFertileLabel")}</strong>${fertileText}</p>
+    <p><strong>${rt("predictionSourceLabel")}</strong>${
       Number(state.settings.manualCycleLength) || Number(state.settings.manualPeriodLength)
         ? (getLanguage() !== "zh-CN" ? "Partly based on manual settings." : "当前部分使用手动输入参数。")
         : (getLanguage() !== "zh-CN" ? "Fully based on historical averages." : "当前完全基于历史平均值。")
     }</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Note:" : "说明："}</strong>${getLanguage() !== "zh-CN" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
+    <p><strong>${rt("predictionNoteLabel")}</strong>${getLanguage() !== "zh-CN" ? "These are estimates based on past records. They are only for observation. If there is long-lasting pain, unusual bleeding, or no period for a long time, talk with a parent and consider medical advice." : "这是按历史记录做出的估算，只是帮助观察变化。如果孩子长期疼痛明显、出血异常，或很久没有来月经，建议告诉家长并咨询医生。"}</p>
   `;
 }
 
@@ -1778,15 +2034,15 @@ function renderTrend(insights) {
     ? insights.frequentSymptoms.map(([name, count]) => (
       getLanguage() !== "zh-CN" ? `${labelFromCatalog("symptoms", name)} (${count})` : `${labelFromCatalog("symptoms", name)}（${count} 次）`
     )).join(getLanguage() !== "zh-CN" ? ", " : "、")
-    : (getLanguage() !== "zh-CN" ? "No frequent symptom data yet." : "暂无高频症状数据。");
+    : rt("trendNoSymptoms");
 
   elements.trendContent.innerHTML = `
-    <p><strong>${getLanguage() !== "zh-CN" ? "Recent status:" : "孩子近况："}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? "Recent logs are being kept consistently." : "最近有持续记录，可以继续保持。") : (getLanguage() !== "zh-CN" ? "Start by logging the uncomfortable days first." : "先从不舒服的那几天开始记就可以。")}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Cycle variation:" : "周期波动："}</strong>${state.settings.parentMode ? irregularityText : (getLanguage() !== "zh-CN" ? "Visible in Parent Mode." : "这部分放在家长模式里查看。")} </p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Variation range:" : "波动范围："}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() !== "zh-CN" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : (getLanguage() !== "zh-CN" ? "Parent Mode only" : "家长模式可见")}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Frequent symptoms:" : "高频症状："}</strong>${symptomText}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "High-pain logs:" : "高疼痛日报："}</strong>${getLanguage() !== "zh-CN" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? (getLanguage() !== "zh-CN" ? ", watch for triggers and what helps." : "，可以单独留意诱因和缓解方式。") : ""}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Latest daily log:" : "最近日报："}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : (getLanguage() !== "zh-CN" ? "No daily log yet." : "还没有日报记录。")}</p>
+    <p><strong>${rt("trendRecentLabel")}</strong>${insights.lastDailyLog ? rt("trendRecentHasLogs") : rt("trendRecentNoLogs")}</p>
+    <p><strong>${rt("trendVariationLabel")}</strong>${state.settings.parentMode ? irregularityText : rt("trendParentOnlyVisible")} </p>
+    <p><strong>${rt("trendRangeLabel")}</strong>${state.settings.parentMode && insights.cycleLengths.length ? (getLanguage() !== "zh-CN" ? `${insights.cycleVariation} days` : `${insights.cycleVariation} 天`) : rt("trendParentOnly")}</p>
+    <p><strong>${rt("trendFrequentLabel")}</strong>${symptomText}</p>
+    <p><strong>${rt("trendHighPainLabel")}</strong>${getLanguage() !== "zh-CN" ? `${insights.highPainCount}` : `${insights.highPainCount} 次`}${insights.highPainCount ? rt("trendHighPainNote") : ""}</p>
+    <p><strong>${rt("trendLatestLabel")}</strong>${insights.lastDailyLog ? (getLanguage() !== "zh-CN" ? `${formatDate(insights.lastDailyLog.date)}, energy ${insights.lastDailyLog.energyLevel}/5, pain ${insights.lastDailyLog.painLevel}/10.` : `${formatDate(insights.lastDailyLog.date)}，精力 ${insights.lastDailyLog.energyLevel}/5，疼痛 ${insights.lastDailyLog.painLevel}/10。`) : rt("trendNoDaily")}</p>
   `;
 }
 
@@ -1988,7 +2244,7 @@ function openDailyLogDetail(logId) {
     <p><strong>${getLanguage() !== "zh-CN" ? "Energy:" : "精力："}</strong>${log.energyLevel}/5</p>
     <p><strong>${getLanguage() !== "zh-CN" ? "Mood:" : "心情："}</strong>${labelFromCatalog("mood", log.mood)}</p>
     <p><strong>${getLanguage() !== "zh-CN" ? "Body feelings:" : "身体感觉："}</strong>${log.symptoms.length ? log.symptoms.map((symptom) => labelFromCatalog("symptoms", symptom)).join(getLanguage() !== "zh-CN" ? ", " : "、") : (getLanguage() !== "zh-CN" ? "None" : "无")}</p>
-    <p><strong>${getLanguage() !== "zh-CN" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || (getLanguage() !== "zh-CN" ? "Normal observation" : "正常观察")}</p>
+    <p><strong>${getLanguage() !== "zh-CN" ? "Alert flags:" : "提醒原因："}</strong>${formatAlertFlags(log) || rt("detailNormalObservation")}</p>
     <p><strong>${getLanguage() !== "zh-CN" ? "Notes:" : "备注："}</strong>${log.notes || (getLanguage() !== "zh-CN" ? "No notes" : "无备注")}</p>
   `;
   elements.dailyDetailEditBtn.dataset.logId = log.id;
@@ -2173,7 +2429,7 @@ function exportSummary() {
   <html lang="${getLanguage()}">
     <head>
       <meta charset="UTF-8">
-      <title>${t("app.name")} - ${getLanguage() !== "zh-CN" ? "Parent Summary" : "家长摘要"}</title>
+      <title>${t("app.name")} - ${rt("summaryTitle")}</title>
       <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; padding: 24px; color: #3f2430; }
         h1, h2 { margin: 0 0 12px; }
@@ -2185,10 +2441,10 @@ function exportSummary() {
       </style>
     </head>
     <body>
-      <h1>${t("app.name")} - ${getLanguage() !== "zh-CN" ? "Parent Summary" : "家长摘要"}</h1>
+      <h1>${t("app.name")} - ${rt("summaryTitle")}</h1>
       <p>${getLanguage() !== "zh-CN" ? "Exported on:" : "导出日期："}${formatDate(toDateInputValue(new Date()))}</p>
       <section class="card">
-        <h2>${getLanguage() !== "zh-CN" ? "Overview" : "概况"}</h2>
+        <h2>${rt("summaryOverview")}</h2>
         <p>${getLanguage() !== "zh-CN" ? "Period records:" : "经期记录次数："}${state.records.length}</p>
         <p>${getLanguage() !== "zh-CN" ? "Daily logs:" : "日报记录次数："}${state.dailyLogs.length}</p>
         <p>${getLanguage() !== "zh-CN" ? "Average cycle:" : "平均周期："}${insights.averageCycleLength}${getLanguage() !== "zh-CN" ? " days" : " 天"}</p>
@@ -2197,11 +2453,11 @@ function exportSummary() {
         <p>${getLanguage() !== "zh-CN" ? "Logs needing parent attention:" : "需要告诉家长的日报次数："}${insights.needsParentAttentionCount}</p>
       </section>
       <section class="card">
-        <h2>${getLanguage() !== "zh-CN" ? "Frequent Body Feelings" : "高频身体感觉"}</h2>
+        <h2>${rt("summaryFeelings")}</h2>
         <ul>${symptomMarkup}</ul>
       </section>
       <section class="card">
-        <h2>${getLanguage() !== "zh-CN" ? "Latest 5 Daily Logs" : "最近 5 条日报"}</h2>
+        <h2>${rt("summaryLatest5")}</h2>
         <table>
           <thead>
             <tr><th>${getLanguage() !== "zh-CN" ? "Date" : "日期"}</th><th>${getLanguage() !== "zh-CN" ? "Bleeding" : "出血"}</th><th>${getLanguage() !== "zh-CN" ? "Pain" : "疼痛"}</th><th>${getLanguage() !== "zh-CN" ? "Energy" : "精力"}</th><th>${getLanguage() !== "zh-CN" ? "Mood" : "心情"}</th><th>${getLanguage() !== "zh-CN" ? "Alert" : "提醒"}</th></tr>
