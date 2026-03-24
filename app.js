@@ -92,6 +92,7 @@ const state = {
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
+  pinDialogMode: "unlock",
 };
 
 const elements = {
@@ -154,8 +155,11 @@ const elements = {
   clearPinBtn: document.querySelector("#clear-pin-btn"),
   pinStatus: document.querySelector("#pin-status"),
   pinDialog: document.querySelector("#pin-dialog"),
+  pinDialogTitle: document.querySelector("#pin-dialog-title"),
   pinDialogForm: document.querySelector("#pin-dialog-form"),
   pinDialogInput: document.querySelector("#pin-dialog-input"),
+  pinDialogConfirmWrap: document.querySelector("#pin-dialog-confirm-wrap"),
+  pinDialogConfirmInput: document.querySelector("#pin-dialog-confirm-input"),
   pinDialogStatus: document.querySelector("#pin-dialog-status"),
   printChecklistBtn: document.querySelector("#print-checklist-btn"),
   welcomeDialog: document.querySelector("#welcome-dialog"),
@@ -1036,14 +1040,11 @@ function toggleParentMode() {
   }
 
   if (!state.settings.parentPin) {
-    elements.pinStatus.textContent = "请先在家长锁里设置 4 位数字 PIN。";
-    document.querySelector(".panel--history")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    openPinDialog("setup");
     return;
   }
 
-  elements.pinDialogInput.value = "";
-  elements.pinDialogStatus.textContent = "只有家长知道这个 PIN。";
-  elements.pinDialog.showModal();
+  openPinDialog("unlock");
 }
 
 function updateAlertAdvice() {
@@ -1102,6 +1103,26 @@ function handlePinDialogSubmit(event) {
   }
 
   const inputPin = normalizePin(elements.pinDialogInput.value);
+
+  if (state.pinDialogMode === "setup") {
+    const confirmPin = normalizePin(elements.pinDialogConfirmInput.value);
+    if (!inputPin || inputPin.length !== 4) {
+      elements.pinDialogStatus.textContent = "PIN 需要是 4 位数字。";
+      return;
+    }
+    if (inputPin !== confirmPin) {
+      elements.pinDialogStatus.textContent = "两次输入的 PIN 不一致。";
+      return;
+    }
+
+    state.settings.parentPin = inputPin;
+    state.settings.parentMode = true;
+    saveState();
+    render();
+    elements.pinDialog.close();
+    return;
+  }
+
   if (inputPin !== state.settings.parentPin) {
     elements.pinDialogStatus.textContent = "PIN 不正确，请重试。";
     return;
@@ -1126,6 +1147,17 @@ function maybeShowOnboarding() {
 function closeOnboarding() {
   localStorage.setItem(ONBOARDING_KEY, "1");
   elements.welcomeDialog?.close();
+}
+
+function openPinDialog(mode) {
+  state.pinDialogMode = mode;
+  elements.pinDialogInput.value = "";
+  elements.pinDialogConfirmInput.value = "";
+  elements.pinDialogConfirmWrap.classList.toggle("is-hidden", mode !== "setup");
+  elements.pinDialogTitle.textContent = mode === "setup" ? "设置家长 PIN" : "输入家长 PIN";
+  elements.pinDialogStatus.textContent =
+    mode === "setup" ? "第一次使用家长模式，请先设置一个 4 位数字 PIN。" : "只有家长知道这个 PIN。";
+  elements.pinDialog.showModal();
 }
 
 function normalizeNumberWithinRange(value, min, max) {

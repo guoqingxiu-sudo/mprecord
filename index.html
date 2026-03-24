@@ -452,12 +452,16 @@
         <div class="section-heading">
           <div>
             <p class="eyebrow">Parent Lock</p>
-            <h2>输入家长 PIN</h2>
+            <h2 id="pin-dialog-title">输入家长 PIN</h2>
           </div>
         </div>
         <label>
           4 位数字 PIN
           <input id="pin-dialog-input" type="password" inputmode="numeric" maxlength="4" placeholder="请输入 PIN" />
+        </label>
+        <label id="pin-dialog-confirm-wrap" class="is-hidden">
+          再输入一次 PIN
+          <input id="pin-dialog-confirm-input" type="password" inputmode="numeric" maxlength="4" placeholder="再次输入 PIN" />
         </label>
         <p id="pin-dialog-status" class="muted">只有家长知道这个 PIN。</p>
         <div class="form-actions">
