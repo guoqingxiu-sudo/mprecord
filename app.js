@@ -117,6 +117,7 @@ const I18N = {
     "preferences.simpleModeHelp": "隐藏更多内容，只保留更简单的记录流程。",
     "preferences.save": "保存偏好",
     "preferences.replay": "重新查看引导",
+    "settingsHub.title": "设置中心",
     "dialog.pinLabel": "4 位数字 PIN",
     "dialog.pinConfirm": "再输入一次 PIN",
     "welcome.title": "第一次使用看看这里",
@@ -237,6 +238,7 @@ const I18N = {
     "preferences.simpleModeHelp": "Hide more content and keep a simpler logging flow.",
     "preferences.save": "Save Preferences",
     "preferences.replay": "Replay Guide",
+    "settingsHub.title": "Settings Hub",
     "dialog.pinLabel": "4-digit PIN",
     "dialog.pinConfirm": "Enter PIN Again",
     "welcome.title": "First Time? Start Here",
@@ -450,6 +452,8 @@ const elements = {
   preferencesLanguageSelect: document.querySelector("#preferences-language-select"),
   preferencesSimpleMode: document.querySelector("#preferences-simple-mode"),
   replayOnboardingBtn: document.querySelector("#replay-onboarding-btn"),
+  settingsTabs: document.querySelectorAll("#settings-tabs [data-tab-target]"),
+  settingsTabPanels: document.querySelectorAll(".tab-panel"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
@@ -584,6 +588,11 @@ function attachEvents() {
   elements.seedBtn.addEventListener("click", seedData);
   elements.preferencesForm?.addEventListener("submit", savePreferences);
   elements.replayOnboardingBtn?.addEventListener("click", replayOnboarding);
+  elements.settingsTabs.forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveSettingsTab(button.dataset.tabTarget);
+    });
+  });
   elements.settingsForm.addEventListener("submit", saveSettings);
   elements.resetSettingsBtn.addEventListener("click", resetSettings);
   elements.installBtn.addEventListener("click", installApp);
@@ -1691,6 +1700,12 @@ function renderParentMode() {
   elements.parentOnlySections.forEach((node) => {
     node.classList.toggle("is-hidden-by-mode", !state.settings.parentMode);
   });
+  if (!state.settings.parentMode) {
+    const activeParentTab = document.querySelector(".tab-panel.parent-only.is-active");
+    if (activeParentTab) {
+      setActiveSettingsTab("preferences-panel");
+    }
+  }
 }
 
 function renderPinSettings() {
@@ -1699,6 +1714,21 @@ function renderPinSettings() {
   elements.pinStatus.textContent = state.settings.parentPin
     ? (getLanguage() === "en" ? "Parent PIN is set. It is only stored in this browser." : "已设置家长 PIN。PIN 只保存在当前浏览器。")
     : (getLanguage() === "en" ? "No PIN yet. Parents should set a 4-digit PIN first." : "还没有设置 PIN。建议家长先设置 4 位数字。");
+}
+
+function setActiveSettingsTab(panelId) {
+  if (!panelId) return;
+  const targetPanel = document.querySelector(`#${panelId}`);
+  if (!targetPanel) return;
+  if (targetPanel.classList.contains("parent-only") && !state.settings.parentMode) {
+    panelId = "preferences-panel";
+  }
+  elements.settingsTabs.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.tabTarget === panelId);
+  });
+  elements.settingsTabPanels.forEach((panel) => {
+    panel.classList.toggle("is-active", panel.id === panelId);
+  });
 }
 
 function normalizeRecord(record) {
