@@ -2,6 +2,7 @@ const STORAGE_KEY = "moon-log-period-tracker-v2";
 const ONBOARDING_KEY = "moon-log-onboarding-seen-v1";
 const PARENT_UNLOCK_KEY = "moon-log-parent-unlocked-v1";
 const PARENT_UNLOCK_EXPIRES_KEY = "moon-log-parent-unlock-expires-v1";
+const VERSION = "1.0.0";
 const MAX_PIN_ATTEMPTS = 3;
 const SYMPTOMS = [
   "腹痛",
@@ -93,6 +94,7 @@ const state = {
     parentMode: false,
     parentPin: "",
     parentLockMinutes: "10",
+    simpleMode: false,
   },
   calendarDate: startOfMonth(new Date()),
   deferredInstallPrompt: null,
@@ -133,6 +135,7 @@ const elements = {
   seedBtn: document.querySelector("#seed-btn"),
   jumpButtons: document.querySelectorAll("[data-jump]"),
   quickLogBtn: document.querySelector("#quick-log-btn"),
+  simpleModeBtn: document.querySelector("#simple-mode-btn"),
   settingsForm: document.querySelector("#settings-form"),
   manualCycleLength: document.querySelector("#manual-cycle-length"),
   manualPeriodLength: document.querySelector("#manual-period-length"),
@@ -172,6 +175,8 @@ const elements = {
   printChecklistBtn: document.querySelector("#print-checklist-btn"),
   welcomeDialog: document.querySelector("#welcome-dialog"),
   welcomeDialogForm: document.querySelector("#welcome-dialog-form"),
+  changelogDialog: document.querySelector("#changelog-dialog"),
+  showChangelogBtn: document.querySelector("#show-changelog-btn"),
 };
 
 bootstrap();
@@ -235,12 +240,14 @@ function attachEvents() {
   elements.installBtn.addEventListener("click", installApp);
   elements.parentModeBtn.addEventListener("click", toggleParentMode);
   elements.quickLogBtn?.addEventListener("click", quickLogToday);
+  elements.simpleModeBtn?.addEventListener("click", toggleSimpleMode);
   elements.pinForm.addEventListener("submit", savePin);
   elements.clearPinBtn.addEventListener("click", clearPin);
   elements.pinDialogForm.addEventListener("submit", handlePinDialogSubmit);
   elements.pinDialogToggleVisibility?.addEventListener("click", togglePinVisibility);
   elements.printChecklistBtn?.addEventListener("click", () => window.print());
   elements.welcomeDialogForm?.addEventListener("submit", closeOnboarding);
+  elements.showChangelogBtn?.addEventListener("click", () => elements.changelogDialog?.showModal());
 
   elements.jumpButtons.forEach((button) => {
     button.addEventListener("click", () => {
@@ -348,6 +355,7 @@ function onSubmitDailyLog(event) {
 
 function render() {
   const insights = buildInsights();
+  document.body.classList.toggle("simple-mode", state.settings.simpleMode);
   renderHero(insights);
   renderStats(insights);
   renderPrediction(insights);
@@ -1035,7 +1043,9 @@ function renderParentMode() {
     state.settings.parentMode = false;
   }
   elements.parentModeBtn.textContent = state.settings.parentMode ? "关闭家长模式" : "打开家长模式";
+  elements.simpleModeBtn.textContent = state.settings.simpleMode ? "关闭超简模式" : "打开超简模式";
   elements.parentModeBtn.classList.toggle("mode-active", state.settings.parentMode);
+  elements.simpleModeBtn.classList.toggle("mode-active", state.settings.simpleMode);
   elements.parentOnlySections.forEach((node) => {
     node.classList.toggle("is-hidden-by-mode", !state.settings.parentMode);
   });
@@ -1085,6 +1095,7 @@ function normalizeSettings(settings = {}) {
     parentMode: Boolean(settings.parentMode),
     parentPin: normalizePin(settings.parentPin),
     parentLockMinutes: normalizeLockMinutes(settings.parentLockMinutes),
+    simpleMode: Boolean(settings.simpleMode),
   };
 }
 
@@ -1279,6 +1290,12 @@ function isParentSessionUnlocked() {
 
 function quickLogToday() {
   fillDailyDate(toDateInputValue(new Date()));
+}
+
+function toggleSimpleMode() {
+  state.settings.simpleMode = !state.settings.simpleMode;
+  saveState();
+  render();
 }
 
 function installApp() {

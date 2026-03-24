@@ -25,6 +25,7 @@
           </p>
           <div class="hero__actions">
             <button class="primary-btn" id="quick-log-btn" type="button">今天一键记录</button>
+            <button class="ghost-btn" id="simple-mode-btn" type="button">打开超简模式</button>
             <button class="primary-btn" data-jump="#record-form">立即记录</button>
             <button class="ghost-btn" data-jump="#calendar-panel">查看日历</button>
             <button class="ghost-btn" id="parent-mode-btn" type="button">打开家长模式</button>
@@ -447,6 +448,11 @@
           </section>
         </aside>
       </main>
+
+      <footer class="app-footer">
+        <p>Eva的月亮 v1.0.0</p>
+        <button id="show-changelog-btn" class="text-btn" type="button">查看更新</button>
+      </footer>
     </div>
 
     <template id="stat-card-template">
@@ -499,6 +505,24 @@
         </div>
         <div class="form-actions">
           <button class="primary-btn" id="welcome-close-btn" type="submit" value="close">开始使用</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="changelog-dialog" class="pin-dialog">
+      <form method="dialog" class="card pin-dialog__card" id="changelog-dialog-form">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Updates</p>
+            <h2>最近更新</h2>
+          </div>
+        </div>
+        <div class="prediction-copy">
+          <p><strong>v1.0.0</strong> 儿童模式、家长模式、PIN 锁、自动锁定、打印摘要已齐备。</p>
+          <p><strong>本次新增</strong> 超简模式、今天一键记录、更新记录入口。</p>
+        </div>
+        <div class="form-actions">
+          <button class="primary-btn" type="submit" value="close">知道了</button>
         </div>
       </form>
     </dialog>

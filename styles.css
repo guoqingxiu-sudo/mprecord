@@ -60,6 +60,19 @@ button {
   padding: 32px 0 48px;
 }
 
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  color: var(--muted);
+  padding: 14px 6px 0;
+}
+
+.app-footer p {
+  margin: 0;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
@@ -462,6 +475,16 @@ textarea {
 .mode-active {
   background: linear-gradient(135deg, var(--primary), #ef7b8d);
   color: #fff;
+}
+
+.simple-mode .panel--insights,
+.simple-mode .panel--history,
+.simple-mode #record-form {
+  display: none;
+}
+
+.simple-mode .layout {
+  grid-template-columns: 1fr;
 }
 
 .parent-only.is-hidden-by-mode {
